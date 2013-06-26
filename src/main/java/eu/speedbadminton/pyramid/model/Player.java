@@ -24,6 +24,9 @@ public class Player {
     @Column(name = "age")
     private String age;
 
+    @Column(name = "position")
+    private long pyramidPosition;
+
     @OneToMany(fetch = FetchType.LAZY)
     private List<Match> matches;
 
@@ -57,5 +60,13 @@ public class Player {
 
     public void setMatches(List<Match> matches) {
         this.matches = matches;
+    }
+
+    public long getPyramidPosition() {
+        return pyramidPosition;
+    }
+
+    public void setPyramidPosition(long pyramidPosition) {
+        this.pyramidPosition = pyramidPosition;
     }
 }

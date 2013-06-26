@@ -28,8 +28,8 @@
                         </component>
                     </components>
                     <componentProperties>
-                        <persistenceunit>Lukas</persistenceunit>
-                        <outputfilename>schema_lukas.ddl</outputfilename>
+                        <persistenceunit>speedbadminton</persistenceunit>
+                        <outputfilename>schema_speed.ddl</outputfilename>
                         <drop>false</drop>
                         <create>true</create>
                         <export>false</export>
