@@ -15,23 +15,11 @@ import java.util.List;
  * @author Yoann Moranville
  */
 @Repository
-public class PlayerDAO {
-
-    @PersistenceContext
-    protected EntityManager entityManager;
-
-    public EntityManager getEntityManager(){
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+public class PlayerDAO extends AbstractJpaDAO {
 
     public void create(Player player) {
         getEntityManager().persist(player);
     }
-
 
     public void delete(Player player) {
         getEntityManager().remove(player);

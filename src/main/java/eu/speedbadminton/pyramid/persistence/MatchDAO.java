@@ -16,23 +16,11 @@ import java.util.List;
  */
 
 @Repository
-public class MatchDAO {
-
-    @PersistenceContext
-    protected EntityManager entityManager;
-
-    public EntityManager getEntityManager(){
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+public class MatchDAO extends AbstractJpaDAO {
 
     public void create(Match match) {
         getEntityManager().persist(match);
     }
-
 
     public void delete(Match match) {
         getEntityManager().remove(match);
@@ -47,5 +35,4 @@ public class MatchDAO {
         List<Match> matches = query.getResultList();
         return matches;
     }
-
 }

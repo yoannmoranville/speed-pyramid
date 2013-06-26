@@ -1,7 +1,6 @@
 package eu.speedbadminton.pyramid;
 
 import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.persistence.PlayerDAO;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class PlayerTest {
     private ApplicationContext context;
 
     @Test
-    public void testLukas() {
+    public void testReadPlayers() {
         PlayerService playerService = (PlayerService)context.getBean("playerService");
         List<Player> players = playerService.getPlayers();
         for(Player player : players) {
