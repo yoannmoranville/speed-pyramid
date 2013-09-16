@@ -59,4 +59,12 @@ public class PlayerService {
         Query query = new Query(criteria);
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }
+
+    public long untilWhichPositionCanPlayerChallenge(Player player) {
+        return untilWhichPositionCanPlayerChallenge(player.getPyramidPosition());
+    }
+
+    public long untilWhichPositionCanPlayerChallenge(long position) {
+        return position - Math.round(Math.sqrt(2*(position - 1)));
+    }
 }
