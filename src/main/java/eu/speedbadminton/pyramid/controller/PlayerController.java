@@ -40,7 +40,7 @@ public class PlayerController {
             players = new ArrayList<Player>(1);
             Player player = playerService.getPlayerById(id);
             players.add(player);
-            modelAndView.addObject("matches", player.getMatches());
+            modelAndView.addObject("matches", playerService.getMatchesOfPlayer(player));
         } else {
             players = playerService.getPlayers();
         }

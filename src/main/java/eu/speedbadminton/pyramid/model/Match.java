@@ -12,6 +12,21 @@ import java.util.Date;
  * @author Yoann Moranville
  */
 
+/**
+    db.match.findOne() {
+        "_id" : 1,
+        "player1" : 1,
+        "player2" : 2
+        ...
+    }
+
+    db.player.findOne() {
+        "_id" : 1,
+        "name" : yoann
+        ...
+    }
+ */
+
 @Document(collection = "Match")
 public class Match {
     @Id

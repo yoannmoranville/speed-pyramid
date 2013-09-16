@@ -31,6 +31,8 @@ public class Player {
 
     private List<Match> matches;
 
+    public Player() {}
+
     public Player(String name, String email, String password, Gender gender) {
         super();
         this.name = name;
