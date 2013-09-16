@@ -5,7 +5,13 @@
 <body>
 
 <c:forEach items="${players}" var="player">
-    ${player.name} ${player.age}
+    ${player.name}
+    <c:if test="${matches}">
+        <c:forEach items="${matches}" var="match">
+            <br/>
+            ${match.player1} vs ${match.player2} (on ${match.matchDate})
+        </c:forEach>
+    </c:if>
     <br />
 </c:forEach>
 

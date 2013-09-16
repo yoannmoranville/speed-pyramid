@@ -6,6 +6,6 @@
     <function>
         <name>contains</name>
         <function-class>eu.speedbadminton.pyramid.taglib.ContainsInteger</function-class>
-        <function-signature>boolean contains(java.util.List,java.lang.Object)</function-signature>
+        <function-signature>boolean contains(java.util.List, java.lang.Object)</function-signature>
     </function>
 </taglib>

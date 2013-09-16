@@ -1,6 +1,8 @@
 package eu.speedbadminton.pyramid.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
 /**
@@ -10,31 +12,43 @@ import java.util.List;
  * @author Yoann Moranville
  */
 
-@Entity
-@Table(name = "player")
+@Document(collection = "player")
 public class Player {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private long id;
+    private String id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "age")
-    private String age;
-
-    @Column(name = "position")
     private long pyramidPosition;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    private String email;
+
+    private String password; //todo: TO BE ENCRYPTED
+
+    private Role role;
+
+    private Gender gender;
+
     private List<Match> matches;
 
-    public long getId() {
+    public Player(String name, String email, String password, Gender gender) {
+        super();
+        this.name = name;
+        this.email = email;
+        this.password = encrypt(password);
+        this.gender = gender;
+    }
+
+    //todo
+    private String encrypt(String password) {
+        return password;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,14 +58,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
     }
 
     public List<Match> getMatches() {
@@ -68,5 +74,50 @@ public class Player {
 
     public void setPyramidPosition(long pyramidPosition) {
         this.pyramidPosition = pyramidPosition;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public enum Role {
+        ADMIN, NONE
+    }
+
+    public enum Gender {
+        MALE, FEMALE
+    }
+
+    @Override
+    public String toString() {
+        return "Player [id=" + id + ", name=" + name + ", pyramidPosition=" + pyramidPosition + ", email=" + email + ", role=" + role.toString() + ", gender=" + gender.toString() + "]";
     }
 }

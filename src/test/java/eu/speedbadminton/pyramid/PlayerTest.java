@@ -37,7 +37,7 @@ public class PlayerTest {
         PlayerService playerService = (PlayerService)context.getBean("playerService");
         List<Player> players = playerService.getPlayers();
         for(Player player : players) {
-            LOG.info("Player name: " + player.getName() + ", age: " + player.getAge());
+            LOG.info("Player name: " + player.getName());
         }
     }
 }

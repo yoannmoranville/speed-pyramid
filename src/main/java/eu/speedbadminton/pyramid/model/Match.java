@@ -1,6 +1,8 @@
 package eu.speedbadminton.pyramid.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
 /**
@@ -10,28 +12,24 @@ import java.util.Date;
  * @author Yoann Moranville
  */
 
-@Entity
-@Table(name = "match")
+@Document(collection = "Match")
 public class Match {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     private Player player1;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     private Player player2;
 
-    @Column(name = "date")
     private Date matchDate;
 
-    public long getId() {
+    private String result; //Create a parser to read and write those results in a string
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -57,5 +55,10 @@ public class Match {
 
     public void setMatchDate(Date matchDate) {
         this.matchDate = matchDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Match [id=" + id + ", player1=" + player1 + ", player2=" + player2 + ", matchDate=" + matchDate + ", result=" + result + "]";
     }
 }

@@ -1,12 +1,15 @@
 package eu.speedbadminton.pyramid.service;
 
 import eu.speedbadminton.pyramid.model.Match;
-import eu.speedbadminton.pyramid.persistence.MatchDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * User: Yoann Moranville
@@ -15,24 +18,29 @@ import java.util.List;
  * @author Yoann Moranville
  */
 @Service
+@Repository
 public class MatchService {
 
     @Autowired
-    private MatchDAO matchDAO;
+    private MongoTemplate mongoTemplate;
+    private static final String COLLECTION_NAME = "match";
 
-    @Transactional
     public void save(Match match) {
-        matchDAO.create(match);
+        if (!mongoTemplate.collectionExists(Match.class)) {
+            mongoTemplate.createCollection(Match.class);
+        }
+        match.setId(UUID.randomUUID().toString());
+        mongoTemplate.insert(match, COLLECTION_NAME);
     }
 
-    @Transactional
     public Match getMatchById(long matchId) {
-        return matchDAO.find(matchId);
+        Criteria criteria = new Criteria("{_id:ObjectId(\"" + matchId + "\")}");
+        Query query = new Query(criteria);
+        return mongoTemplate.findOne(query, Match.class, COLLECTION_NAME);
     }
 
-    @Transactional
     public List<Match> getMatches() {
-        return matchDAO.findAll();
+        return mongoTemplate.findAll(Match.class, COLLECTION_NAME);
     }
 
 }

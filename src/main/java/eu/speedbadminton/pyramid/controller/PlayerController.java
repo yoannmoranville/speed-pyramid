@@ -38,8 +38,9 @@ public class PlayerController {
         List<Player> players;
         if(StringUtils.isNotEmpty(id)) {
             players = new ArrayList<Player>(1);
-            Player player = playerService.getPlayerById(Long.parseLong(id));
+            Player player = playerService.getPlayerById(id);
             players.add(player);
+            modelAndView.addObject("matches", player.getMatches());
         } else {
             players = playerService.getPlayers();
         }
