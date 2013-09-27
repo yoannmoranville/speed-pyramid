@@ -6,28 +6,30 @@
     <head>
         <title>Pyramid default view</title>
         <link rel="stylesheet" href="css/pyramid.css" type="text/css" />
-        <script type="text/javascript" src="http://fiddle.jshell.net/js/lib/mootools-core-1.4.5-nocompat.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>
         <script type="text/javascript" src="js/pyramid.js"></script>
     </head>
     <body>
-        <div id="pyramid"></div>
-            <%--<c:set var="jumpNb" value="1"/>--%>
-            <%--<c:set var="currentJump" value="1"/>--%>
-            <div class="hidden">
-                <c:forEach items="${players}" var="player" varStatus="currentPlayer">
-                    <span class="player" id="player_${currentPlayer.index + 1}">${currentPlayer.index + 1}. ${player.name}</span>
-                    <%--<c:choose>--%>
-                        <%--<c:when test="${jumpNb == currentJump}">--%>
-                            <%--</div><div>--%>
-                            <%--<c:set var="jumpNb" value="${currentPlayer.index + 1}"/>--%>
-                            <%--<c:set var="currentJump" value="0"/>--%>
-                        <%--</c:when>--%>
-                        <%--<c:otherwise>--%>
-                            <%--<c:set var="currentJump" value="${currentJump + 1}"/>--%>
-                        <%--</c:otherwise>--%>
-                    <%--</c:choose>--%>
-                </c:forEach>
-            </div>
+        <div id="pyramid">
+            <c:set var="jumpNb" value="1"/>
+            <c:set var="currentJump" value="1"/>
+            <c:forEach items="${players}" var="player" varStatus="currentPlayer">
+                <div class="buildingBlock">${currentPlayer.index + 1}. ${player.name}</div>
+                <c:choose>
+                    <c:when test="${jumpNb == currentJump}">
+                        <div></div>
+                        <c:set var="jumpNb" value="${jumpNb + 1}"/>
+                        <c:set var="currentJump" value="1"/>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="currentJump" value="${currentJump + 1}"/>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:set var="diff" value="${jumpNb - currentJump}"/>
+            <c:forEach begin="0" end="${diff}" varStatus="loop">
+                <div class="buildingBlock empty">&nbsp;</div>
+            </c:forEach>
+        </div>
     </body>
 </html>
