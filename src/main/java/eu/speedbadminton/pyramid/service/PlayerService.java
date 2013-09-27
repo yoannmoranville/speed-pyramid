@@ -74,6 +74,7 @@ public class PlayerService {
         long yourPosition = getPlayerById(yourId).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
         List<String> availablePlayerIds = new ArrayList<String>();
+        LOG.info("yourPosition: " + yourPosition + ", untilPosition: " + untilPosition);
         for(long position = yourPosition; position < untilPosition; position++) {
             availablePlayerIds.add(getPlayerWithPosition(position).getId());
         }
