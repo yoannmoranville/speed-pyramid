@@ -21,8 +21,8 @@ public class PyramidService {
         int rows = 0;
         int currentPlayersThatCanPlay = 0;
         do {
-            rows++;
             currentPlayersThatCanPlay += rows;
+            rows++;
         } while (currentPlayersThatCanPlay < playerCount);
         return rows;
     }
@@ -32,9 +32,9 @@ public class PyramidService {
         int rows = 0;
         int currentPlayersThatCanPlay = 0;
         do {
-            rows++;
             currentPlayersThatCanPlay += rows;
             rowJumps.add(currentPlayersThatCanPlay);
+            rows++;
         } while (currentPlayersThatCanPlay < playerCount);
         return rowJumps;
     }
