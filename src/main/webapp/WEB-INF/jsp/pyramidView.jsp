@@ -26,8 +26,7 @@
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-            <c:set var="diff" value="${jumpNb - currentJump}"/>
-            <c:forEach begin="0" end="${diff}" varStatus="loop">
+            <c:forEach begin="0" end="${jumpNb - currentJump}">
                 <div class="buildingBlock empty">&nbsp;</div>
             </c:forEach>
         </div>
