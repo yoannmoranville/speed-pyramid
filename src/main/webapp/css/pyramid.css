@@ -16,6 +16,12 @@
 .available {
     background-color: #0a0;
 }
+.yourself {
+    background-color: #09c;
+}
+.empty {
+    background-color: #ccc;
+}
 #pyramid {
     text-align:center;
 }

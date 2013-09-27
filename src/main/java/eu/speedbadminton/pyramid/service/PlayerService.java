@@ -6,6 +6,7 @@ package eu.speedbadminton.pyramid.service;
  *
  * @author Yoann Moranville
  */
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,5 +67,20 @@ public class PlayerService {
 
     public long untilWhichPositionCanPlayerChallenge(long position) {
         return position - Math.round(Math.sqrt(2*(position - 1)));
+    }
+
+    //todo: Get rid of players already in a planned game
+    public List<String> getAvailablePlayerIds(String yourId) {
+        long yourPosition = getPlayerById(yourId).getPyramidPosition();
+        long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
+        List<String> availablePlayerIds = new ArrayList<String>();
+        for(long position = yourPosition; position < untilPosition; position++) {
+            availablePlayerIds.add(getPlayerWithPosition(position).getId());
+        }
+        return availablePlayerIds;
+    }
+
+    public Player getPlayerWithPosition(long position) {
+        return mongoTemplate.findOne(new Query(Criteria.where("position").is(position)), Player.class, COLLECTION_NAME_PLAYER);
     }
 }

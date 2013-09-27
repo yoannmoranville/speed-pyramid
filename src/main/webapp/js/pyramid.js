@@ -1,19 +1,14 @@
-$(function() {
-//    preparePyramid();
-});
-
-function preparePyramid() {
-    addNames();
-    addAvailability();
+function preparePyramid(yourself, availables) { //1. your id, 2. list of available player ids
+    addPlayerPosition(yourself);
+    addAvailability(availables);
 }
 
-function addNames() {
-    $("span.player").each(function(index) {
-        $("#block_" + index+1).text($(this).text());
-//        alert((index+1) + " - " + $(this).text());
+function addPlayerPosition(yourself) {
+    $("#" + yourself).addClass("yourself");
+}
+
+function addAvailability(availables) {
+    $(availables).each(function(index) {
+        $("#" + this).addClass("available");
     });
-}
-
-function addAvailability() {
-
 }

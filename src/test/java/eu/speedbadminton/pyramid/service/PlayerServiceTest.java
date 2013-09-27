@@ -28,6 +28,8 @@ public class PlayerServiceTest {
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(14), 9);
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(12), 7);
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(11), 7);
+        Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(9), 5);
+        Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(7), 4);
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(6), 3);
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(5), 2);
     }
