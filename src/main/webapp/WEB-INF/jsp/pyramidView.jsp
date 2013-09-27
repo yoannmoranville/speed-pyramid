@@ -5,31 +5,29 @@
 <html>
     <head>
         <title>Pyramid default view</title>
-        <script language="javascript">
-            window.onload = function () {
-                var landscape_canvas = document.getElementById("landscape");
-                var ctx = landscape_canvas.getContext("2d");
-//                ctx.fillStyle = "Blue";
-//                ctx.fillRect(0, 0, 800, 850);
-                ctx.fillStyle = "#67ff30";
-                ctx.beginPath();
-                ctx.moveTo(150, 250);
-                ctx.lineTo(300, 20);
-                ctx.lineTo(450, 250);
-                ctx.lineTo(150, 250);
-                ctx.fill();
-                ctx.closePath();
-            }
-        </script>
+        <link rel="stylesheet" href="css/pyramid.css" type="text/css" />
+        <script type="text/javascript" src="http://fiddle.jshell.net/js/lib/mootools-core-1.4.5-nocompat.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>
+        <script type="text/javascript" src="js/pyramid.js"></script>
     </head>
     <body>
-        <div id="pyramid">
-            <c:forEach items="${players}" var="player" varStatus="currentNumber">
-                ${currentNumber.index}. ${player.name}
-                <%--<c:if test="${speed:contains(rowJumps, currentNumber.index + 1)}">--%>
-                    <br/>
-                <%--</c:if>--%>
-            </c:forEach>
-            <canvas id="landscape" width="800" height="350"></canvas>
+        <div id="pyramid"></div>
+            <%--<c:set var="jumpNb" value="1"/>--%>
+            <%--<c:set var="currentJump" value="1"/>--%>
+            <div class="hidden">
+                <c:forEach items="${players}" var="player" varStatus="currentPlayer">
+                    <span class="player" id="player_${currentPlayer.index + 1}">${currentPlayer.index + 1}. ${player.name}</span>
+                    <%--<c:choose>--%>
+                        <%--<c:when test="${jumpNb == currentJump}">--%>
+                            <%--</div><div>--%>
+                            <%--<c:set var="jumpNb" value="${currentPlayer.index + 1}"/>--%>
+                            <%--<c:set var="currentJump" value="0"/>--%>
+                        <%--</c:when>--%>
+                        <%--<c:otherwise>--%>
+                            <%--<c:set var="currentJump" value="${currentJump + 1}"/>--%>
+                        <%--</c:otherwise>--%>
+                    <%--</c:choose>--%>
+                </c:forEach>
+            </div>
     </body>
 </html>

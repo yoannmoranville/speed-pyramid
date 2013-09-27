@@ -1,0 +1,21 @@
+@import url(base.css);
+
+.player {
+    border:1px solid #000000;
+    display: block;
+}
+
+.buildingBlock {
+    display:inline-block;
+    width:80px;
+    height:30px;
+    margin:2px 5px;
+    background-color:#eee;
+    border:2px solid #ccc;
+}
+.available {
+    background-color: #0a0;
+}
+#pyramid {
+    text-align:center;
+}

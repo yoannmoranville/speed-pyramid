@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Repository
 public class PlayerService {
+    private static final Logger LOG = Logger.getLogger(PlayerService.class);
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -45,9 +47,7 @@ public class PlayerService {
     }
 
     public Player getPlayerById(String playerId) {
-        Criteria criteria = new Criteria("{_id:ObjectId(\"" + playerId + "\")}");
-        Query query = new Query(criteria);
-        return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
+        return mongoTemplate.findOne(new Query(Criteria.where("_id").is(playerId)), Player.class, COLLECTION_NAME_PLAYER);
     }
 
     public List<Player> getPlayers() {
@@ -55,7 +55,7 @@ public class PlayerService {
     }
 
     public List<Match> getMatchesOfPlayer(Player player) {
-        Criteria criteria = new Criteria("{player1_id:" + player.getId() + "}").orOperator(new Criteria[]{new Criteria("{player2_id:" + player.getId() + "}")});
+        Criteria criteria = new Criteria().orOperator(Criteria.where("player1_id").is(player.getId()), Criteria.where("player2_id").is(player.getId()));
         Query query = new Query(criteria);
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }

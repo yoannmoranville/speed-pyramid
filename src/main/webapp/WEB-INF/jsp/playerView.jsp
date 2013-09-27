@@ -6,7 +6,7 @@
 
 <c:forEach items="${players}" var="player" varStatus="step">
     ${step.index}. <a href="viewPlayers.html?id=${player.id}">${player.name}</a>
-    <c:if test="${matches}">
+    <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">
             <br/>
             ${match.player1} vs ${match.player2} (on ${match.matchDate})
