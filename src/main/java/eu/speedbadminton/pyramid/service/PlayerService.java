@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.gson.Gson;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -52,7 +55,9 @@ public class PlayerService {
     }
 
     public List<Player> getPlayers() {
-        return mongoTemplate.findAll(Player.class, COLLECTION_NAME_PLAYER);
+        Query query = new Query();
+        query.with(new Sort(Sort.Direction.ASC, "pyramidPosition"));
+        return mongoTemplate.find(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 
     public List<Match> getMatchesOfPlayer(Player player) {
@@ -70,18 +75,25 @@ public class PlayerService {
     }
 
     //todo: Get rid of players already in a planned game
-    public List<String> getAvailablePlayerIds(String yourId) {
+    public String getAvailablePlayerIds(String yourId) {
         long yourPosition = getPlayerById(yourId).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
         List<String> availablePlayerIds = new ArrayList<String>();
-        LOG.info("yourPosition: " + yourPosition + ", untilPosition: " + untilPosition);
-        for(long position = yourPosition; position < untilPosition; position++) {
-            availablePlayerIds.add(getPlayerWithPosition(position).getId());
+        for(long position = yourPosition-1; position >= untilPosition; position--) {
+            Player player = getPlayerWithPosition(position);
+            boolean isBusy = false;
+            for(Match match : player.getMatches()) {
+                if(match.getMatchDate() == null) {
+                    isBusy = true;
+                }
+            }
+            if(!isBusy)
+                availablePlayerIds.add(getPlayerWithPosition(position).getId());
         }
-        return availablePlayerIds;
+        return new Gson().toJson(availablePlayerIds);
     }
 
     public Player getPlayerWithPosition(long position) {
-        return mongoTemplate.findOne(new Query(Criteria.where("position").is(position)), Player.class, COLLECTION_NAME_PLAYER);
+        return mongoTemplate.findOne(new Query(Criteria.where("pyramidPosition").is(position)), Player.class, COLLECTION_NAME_PLAYER);
     }
 }

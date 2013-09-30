@@ -35,7 +35,7 @@ public class PyramidController {
         String id = request.getParameter("id");
         if(StringUtils.isNotEmpty(id)) {
             modelAndView.addObject("yourself", id);
-            List<String> ids = playerService.getAvailablePlayerIds(id);
+            String ids = playerService.getAvailablePlayerIds(id);
             modelAndView.addObject("availables", ids);
         }
         List<Player> players = playerService.getPlayers();

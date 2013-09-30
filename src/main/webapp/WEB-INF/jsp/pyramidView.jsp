@@ -11,14 +11,14 @@
     <body>
         <script type="text/javascript">
             $(document).ready(function() {
-                preparePyramid(${yourself}, ${availables}); //availables being a list, it does not convert good into JS?
+                preparePyramid('${yourself}', '${availables}');
             });
         </script>
         <div id="pyramid">
             <c:set var="jumpNb" value="1"/>
             <c:set var="currentJump" value="1"/>
             <c:forEach items="${players}" var="player" varStatus="currentPlayer">
-                <div class="buildingBlock" id="${player.id}">${currentPlayer.index + 1}. ${player.name}</div>
+                <div class="buildingBlock" id="${player.id}">${player.pyramidPosition}. ${player.name}</div>
                 <c:choose>
                     <c:when test="${jumpNb == currentJump}">
                         <div></div>

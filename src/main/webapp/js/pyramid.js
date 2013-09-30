@@ -8,7 +8,8 @@ function addPlayerPosition(yourself) {
 }
 
 function addAvailability(availables) {
-    $(availables).each(function(index) {
-        $("#" + this).addClass("available");
+    var array = $.parseJSON(availables);
+    $.each(array, function (index, value) {
+        $("#" + value).addClass("available");
     });
 }

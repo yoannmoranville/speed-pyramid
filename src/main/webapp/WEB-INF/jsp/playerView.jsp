@@ -5,7 +5,7 @@
 <body>
 
 <c:forEach items="${players}" var="player" varStatus="step">
-    ${step.index}. <a href="viewPyramid.html?id=${player.id}">${player.name}</a>
+    ${player.pyramidPosition}. <a href="viewPyramid.html?id=${player.id}">${player.name}</a>
     <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">
             <br/>
