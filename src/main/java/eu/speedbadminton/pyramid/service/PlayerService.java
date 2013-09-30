@@ -81,7 +81,6 @@ public class PlayerService {
         return position - Math.round(Math.sqrt(2*(position - 1)));
     }
 
-    //todo: Get rid of players already in a planned game
     public String getAvailablePlayerIds(String yourId) {
         long yourPosition = getPlayerById(yourId).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
@@ -102,5 +101,12 @@ public class PlayerService {
 
     public Player getPlayerWithPosition(long position) {
         return mongoTemplate.findOne(new Query(Criteria.where("pyramidPosition").is(position)), Player.class, COLLECTION_NAME_PLAYER);
+    }
+
+    public Player login(String email, String password) {
+//        LOG.info(password);
+        Criteria criteria = new Criteria().andOperator(Criteria.where("email").is(email), Criteria.where("password").is(password));
+        Query query = new Query(criteria);
+        return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 }

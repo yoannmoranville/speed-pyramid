@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
+<speedbadminton:securityContext var="securityContext" />
 <html>
     <head>
         <title>Pyramid view</title>
@@ -11,7 +12,9 @@
     <body>
         <script type="text/javascript">
             $(document).ready(function() {
+<c:if test="${not empty yourself}">
                 preparePyramid('${yourself}', '${availables}');
+</c:if>
             });
         </script>
         <div id="pyramid">
@@ -33,17 +36,18 @@
             <c:forEach begin="0" end="${jumpNb - currentJump}">
                 <span class="buildingBlock empty">&nbsp;</span>
             </c:forEach>
+            <div></div>
+            <div>
+
+                <c:choose>
+                    <c:when test="${empty securityContext}">
+                        <a href="login.html">Log in</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="logout.html">Log out</a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </body>
 </html>
-
-<%--<c:forEach items="${availables}" var="available">--%>
-    <%--<c:choose>--%>
-        <%--<c:when test="${available.id == player.id}">--%>
-            <%--<div class="buildingBlock available" id="${player.id}">${currentPlayer.index + 1}. ${player.name}</div>--%>
-        <%--</c:when>--%>
-        <%--<c:otherwise>--%>
-            <%--<div class="buildingBlock" id="${player.id}">${currentPlayer.index + 1}. ${player.name}</div>--%>
-        <%--</c:otherwise>--%>
-    <%--</c:choose>--%>
-<%--</c:forEach>--%>

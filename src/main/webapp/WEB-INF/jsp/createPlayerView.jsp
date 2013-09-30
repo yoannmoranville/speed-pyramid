@@ -5,7 +5,7 @@
         <title>Create Player - Admin page</title>
     </head>
     <body>
-        <form action="createPlayer/save.html" method="post">
+        <form action="create_player_save.html" method="post">
             <input type="hidden" name="id" />
             <label for="position">Player's position</label>
             <input type="text" id="position" name="position" value="${nextPosition}" disabled="disabled"/>
