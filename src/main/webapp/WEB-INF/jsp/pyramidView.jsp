@@ -18,7 +18,7 @@
             <c:set var="jumpNb" value="1"/>
             <c:set var="currentJump" value="1"/>
             <c:forEach items="${players}" var="player" varStatus="currentPlayer">
-                <div class="buildingBlock" id="${player.id}">${player.pyramidPosition}. ${player.name}</div>
+                <a href="#colorbox" class="spanLink" id="link_${player.id}"><span class="buildingBlock" id="${player.id}">${player.pyramidPosition}. ${player.name}</span></a>
                 <c:choose>
                     <c:when test="${jumpNb == currentJump}">
                         <div></div>
@@ -31,7 +31,7 @@
                 </c:choose>
             </c:forEach>
             <c:forEach begin="0" end="${jumpNb - currentJump}">
-                <div class="buildingBlock empty">&nbsp;</div>
+                <span class="buildingBlock empty">&nbsp;</span>
             </c:forEach>
         </div>
     </body>

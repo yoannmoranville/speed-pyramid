@@ -9,5 +9,8 @@
     To go to view players: <a href="viewPlayers.html">Players</a>
     <br/>
     To go to view matches: <a href="viewMatches.html">Matches</a>
+    <br/>
+    <br/>
+    To create a player: <a href="createPlayer.html">Create player</a>
 </body>
 </html>

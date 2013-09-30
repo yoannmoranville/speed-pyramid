@@ -60,6 +60,13 @@ public class PlayerService {
         return mongoTemplate.find(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 
+    public long getLastPlayerPosition() {
+        Query query = new Query().limit(1);
+        query.with(new Sort(Sort.Direction.DESC, "pyramidPosition"));
+        Player player = mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
+        return player.getPyramidPosition();
+    }
+
     public List<Match> getMatchesOfPlayer(Player player) {
         Criteria criteria = new Criteria().orOperator(Criteria.where("player1_id").is(player.getId()), Criteria.where("player2_id").is(player.getId()));
         Query query = new Query(criteria);

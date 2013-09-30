@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -5,7 +6,10 @@
     </head>
     <body>
         <form action="createPlayer/save.html" method="post">
-            <input type="hidden" name="id">
+            <input type="hidden" name="id" />
+            <label for="position">Player's position</label>
+            <input type="text" id="position" name="position" value="${nextPosition}" disabled="disabled"/>
+            <br/>
             <label for="name">Player's name</label>
             <input type="text" id="name" name="name"/>
             <br />
@@ -16,7 +20,10 @@
             <input type="text" id="password" name="password"/>
             <br />
             <label for="gender">Player's gender</label>
-            <input type="text" id="gender" name="gender"/>
+            <select name="gender" id="gender">
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+            </select>
             <br />
             <input type="submit" value="Submit"/>
         </form>

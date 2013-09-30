@@ -3,6 +3,7 @@ package eu.speedbadminton.pyramid.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +64,8 @@ public class Player {
     }
 
     public List<Match> getMatches() {
+        if(matches == null)
+            return new ArrayList<Match>();
         return matches;
     }
 

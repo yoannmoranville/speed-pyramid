@@ -1,27 +1,34 @@
 @import url(base.css);
 
-.player {
-    border:1px solid #000000;
+#pyramid .player {
+    border: 1px solid #000000;
     display: block;
 }
-
-.buildingBlock {
-    display:inline-block;
-    width:120px;
-    height:30px;
-    margin:2px 5px;
-    background-color:#eee;
-    border:2px solid #ccc;
+#pyramid .buildingBlock {
+    display: inline-block;
+    width: 120px;
+    height: 30px;
+    margin: 2px 5px;
+    background-color: #eee;
+    border: 2px solid #ccc;
+    vertical-align: middle;
 }
-.available {
+#pyramid .available {
     background-color: #0a0;
 }
-.yourself {
+#pyramid .yourself {
     background-color: #09c;
 }
-.empty {
+#pyramid .empty {
     background-color: #ccc;
 }
 #pyramid {
     text-align:center;
+}
+#pyramid .spanLink {
+    pointer-events: none;
+    cursor: default;
+}
+#pyramid a {
+    color: black;
 }

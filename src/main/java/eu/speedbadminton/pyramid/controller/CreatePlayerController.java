@@ -32,7 +32,9 @@ public class CreatePlayerController {
 
     @RequestMapping(value={"/createPlayer"}, method= RequestMethod.GET) //Not POST method?
     public ModelAndView handleRequest(HttpServletRequest request) {
-        return new ModelAndView("createPlayerView");
+        ModelAndView modelAndView = new ModelAndView("createPlayerView");
+        modelAndView.addObject("nextPosition", playerService.getLastPlayerPosition() + 1);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/createPlayer/save", method = RequestMethod.POST)
