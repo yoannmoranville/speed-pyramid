@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+    <definition name="base.definition" template="/WEB-INF/jsp/templates/layout.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="body" value="" />
+    </definition>
+
+    <definition name="admin" extends="base.definition">
+        <put-attribute name="title" value="Administration" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin.jsp" />
+    </definition>
+    <definition name="createPlayerView" extends="base.definition">
+        <put-attribute name="title" value="Create player" />
+        <put-attribute name="body" value="/WEB-INF/jsp/createPlayerView.jsp" />
+    </definition>
+    <definition name="login" extends="base.definition">
+        <put-attribute name="title" value="Login" />
+        <put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+    </definition>
+    <definition name="matchView" extends="base.definition">
+        <put-attribute name="title" value="Matches" />
+        <put-attribute name="body" value="/WEB-INF/jsp/matchView.jsp" />
+    </definition>
+    <definition name="playerView" extends="base.definition">
+        <put-attribute name="title" value="Players" />
+        <put-attribute name="body" value="/WEB-INF/jsp/playerView.jsp" />
+    </definition>
+    <definition name="pyramidView" extends="base.definition">
+        <put-attribute name="title" value="Pyramid" />
+        <put-attribute name="body" value="/WEB-INF/jsp/pyramidView.jsp" />
+    </definition>
+</tiles-definitions>

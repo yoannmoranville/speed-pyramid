@@ -1,6 +1,7 @@
 package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.service.PyramidService;
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +34,7 @@ public class PyramidController {
     public ModelAndView handleRequest(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("pyramidView");
         String id = request.getParameter("id");
-        if(StringUtils.isNotEmpty(id)) {
+        if(StringUtils.isNotEmpty(id) && SecurityContext.get() != null) {
             modelAndView.addObject("yourself", id);
             String ids = playerService.getAvailablePlayerIds(id);
             modelAndView.addObject("availables", ids);

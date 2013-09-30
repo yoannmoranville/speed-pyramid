@@ -36,18 +36,6 @@
             <c:forEach begin="0" end="${jumpNb - currentJump}">
                 <span class="buildingBlock empty">&nbsp;</span>
             </c:forEach>
-            <div></div>
-            <div>
-
-                <c:choose>
-                    <c:when test="${empty securityContext}">
-                        <a href="login.html">Log in</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="logout.html">Log out</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
         </div>
     </body>
 </html>

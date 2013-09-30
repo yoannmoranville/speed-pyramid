@@ -2,6 +2,7 @@ package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.security.SecurityContext;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Yoann Moranville
  */
+@Controller
 public class AdminController {
     private static final Logger LOG = Logger.getLogger(AdminController.class);
 
