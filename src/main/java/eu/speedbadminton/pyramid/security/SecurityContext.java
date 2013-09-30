@@ -24,13 +24,12 @@ public final class SecurityContext implements HttpSessionBindingListener {
     private String name;
     private String playerId;
     private Player.Role role;
+    private boolean admin;
     private String sessionId;
 
     protected SecurityContext(Player player) {
         role = player.getRole();
-        if (!Player.Role.ADMIN.equals(role)) {
-
-        }
+        admin = Player.Role.ADMIN.equals(role);
         playerId = player.getId();
         emailAddress = player.getEmail();
         name = player.getName();
@@ -53,7 +52,7 @@ public final class SecurityContext implements HttpSessionBindingListener {
     }
 
     public boolean isAdmin() {
-        return Player.Role.ADMIN.equals(role);
+        return admin;
     }
 
     @Override

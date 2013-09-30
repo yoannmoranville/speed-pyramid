@@ -1,15 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
 <speedbadminton:securityContext var="securityContext" />
-<html>
-    <head>
-        <title>Pyramid view</title>
-        <link rel="stylesheet" href="css/pyramid.css" type="text/css" />
-        <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-        <script type="text/javascript" src="js/pyramid.js"></script>
-    </head>
-    <body>
         <script type="text/javascript">
             $(document).ready(function() {
 <c:if test="${not empty yourself}">
@@ -37,5 +28,3 @@
                 <span class="buildingBlock empty">&nbsp;</span>
             </c:forEach>
         </div>
-    </body>
-</html>

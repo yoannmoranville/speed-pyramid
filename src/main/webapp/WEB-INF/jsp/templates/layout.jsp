@@ -6,6 +6,9 @@
 <head>
     <meta content="text/html; charset=UTF-8;" http-equiv="content-type" />
     <title><tiles:getAsString name="title" ignore="true"/></title>
+    <link rel="stylesheet" href="css/<tiles:getAsString name="css"/>" type="text/css" />
+    <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/<tiles:getAsString name="js" />"></script>
 </head>
 <body>
 <speedbadminton:securityContext var="securityContext" />
@@ -13,21 +16,26 @@
     <div id="wrap">
         <div id="speedbadminton">
             <div id="header">
-                <div id="left-header">
-                    <div id="titledashboard"><tiles:getAsString name="title"/></div>
-                </div>
-            </div>
-            <div id="menubar" >
-                <div id="userFeatures">
+                <ul>
+                    <li><a href="viewPyramid.html">View pyramid</a></li>
+                    <c:if test="${not empty securityContext}">
+                        <c:if test="${securityContext.admin}">
+                            <li><a href="createPlayer.html">Create a player</a></li>
+                            <li><a href="viewPlayers.html">View list of players</a></li>
+                            <li><a href="viewMatches.html">View list of matches</a></li>
+                        </c:if>
+                    </c:if>
+                </ul>
+                <p id="userFeatures">
                     <c:choose>
                         <c:when test="${empty securityContext}">
                             <a href="login.html">Log in</a>
                         </c:when>
                         <c:otherwise>
-                            Edit details - <a href="logout.html">Log out</a>
+                            <a href="logout.html">Log out</a>
                         </c:otherwise>
                     </c:choose>
-                </div>
+                </p>
             </div>
         </div>
         <div id="main" class="main">
@@ -35,7 +43,7 @@
         </div>
     </div>
     <div id="footer">
-        <div id="footerSupportText">Created by ...</div>
+        <p id="footerSupportText">Created by Yoann (Sourcecode on <a target="_blank" href="https://github.com/yoannmoranville/speed-pyramid">Github</a>)</p>
     </div>
 </div>
 </body>

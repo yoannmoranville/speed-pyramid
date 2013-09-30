@@ -26,15 +26,18 @@ public class PyramidController {
     private static final Logger LOG = Logger.getLogger(PyramidController.class);
 
     @Autowired
-    private PyramidService pyramidService;
-    @Autowired
     private PlayerService playerService;
 
     @RequestMapping(value={"/viewPyramid"}, method= RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("pyramidView");
-        String id = request.getParameter("id");
-        if(StringUtils.isNotEmpty(id) && SecurityContext.get() != null) {
+        if(SecurityContext.get() != null) {
+            String id;
+            if(SecurityContext.get().isAdmin() && request.getParameter("id") != null) {
+                id = request.getParameter("id");
+            } else {
+                id = SecurityContext.get().getPlayerId();
+            }
             modelAndView.addObject("yourself", id);
             String ids = playerService.getAvailablePlayerIds(id);
             modelAndView.addObject("availables", ids);

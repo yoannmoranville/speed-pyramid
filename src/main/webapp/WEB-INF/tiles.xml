@@ -9,25 +9,37 @@
     <definition name="admin" extends="base.definition">
         <put-attribute name="title" value="Administration" />
         <put-attribute name="body" value="/WEB-INF/jsp/admin.jsp" />
+        <put-attribute name="css" value="default.css" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="createPlayerView" extends="base.definition">
         <put-attribute name="title" value="Create player" />
         <put-attribute name="body" value="/WEB-INF/jsp/createPlayerView.jsp" />
+        <put-attribute name="css" value="default.css" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="login" extends="base.definition">
         <put-attribute name="title" value="Login" />
         <put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+        <put-attribute name="css" value="default.css" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="matchView" extends="base.definition">
         <put-attribute name="title" value="Matches" />
         <put-attribute name="body" value="/WEB-INF/jsp/matchView.jsp" />
+        <put-attribute name="css" value="default.css" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="playerView" extends="base.definition">
         <put-attribute name="title" value="Players" />
         <put-attribute name="body" value="/WEB-INF/jsp/playerView.jsp" />
+        <put-attribute name="css" value="default.css" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="pyramidView" extends="base.definition">
         <put-attribute name="title" value="Pyramid" />
         <put-attribute name="body" value="/WEB-INF/jsp/pyramidView.jsp" />
+        <put-attribute name="css" value="pyramid.css" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
 </tiles-definitions>
