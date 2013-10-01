@@ -34,7 +34,6 @@ public class CreatePlayerController {
     @RequestMapping(value={"/createPlayer"}, method= RequestMethod.GET) //Not POST method?
     public ModelAndView handleRequest(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("createPlayerView");
-        modelAndView.addObject("nextPosition", playerService.getLastPlayerPosition() + 1);
         return modelAndView;
     }
 
@@ -42,11 +41,12 @@ public class CreatePlayerController {
     public View createPerson(@ModelAttribute Player player, ModelMap model) {
         player.setPassword(PasswordEncryption.generateDigest(player.getPassword()));
         player.setRole(Player.Role.NONE);
+        player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
         if(StringUtils.hasText(player.getId())) {
             playerService.updatePlayer(player);
         } else {
             playerService.save(player);
         }
-        return new RedirectView("/speedbadminton/viewPlayers.html");
+        return new RedirectView("viewPlayers.html");
     }
 }

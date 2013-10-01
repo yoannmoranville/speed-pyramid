@@ -1,9 +1,6 @@
 <div id="createPlayer">
     <form action="create_player_save.html" method="post">
         <input type="hidden" name="id" />
-        <label for="position">Player's position</label>
-        <input type="text" id="position" name="position" value="${nextPosition}" disabled="disabled"/>
-        <br/>
         <label for="name">Player's name</label>
         <input type="text" id="name" name="name"/>
         <br />
