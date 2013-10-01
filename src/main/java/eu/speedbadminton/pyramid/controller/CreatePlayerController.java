@@ -41,6 +41,7 @@ public class CreatePlayerController {
     @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
     public View createPerson(@ModelAttribute Player player, ModelMap model) {
         player.setPassword(PasswordEncryption.generateDigest(player.getPassword()));
+        player.setRole(Player.Role.NONE);
         if(StringUtils.hasText(player.getId())) {
             playerService.updatePlayer(player);
         } else {
