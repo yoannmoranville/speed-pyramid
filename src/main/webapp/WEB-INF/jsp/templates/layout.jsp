@@ -8,6 +8,7 @@
     <title><tiles:getAsString name="title" ignore="true"/></title>
     <link rel="stylesheet" href="css/<tiles:getAsString name="css"/>" type="text/css" />
     <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.colorbox-min.js"></script>
     <script type="text/javascript" src="js/<tiles:getAsString name="js" />"></script>
 </head>
 <body>
