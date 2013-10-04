@@ -32,9 +32,10 @@
         <div id="colorbox" class="colorboxLeft">
             <form>
                 <img src="images/nobody.jpg" class="avatar" alt="Player avatar" />
-                <span id="data">Nothing happens...</span>
-                <input type="button" id="btnEncounter" value="Ask for encounter" />
-                <input type="button" id="btnCancel" value="Cancel" />
+                <span id="data" class="middle">Nothing happens...</span>
+                <div></div>
+                <input class="btn" type="button" id="btnEncounter" value="Ask for encounter" />
+                <input class="btn" type="button" id="btnCancel" value="Cancel" />
             </form>
         </div>
     </div>

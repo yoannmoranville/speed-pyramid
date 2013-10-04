@@ -5,23 +5,22 @@ function preparePyramid(yourself, availables) { //1. your id, 2. list of availab
 
 function addPlayerPosition(yourself) {
     $("#" + yourself).addClass("yourself");
-    $("a.spanLink").click(function() { return false; });
 }
 
 function addAvailability(availables) {
     var array = $.parseJSON(availables);
+    $("#btnCancel").click(function() {
+        $.fn.colorbox.close();
+    });
     $.each(array, function (index, value) {
         $("#" + value).addClass("available");
         $("#link_" + value).removeClass("spanLink");
-        $("#link_" + value).click(function() {
-            bindColorboxLinks("#link_" + value);
-            return true;
-        });
+        bindColorboxLinks("#link_" + value, value);
     });
 }
 
-function bindColorboxLinks(aId) {
-    $(".colorbox").colorbox(
+function bindColorboxLinks(linkId, aId) {
+    $(linkId).colorbox(
         {
             width:"80%",
             height:"400px",
@@ -32,20 +31,18 @@ function bindColorboxLinks(aId) {
                 $(document).unbind('keydown.cbox_close');
             },
             onLoad:function() {
-                $('#cboxClose').remove();
+                $("#cboxClose").remove();
                 $.post("usersDataColorbox.html", {id: aId}, function(databack){
-                    if(databack.success) {
-                        //to print data of user with possibility to select for encounter
-                        $(".colorbox .data").html("Yoyo");
+                    if(databack.username) {
+                        $("#colorbox #data").html(databack.username + ' (' + databack.email +')');
                     } else {
-                        //to print error
-                        $(".colorbox .data").html("Error");
+                        $("#colorbox #data").html("Error");
                     }
                 });
             },
             onCleanup:function() {
             },
-            href:"#editColorbox"
+            href:"#colorbox"
         }
     );
 }

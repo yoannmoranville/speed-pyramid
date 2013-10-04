@@ -57,3 +57,23 @@
 .cboxIE #cboxBottomRight{background:transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=images/colorbox/internet_explorer/borderBottomRight.png, sizingMethod='scale');}
 .cboxIE #cboxMiddleLeft{background:transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=images/colorbox/internet_explorer/borderMiddleLeft.png, sizingMethod='scale');}
 .cboxIE #cboxMiddleRight{background:transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=images/colorbox/internet_explorer/borderMiddleRight.png, sizingMethod='scale');}
+
+#colorbox form {
+    text-align: center;
+}
+#colorbox .avatar {
+    display: inline-block;
+    margin-right: 100px;
+    height: 150px;
+    width: 100px;
+}
+#colorbox .middle {
+    display: inline-block;
+    height: 150px;
+    vertical-align: middle;
+}
+#colorbox .btn {
+    width: 200px;
+    height: 30px;
+    margin: 0 20px 0 20px;
+}
