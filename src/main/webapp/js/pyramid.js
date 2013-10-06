@@ -35,6 +35,17 @@ function bindColorboxLinks(linkId, aId) {
                 $.post("usersDataColorbox.html", {id: aId}, function(databack){
                     if(databack.username) {
                         $("#colorbox #data").html(databack.username + ' (' + databack.email +')');
+                        $("#btnEncounter").click(function(){
+                            if(confirm("Are you sure?")) {
+                                $.post("usersEncounterQuestion.html", {asker: aId, asked: databack.email}, function(databack){
+                                    if(databack.success == 'true'){
+                                        alert("Emails sent");
+                                    } else {
+                                        alert("Problem, please contact admin...")
+                                    }
+                                });
+                            }
+                        });
                     } else {
                         $("#colorbox #data").html("Error");
                     }

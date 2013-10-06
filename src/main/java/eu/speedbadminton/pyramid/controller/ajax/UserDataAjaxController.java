@@ -38,4 +38,22 @@ public class UserDataAjaxController extends AjaxAbstractController {
             LOG.error("Error...", e);
         }
     }
+
+    @RequestMapping(value = {"/usersEncounterQuestion"}, method = RequestMethod.POST)
+    public void sendEncounter(HttpServletRequest request, HttpServletResponse response) {
+        String askerId = request.getParameter("asker");
+        Player player = playerService.getPlayerById(askerId);
+        String askedEmail = request.getParameter("asked");
+        try {
+            Writer writer = getResponseWriter(response);
+            if(playerService.sendEmail(player, askedEmail)) {
+                writeSimpleData(writer, "success", "true");
+            } else {
+                writeSimpleData(writer, "success", "false");
+            }
+            closeWriter(writer);
+        } catch (IOException e) {
+            LOG.error("Error...", e);
+        }
+    }
 }

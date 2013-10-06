@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import org.apache.log4j.Logger;
@@ -108,5 +109,10 @@ public class PlayerService {
         Criteria criteria = new Criteria().andOperator(Criteria.where("email").is(email), Criteria.where("password").is(password));
         Query query = new Query(criteria);
         return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
+    }
+
+    public boolean sendEmail(Player asker, String beingAskedEmail) {
+        MailService.sendEmail(asker.getEmail(), "blabla", beingAskedEmail, asker.getEmail());
+        return true;
     }
 }
