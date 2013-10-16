@@ -1,13 +1,13 @@
 function preparePyramid(yourself, availables) { //1. your id, 2. list of available player ids
     addPlayerPosition(yourself);
-    addAvailability(availables);
+    addAvailability(availables, yourself);
 }
 
 function addPlayerPosition(yourself) {
     $("#" + yourself).addClass("yourself");
 }
 
-function addAvailability(availables) {
+function addAvailability(availables, yourself) {
     var array = $.parseJSON(availables);
     $("#btnCancel").click(function() {
         $.fn.colorbox.close();
@@ -15,11 +15,11 @@ function addAvailability(availables) {
     $.each(array, function (index, value) {
         $("#" + value).addClass("available");
         $("#link_" + value).removeClass("spanLink");
-        bindColorboxLinks("#link_" + value, value);
+        bindColorboxLinks("#link_" + value, value, yourself);
     });
 }
 
-function bindColorboxLinks(linkId, aId) {
+function bindColorboxLinks(linkId, aId, yourself) {
     $(linkId).colorbox(
         {
             width:"80%",
@@ -37,8 +37,8 @@ function bindColorboxLinks(linkId, aId) {
                         $("#colorbox #data").html(databack.username + ' (' + databack.email +')');
                         $("#btnEncounter").click(function(){
                             if(confirm("Are you sure?")) {
-                                $.post("usersEncounterQuestion.html", {asker: aId, asked: databack.email}, function(databack){
-                                    if(databack.success == 'true'){
+                                $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
+                                    if(databack2.success == 'true'){
                                         alert("Emails sent");
                                     } else {
                                         alert("Problem, please contact admin...")

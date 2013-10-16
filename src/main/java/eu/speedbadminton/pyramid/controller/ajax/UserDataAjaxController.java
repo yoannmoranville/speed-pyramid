@@ -42,12 +42,14 @@ public class UserDataAjaxController extends AjaxAbstractController {
     @RequestMapping(value = {"/usersEncounterQuestion"}, method = RequestMethod.POST)
     public void sendEncounter(HttpServletRequest request, HttpServletResponse response) {
         String askerId = request.getParameter("asker");
-        Player player = playerService.getPlayerById(askerId);
-        String askedEmail = request.getParameter("asked");
+        Player askerPlayer = playerService.getPlayerById(askerId);
+        String askedId = request.getParameter("asked");
+        Player askedPlayer = playerService.getPlayerById(askedId);
         try {
             Writer writer = getResponseWriter(response);
-            if(playerService.sendEmail(player, askedEmail)) {
+            if(playerService.sendEmail(askerPlayer, askedPlayer)) {
                 writeSimpleData(writer, "success", "true");
+                //Create a match with empty date
             } else {
                 writeSimpleData(writer, "success", "false");
             }

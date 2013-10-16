@@ -12,7 +12,7 @@ public abstract class MailService {
         emailComposer.setProperty("email", email);
         emailComposer.setProperty("body", body);
         emailComposer.setProperty("to", to);
-        emailComposer.setProperty("reply-to", from);
+        emailComposer.setProperty("from", from);
         Emailer emailer = new Emailer();
         emailer.sendMessage(to, null, null, email, emailComposer);
     }

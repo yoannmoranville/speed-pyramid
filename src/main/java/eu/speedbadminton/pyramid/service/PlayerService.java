@@ -111,8 +111,8 @@ public class PlayerService {
         return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 
-    public boolean sendEmail(Player asker, String beingAskedEmail) {
-        MailService.sendEmail(asker.getEmail(), "blabla", beingAskedEmail, asker.getEmail());
+    public boolean sendEmail(Player asker, Player asked) {
+        MailService.sendEmail(asker.getEmail(), "blabla", asked.getEmail(), asker.getEmail());
         return true;
     }
 }
