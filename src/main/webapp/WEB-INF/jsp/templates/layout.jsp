@@ -44,7 +44,7 @@
         </div>
     </div>
     <div id="footer">
-        <p id="footerSupportText">Created by Yoann (Sourcecode on <a target="_blank" href="https://github.com/yoannmoranville/speed-pyramid">Github</a>)</p>
+        <p id="footerSupportText">Developed by Domme, Lukas and Yoann (Sourcecode on <a target="_blank" href="https://github.com/yoannmoranville/speed-pyramid">Github</a>)</p>
     </div>
 </div>
 </body>

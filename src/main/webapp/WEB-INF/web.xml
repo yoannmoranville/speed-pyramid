@@ -26,6 +26,9 @@
     <listener>
         <listener-class>eu.speedbadminton.pyramid.security.SecurityContextContainer</listener-class>
     </listener>
+    <listener>
+        <listener-class>eu.speedbadminton.pyramid.listener.SpeedbadmintonListener</listener-class>
+    </listener>
 
     <security-constraint>
         <display-name>SSL is required</display-name>
