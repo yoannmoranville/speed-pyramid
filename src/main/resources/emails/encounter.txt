@@ -1,4 +1,4 @@
-Hi Speeder,
+Hi ${name},
 
 The user ${email}
 
