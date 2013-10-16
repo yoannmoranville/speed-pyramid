@@ -16,6 +16,6 @@ public abstract class MailService {
         emailComposer.setProperty("to", to);
         emailComposer.setProperty("from", from);
         Emailer emailer = new Emailer();
-        emailer.sendMessage(to, null, from, null, emailComposer);
+        emailer.sendMessage(to, from, null, from, emailComposer);
     }
 }

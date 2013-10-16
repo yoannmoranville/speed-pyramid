@@ -40,6 +40,7 @@ function bindColorboxLinks(linkId, aId, yourself) {
                                 $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
                                     if(databack2.success == 'true'){
                                         alert("Emails sent");
+                                        $.fn.colorbox.close();
                                     } else {
                                         alert("Problem, please contact admin...")
                                     }
