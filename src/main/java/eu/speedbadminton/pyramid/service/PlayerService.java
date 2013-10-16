@@ -120,7 +120,7 @@ public class PlayerService {
                 "\n" +
                 "Speed well,\n" +
                 "The Pyramid team!";
-        MailService.sendEmail(asker.getEmail(), body, asked.getEmail(), asked.getName());
+        MailService.sendEmail(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;
     }
 }
