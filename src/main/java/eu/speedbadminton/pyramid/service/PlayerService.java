@@ -112,7 +112,15 @@ public class PlayerService {
     }
 
     public boolean sendEmail(Player asker, Player asked) {
-        MailService.sendEmail(asker.getEmail(), "blabla", asked.getEmail(), asker.getEmail());
+        String body = "I want to destroy you on the field! I will take your pyramid place!\n" +
+                "Take care and reply to this email so we can find a place where to meet and play together!\n" +
+                "\n" +
+                "Once you have played together, one of you will need to enter the results online.\n" +
+                "BE CAREFUL! You only have 21 days to play, after this, you will be automatically removed from your place!\n" +
+                "\n" +
+                "Speed well,\n" +
+                "The Pyramid team!";
+        MailService.sendEmail(asker.getEmail(), body, asked.getEmail());
         return true;
     }
 }
