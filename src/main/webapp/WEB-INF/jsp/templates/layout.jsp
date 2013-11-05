@@ -20,6 +20,7 @@
                 <ul>
                     <li><a href="viewPyramid.html">View pyramid</a></li>
                     <c:if test="${not empty securityContext}">
+                        <li><a href="viewPlayerData.html">View your user data</a></li>
                         <c:if test="${securityContext.admin}">
                             <li><a href="createPlayer.html">Create a player</a></li>
                             <li><a href="viewPlayers.html">View list of players</a></li>

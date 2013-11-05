@@ -82,6 +82,14 @@ public class Match {
         this.matchDate = matchDate;
     }
 
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     @Override
     public String toString() {
         return "Match [id=" + id + ", player1=" + player1 + ", player2=" + player2 + ", matchDate=" + matchDate + ", result=" + result + "]";
