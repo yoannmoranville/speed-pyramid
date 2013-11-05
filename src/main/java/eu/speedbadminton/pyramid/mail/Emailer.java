@@ -36,7 +36,7 @@ public class Emailer {
     private static final String MAIL_ADDRESS_SEPARATOR = ";";
 
     private Session session;
-    private String emailFromAddress = "noreply@archivesportaleurope.net";
+    private String emailFromAddress = "noreply@speedminton.eu";
 
     public Emailer() {
         try {
@@ -63,7 +63,7 @@ public class Emailer {
                     + " attachments");
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("X-Priority", emailComposer.getPriority().toString());
-            msg.setFrom(new InternetAddress(replyTo));
+            msg.setFrom(new InternetAddress(emailFromAddress));
             if (toRecipients != null) {
                 msg.setRecipients(Message.RecipientType.TO, convertToInternetAddress(toRecipients));
             }

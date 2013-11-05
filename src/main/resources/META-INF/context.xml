@@ -43,4 +43,37 @@
     </bean>
 
     <bean id="contextApplicationContextProvider" class="eu.speedbadminton.pyramid.context.ApplicationContextProvider"/>
+
+
+    <bean name="inactivityTask" class="eu.speedbadminton.pyramid.listener.InactivityTask">
+        <property name="duration" value="10" /> <!-- in minutes -->
+    </bean>
+
+    <bean name="inactivityJobTask" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="eu.speedbadminton.pyramid.listener.InactivityJobTask" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="inactivityTask" value-ref="inactivityTask" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="inactivityJobTask" />
+        <!--<property name="cronExpression" value="0 0 23 * * ?" />-->
+        <property name="cronExpression" value="0/30 * * * * ?" />
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="inactivityJobTask" />
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger" />
+            </list>
+        </property>
+    </bean>
 </beans>

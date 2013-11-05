@@ -24,11 +24,7 @@ import org.apache.log4j.Logger;
  */
 public class EmailComposer {
     private static Logger LOGGER = Logger.getLogger(EmailComposer.class);
-    /**
-     * Priority of an email Message
-     * @author Bastiaan Verhoef
-     *
-     */
+
     public enum Priority {
         HIGH("1"), NORMAL("3"), LOW("5");
         private String priority;

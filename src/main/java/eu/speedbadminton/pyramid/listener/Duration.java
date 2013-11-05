@@ -1,9 +1,9 @@
 package eu.speedbadminton.pyramid.listener;
 
 /**
- * User: Bastiaan
+ * User: Yoann Moranville
  *
- * @author Bastiaan
+ * @author Bastiaan Verhoef
  */
 public class Duration {
     private static final long SECONDS = 1000l;

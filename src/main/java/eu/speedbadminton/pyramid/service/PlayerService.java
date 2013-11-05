@@ -113,7 +113,7 @@ public class PlayerService {
 
     public boolean sendEmail(Player asker, Player asked) {
         String body = "I want to destroy you on the field! I will take your pyramid place!\n" +
-                "Take care and reply to this email so we can find a place where to meet and play together!\n" +
+                "Take care and reply to me so we can find a place where to meet and play together!\n" +
                 "\n" +
                 "Once you have played together, one of you will need to enter the results online.\n" +
                 "BE CAREFUL! You only have 21 days to play, after this, you will be automatically removed from your place!\n" +

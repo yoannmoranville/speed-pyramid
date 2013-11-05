@@ -36,9 +36,11 @@ public class Match {
 
     private Player player2;
 
+    private Date creation;
+
     private Date matchDate;
 
-    private String result; //Create a parser to read and write those results in a string
+    private String result; //todo: Create a parser to read and write those results in a string
 
     public String getId() {
         return id;
@@ -62,6 +64,14 @@ public class Match {
 
     public void setPlayer2(Player player2) {
         this.player2 = player2;
+    }
+
+    public Date getCreation() {
+        return creation;
+    }
+
+    public void setCreation(Date creation) {
+        this.creation = creation;
     }
 
     public Date getMatchDate() {

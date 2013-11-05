@@ -1,6 +1,8 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
+import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class UserDataAjaxController extends AjaxAbstractController {
 
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private MatchService matchService;
 
     @RequestMapping(value={"/usersDataColorbox"}, method = RequestMethod.POST)
     public void getUserData(HttpServletRequest request, HttpServletResponse response) {
@@ -49,7 +53,7 @@ public class UserDataAjaxController extends AjaxAbstractController {
             Writer writer = getResponseWriter(response);
             if(playerService.sendEmail(askerPlayer, askedPlayer)) {
                 writeSimpleData(writer, "success", "true");
-                //Create a match with empty date
+                matchService.createMatch(askerPlayer, askedPlayer);
             } else {
                 writeSimpleData(writer, "success", "false");
             }

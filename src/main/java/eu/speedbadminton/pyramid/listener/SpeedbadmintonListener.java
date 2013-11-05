@@ -14,11 +14,11 @@ public class SpeedbadmintonListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         SpeedbadmintonConfig config = new SpeedbadmintonConfig();
         if (config.isDefaultInactivityProcessing()){
-            InactivityDaemon.start();
+//            InactivityDaemon.start();
         }
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        InactivityDaemon.stop();
+//        InactivityDaemon.stop();
     }
 }
