@@ -34,13 +34,13 @@
         <put-attribute name="title" value="Players" />
         <put-attribute name="body" value="/WEB-INF/jsp/playerView.jsp" />
         <put-attribute name="css" value="default.css" />
-        <put-attribute name="js" value="player.js" />
+        <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="playerDataView" extends="base.definition">
         <put-attribute name="title" value="Player" />
         <put-attribute name="body" value="/WEB-INF/jsp/playerDataView.jsp" />
         <put-attribute name="css" value="default.css" />
-        <put-attribute name="js" value="pyramid.js" />
+        <put-attribute name="js" value="player.js" />
     </definition>
     <definition name="pyramidView" extends="base.definition">
         <put-attribute name="title" value="Pyramid" />
