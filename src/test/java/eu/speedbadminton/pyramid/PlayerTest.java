@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:META-INF/context.xml"})
+@ContextConfiguration(locations = {"classpath:META-INF/context-base.xml"})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 @Transactional
 public class PlayerTest {
