@@ -31,6 +31,7 @@ function bindColorboxLinks(linkId, aId, yourself) {
                 $(document).unbind('keydown.cbox_close');
             },
             onLoad:function() {
+                $("#btnEncounter").unbind();
                 $("#cboxClose").remove();
                 $.post("usersDataColorbox.html", {id: aId}, function(databack){
                     if(databack.username) {

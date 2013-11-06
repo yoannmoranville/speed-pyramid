@@ -55,7 +55,10 @@ public class ResultsAjaxController extends AjaxAbstractController {
     @RequestMapping(value={"/saveResults"}, method = RequestMethod.POST)
     public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws ParseException {
         try {
+            Writer writer = getResponseWriter(response);
+
             String matchId = request.getParameter("matchId");
+            Match match = matchService.getMatchById(matchId);
 
             String challengerId = request.getParameter("askerId");
             String challengeeId = request.getParameter("askedId");
@@ -67,28 +70,45 @@ public class ResultsAjaxController extends AjaxAbstractController {
             String resultSet3Player1 = request.getParameter("results_set3_player1");
             String resultSet3Player2 = request.getParameter("results_set3_player2");
             Result result = new Result(resultSet1Player1, resultSet1Player2, resultSet2Player1, resultSet2Player2, resultSet3Player1, resultSet3Player2);
-            String resultString = ResultsUtil.createResultString(result);
 
-            String datePlayed = request.getParameter("datePlayed"); //dd-MM-yyyy
-            Date date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(datePlayed);
-
-            Writer writer = getResponseWriter(response);
-            Match match = matchService.getMatchById(matchId);
-
-            match.setResult(resultString);
-            match.setMatchDate(date);
-
-            matchService.update(match);
-//            matchService.update(matchId, resultString, date);
-
-            if(ResultsUtil.isChallengerWinner(result)) {
-                Player challenger = playerService.getPlayerById(challengerId);
-                Player challengee = playerService.getPlayerById(challengeeId);
-                playerService.swap(challenger, challengee);
+            boolean continueTask = true;
+            Date date = null;
+            try {
+                String datePlayed = request.getParameter("datePlayed");
+                date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(datePlayed);
+            } catch(Exception e) {
+                writeSimpleData(writer, "errors", "The date is not in the correct dd-MM-yyyy format (example: 15-10-2013 for 15th October 2013)");
+                continueTask = false;
+            }
+            if(continueTask && date == null) {
+                writeSimpleData(writer, "errors", "The date is empty");
+                continueTask = false;
+            }
+            if(continueTask && match.getCreation().after(date)) {
+                writeSimpleData(writer, "errors", "The date is prior to the creation date, it should be after " + match.getCreation());
+                continueTask = false;
+            }
+            if(continueTask && !ResultsUtil.isResultCorrect(result)) {
+                writeSimpleData(writer, "errors", "The results are not correct, one of the players needs to win 2 sets, not more, not less");
+                continueTask = false;
             }
 
-            writeSimpleData(writer, "success", "true");
+            if(continueTask) {
+                String resultString = ResultsUtil.createResultString(result);
 
+                match.setResult(resultString);
+                match.setMatchDate(date);
+
+                matchService.update(match);
+
+                if(ResultsUtil.isChallengerWinner(result)) {
+                    Player challenger = playerService.getPlayerById(challengerId);
+                    Player challengee = playerService.getPlayerById(challengeeId);
+                    playerService.swap(challenger, challengee);
+                }
+
+                writeSimpleData(writer, "success", "true");
+            }
             closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);

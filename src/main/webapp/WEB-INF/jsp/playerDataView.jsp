@@ -17,6 +17,7 @@
 </div>
 <div class="hidden">
     <div id="colorbox" class="colorboxLeft">
+        <div id="error" class="error strong"></div>
         <form>
             <table>
                 <tr>
