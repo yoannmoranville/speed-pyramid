@@ -33,6 +33,7 @@ function bindColorboxLinks(aId) {
                                     if(databack2.success == 'true'){
                                         alert("Results saved");
                                         $.fn.colorbox.close();
+                                        location.reload(true);
                                     } else {
                                         alert("Problem, please contact admin...");
                                     }
