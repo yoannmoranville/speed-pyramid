@@ -2,6 +2,7 @@ package eu.speedbadminton.pyramid.listener;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.service.MatchService;
+import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,8 @@ public class InactivityTask {
 
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private PlayerService playerService;
 
     public InactivityTask() {}
 
@@ -58,7 +61,7 @@ public class InactivityTask {
                 LOGGER.info("This match has not been played yet");
                 if(match.getCreation().getTime() + MAX_TIME_TO_PLAY.getMilliseconds() <= System.currentTimeMillis()) {
                     LOGGER.info("Match has not been played in time... We need to switch places between both players and send both an email.");
-
+                    playerService.swap(match.getChallenger(), match.getChallengee());
                 }
             }
         }
