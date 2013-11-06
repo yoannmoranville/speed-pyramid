@@ -2,6 +2,7 @@ package eu.speedbadminton.pyramid.service;
 
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class PyramidServiceTest {
     @Autowired
     private PyramidService pyramidService;
 
+    @Ignore
     @Test
     public void countPyramidRowsFromNumberOfPlayersTest() {
         Assert.assertEquals(pyramidService.countPyramidRowsFromNumberOfPlayers(2), 2);

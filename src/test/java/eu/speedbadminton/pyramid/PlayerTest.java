@@ -24,17 +24,14 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:META-INF/context-base.xml"})
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
-@Transactional
 public class PlayerTest {
     private static final Logger LOG = Logger.getLogger(PlayerTest.class);
 
     @Autowired
-    private ApplicationContext context;
+    private PlayerService playerService;
 
     @Test
     public void testReadPlayers() {
-        PlayerService playerService = (PlayerService)context.getBean("playerService");
         List<Player> players = playerService.getPlayers();
         for(Player player : players) {
             LOG.info("Player name: " + player.getName());
