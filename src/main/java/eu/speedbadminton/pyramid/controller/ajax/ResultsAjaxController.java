@@ -3,6 +3,7 @@ package eu.speedbadminton.pyramid.controller.ajax;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.service.MatchService;
+import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
@@ -32,6 +33,8 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private PlayerService playerService;
 
     @RequestMapping(value={"/resultColorbox"}, method = RequestMethod.POST)
     public void getMatchData(HttpServletRequest request, HttpServletResponse response) {
@@ -54,8 +57,8 @@ public class ResultsAjaxController extends AjaxAbstractController {
         try {
             String matchId = request.getParameter("matchId");
 
-            String askerId = request.getParameter("askerId");
-            String askedId = request.getParameter("askedId");
+            String challengerId = request.getParameter("askerId");
+            String challengeeId = request.getParameter("askedId");
 
             String resultSet1Player1 = request.getParameter("results_set1_player1");
             String resultSet1Player2 = request.getParameter("results_set1_player2");
@@ -76,6 +79,12 @@ public class ResultsAjaxController extends AjaxAbstractController {
             match.setMatchDate(date);
 
             matchService.update(matchId, resultString, date);
+
+            if(ResultsUtil.isChallengerWinner(result)) {
+                Player challenger = playerService.getPlayerById(challengerId);
+                Player challengee = playerService.getPlayerById(challengeeId);
+                playerService.swap(challenger, challengee);
+            }
 
             writeSimpleData(writer, "success", "true");
 

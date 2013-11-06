@@ -7,6 +7,7 @@ package eu.speedbadminton.pyramid.service;
  * @author Yoann Moranville
  */
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,16 @@ public class PlayerService {
 
     public void updatePlayer(Player player) {
         mongoTemplate.insert(player, COLLECTION_NAME_PLAYER);
+    }
+
+    public void swap(Player challenger, Player challengee) {
+        long newChallengerPosition = challengee.getPyramidPosition();
+        long newChallengeePosition = challenger.getPyramidPosition();
+
+        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(challenger.getId())),
+                new Update().set("pyramidPosition", newChallengerPosition), COLLECTION_NAME_PLAYER);
+        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(challengee.getId())),
+                new Update().set("pyramidPosition", newChallengeePosition), COLLECTION_NAME_PLAYER);
     }
 
     public Player getPlayerById(String playerId) {

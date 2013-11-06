@@ -50,8 +50,6 @@ public class MatchService {
     }
 
     public void update(String matchId, String result, Date date) {
-//        mongoTemplate.insert(match, COLLECTION_NAME);
-
         mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(matchId)),
                 new Update().set("result", result), COLLECTION_NAME);
         mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(matchId)),

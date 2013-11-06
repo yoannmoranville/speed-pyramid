@@ -1,5 +1,7 @@
 package eu.speedbadminton.pyramid.utils;
 
+import eu.speedbadminton.pyramid.model.Player;
+
 /**
  * User: Yoann Moranville
  * Date: 05/11/2013
@@ -49,5 +51,21 @@ public abstract class ResultsUtil {
         }
 
         return new Result(set1, set2, set3);
+    }
+
+    public static boolean isChallengerWinner(Result result) {
+        int winningSet = 0;
+        if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {
+            winningSet ++;
+        }
+        if(result.getSet2().getPointOfChallenger() > result.getSet2().getPointOfChallengee()) {
+            winningSet ++;
+        }
+        if(result.getSet3() != null) {
+            if(result.getSet3().getPointOfChallenger() > result.getSet3().getPointOfChallengee()) {
+                winningSet ++;
+            }
+        }
+        return winningSet == 2;
     }
 }
