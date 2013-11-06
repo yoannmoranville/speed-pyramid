@@ -43,7 +43,6 @@ public class ViewUserDataController {
             Player player = playerService.getPlayerById(id);
             modelAndView.addObject("player", player);
             List<String> matchIds = new ArrayList<String>();
-            LOG.info(playerService.getMatchesOfPlayer(player).size());
             for(Match match : playerService.getMatchesOfPlayer(player)) {
                 if(match.getMatchDate() == null) {
                     matchIds.add(match.getId());

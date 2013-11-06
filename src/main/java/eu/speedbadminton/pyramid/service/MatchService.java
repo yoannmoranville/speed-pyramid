@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,15 @@ public class MatchService {
         }
         match.setId(UUID.randomUUID().toString());
         mongoTemplate.insert(match, COLLECTION_NAME);
+    }
+
+    public void update(String matchId, String result, Date date) {
+//        mongoTemplate.insert(match, COLLECTION_NAME);
+
+        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(matchId)),
+                new Update().set("result", result), COLLECTION_NAME);
+        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(matchId)),
+                new Update().set("matchDate", date), COLLECTION_NAME);
     }
 
     public Match getMatchById(String matchId) {

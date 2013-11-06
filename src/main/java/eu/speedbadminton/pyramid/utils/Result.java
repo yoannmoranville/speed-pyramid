@@ -1,5 +1,7 @@
 package eu.speedbadminton.pyramid.utils;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * User: Yoann Moranville
  * Date: 05/11/2013
@@ -15,6 +17,16 @@ public class Result {
         this.set1 = set1;
         this.set2 = set2;
         this.set3 = set3;
+    }
+
+    public Result(String set11, String set12, String set21, String set22, String set31, String set32) {
+        this.set1 = new Set(Integer.parseInt(set11), Integer.parseInt(set12));
+        this.set2 = new Set(Integer.parseInt(set21), Integer.parseInt(set22));
+        if(StringUtils.isNotEmpty(set31) && StringUtils.isNotEmpty(set32)) {
+            this.set3 = new Set(Integer.parseInt(set31), Integer.parseInt(set32));
+        } else {
+            this.set3 = null;
+        }
     }
 
     public Set getSet1() {
