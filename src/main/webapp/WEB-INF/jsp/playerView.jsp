@@ -5,7 +5,7 @@
         <c:if test="${not empty matches}">
             <c:forEach items="${matches}" var="match">
                 <br/>
-                ${match.player1} vs ${match.player2} (on ${match.matchDate})
+                ${match.challenger} vs ${match.challenger} (on ${match.matchDate})
             </c:forEach>
         </c:if>
         <br />

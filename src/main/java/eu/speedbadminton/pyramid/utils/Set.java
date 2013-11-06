@@ -7,27 +7,27 @@ package eu.speedbadminton.pyramid.utils;
  * @author Yoann Moranville
  */
 public class Set {
-    private int pointOfPlayer1;
-    private int pointOfPlayer2;
+    private int pointOfChallenger;
+    private int pointOfChallengee;
 
-    public Set(int pointOfPlayer1, int pointOfPlayer2) {
-        this.pointOfPlayer1 = pointOfPlayer1;
-        this.pointOfPlayer2 = pointOfPlayer2;
+    public Set(int pointOfChallenger, int pointOfChallengee) {
+        this.pointOfChallenger= pointOfChallenger;
+        this.pointOfChallengee = pointOfChallengee;
     }
 
-    public int getPointOfPlayer1() {
-        return pointOfPlayer1;
+    public int getPointOfChallenger() {
+        return pointOfChallenger;
     }
 
-    public void setPointOfPlayer1(int pointOfPlayer1) {
-        this.pointOfPlayer1 = pointOfPlayer1;
+    public void setPointOfChallenger(int pointOfChallenger) {
+        this.pointOfChallenger = pointOfChallenger;
     }
 
-    public int getPointOfPlayer2() {
-        return pointOfPlayer2;
+    public int getPointOfChallengee() {
+        return pointOfChallengee;
     }
 
-    public void setPointOfPlayer2(int pointOfPlayer2) {
-        this.pointOfPlayer2 = pointOfPlayer2;
+    public void setPointOfChallengee(int pointOfChallengee) {
+        this.pointOfChallengee = pointOfChallengee;
     }
 }

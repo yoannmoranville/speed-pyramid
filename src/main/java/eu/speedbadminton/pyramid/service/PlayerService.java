@@ -69,7 +69,7 @@ public class PlayerService {
     }
 
     public List<Match> getMatchesOfPlayer(Player player) {
-        Criteria criteria = new Criteria().orOperator(Criteria.where("player1_id").is(player.getId()), Criteria.where("player2_id").is(player.getId()));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger_id").is(player.getId()), Criteria.where("challengee_id").is(player.getId()));
         Query query = new Query(criteria);
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }

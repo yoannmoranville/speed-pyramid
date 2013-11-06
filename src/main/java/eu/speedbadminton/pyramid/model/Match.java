@@ -15,8 +15,8 @@ import java.util.Date;
 /**
     db.match.findOne() {
         "_id" : 1,
-        "player1" : 1,
-        "player2" : 2
+        "challenger" : 1,
+        "challengee" : 2
         ...
     }
 
@@ -32,15 +32,15 @@ public class Match {
     @Id
     private String id;
 
-    private Player player1;
+    private Player challenger;
 
-    private Player player2;
+    private Player challengee;
 
     private Date creation;
 
     private Date matchDate;
 
-    private String result; //todo: Create a parser to read and write those results in a string
+    private String result;
 
     public String getId() {
         return id;
@@ -50,20 +50,20 @@ public class Match {
         this.id = id;
     }
 
-    public Player getPlayer1() {
-        return player1;
+    public Player getChallenger() {
+        return challenger;
     }
 
-    public void setPlayer1(Player player1) {
-        this.player1 = player1;
+    public void setChallenger(Player challenger) {
+        this.challenger = challenger;
     }
 
-    public Player getPlayer2() {
-        return player2;
+    public Player getChallengee() {
+        return challengee;
     }
 
-    public void setPlayer2(Player player2) {
-        this.player2 = player2;
+    public void setChallengee(Player challengee) {
+        this.challengee = challengee;
     }
 
     public Date getCreation() {
@@ -92,6 +92,6 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match [id=" + id + ", player1=" + player1 + ", player2=" + player2 + ", matchDate=" + matchDate + ", result=" + result + "]";
+        return "Match [id=" + id + ", challenger=" + challenger + ", challengee=" + challengee + ", matchDate=" + matchDate + ", result=" + result + "]";
     }
 }

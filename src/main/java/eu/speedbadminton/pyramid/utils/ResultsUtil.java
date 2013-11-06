@@ -12,22 +12,22 @@ public abstract class ResultsUtil {
 
     public static String createResultString(Result result) {
         StringBuilder resultString = new StringBuilder();
-        resultString.append(result.getSet1().getPointOfPlayer1());
+        resultString.append(result.getSet1().getPointOfChallenger());
         resultString.append(SEPARATION_OF_POINT);
-        resultString.append(result.getSet1().getPointOfPlayer2());
+        resultString.append(result.getSet1().getPointOfChallengee());
 
         resultString.append(SEPARATION_OF_SET);
 
-        resultString.append(result.getSet2().getPointOfPlayer1());
+        resultString.append(result.getSet2().getPointOfChallenger());
         resultString.append(SEPARATION_OF_POINT);
-        resultString.append(result.getSet2().getPointOfPlayer2());
+        resultString.append(result.getSet2().getPointOfChallengee());
 
         if(result.getSet3() != null) {
             resultString.append(SEPARATION_OF_SET);
 
-            resultString.append(result.getSet3().getPointOfPlayer1());
+            resultString.append(result.getSet3().getPointOfChallenger());
             resultString.append(SEPARATION_OF_POINT);
-            resultString.append(result.getSet3().getPointOfPlayer2());
+            resultString.append(result.getSet3().getPointOfChallengee());
         }
 
         return resultString.toString();

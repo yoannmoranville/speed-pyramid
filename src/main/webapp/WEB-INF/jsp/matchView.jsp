@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="matches">
     <c:forEach items="${matches}" var="match">
-        ${match.matchDate}: <a href="viewPlayers.html?id=${match.player1.id}">${match.player1.name}</a> vs <a href="viewPlayers.html?id=${match.player2.id}">${match.player2.name}</a>
+        ${match.matchDate}: <a href="viewPlayers.html?id=${match.challenger.id}">${match.challenger.name}</a> vs <a href="viewPlayers.html?id=${match.challengee.id}">${match.challengee.name}</a>
         <br />
     </c:forEach>
 </div>
