@@ -48,10 +48,8 @@ public class MatchService {
         mongoTemplate.insert(match, COLLECTION_NAME);
     }
 
-    public Match getMatchById(long matchId) {
-        Criteria criteria = new Criteria("{_id:ObjectId(\"" + matchId + "\")}");
-        Query query = new Query(criteria);
-        return mongoTemplate.findOne(query, Match.class, COLLECTION_NAME);
+    public Match getMatchById(String matchId) {
+        return mongoTemplate.findOne(new Query(Criteria.where("_id").is(matchId)), Match.class, COLLECTION_NAME);
     }
 
     public List<Match> getMatches() {

@@ -1,16 +1,15 @@
-function preparePlayer() {
+function preparePlayer(matchIdsWithoutResults) {
     $("#btnCancel").click(function() {
         $.fn.colorbox.close();
     });
-    var array = $.parseJSON(availables); //availables...????
+    var array = $.parseJSON(matchIdsWithoutResults);
     $.each(array, function (index, value) {
-        $("#" + value).addClass("available");
-        $("#link_" + value).removeClass("spanLink");
-        bindColorboxLinks("#link_" + value, value, yourself);
+        bindColorboxLinks(value);
     });
 }
 
-function bindColorboxLinks(linkId, aId, yourself) {
+function bindColorboxLinks(aId) {
+    var linkId = "#link_" + aId;
     $(linkId).colorbox(
         {
             width:"80%",
@@ -23,23 +22,25 @@ function bindColorboxLinks(linkId, aId, yourself) {
             },
             onLoad:function() {
                 $("#cboxClose").remove();
-                $.post("usersDataColorbox.html", {id: aId}, function(databack){
-                    if(databack.username) {
-                        $("#colorbox #data").html(databack.username + ' (' + databack.email +')');
-                        $("#btnEncounter").click(function(){
+                $.post("resultColorbox.html", {id: aId}, function(databack){
+                    if(databack.asker && databack.asked) {
+                        $("#colorbox #name_player1").html(databack.asker);
+                        $("#colorbox #name_player2").html(databack.asked);
+
+                        $("#btnSave").click(function(){
                             if(confirm("Are you sure?")) {
-                                $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
+                                $.post("saveResults.html", {asker: databack.asker, asked: databack.asked, results_set1_player1: $("#colorbox #set11").val(), results_set1_player2: $("#colorbox #set12").val(), results_set2_player1: $("#colorbox #set21").val(), results_set2_player2: $("#colorbox #set22").val(), results_set3_player1: $("#colorbox #set31").val(), results_set3_player2: $("#colorbox #set32").val(), datePlayed: $("#colorbox #dateMatchPlayed").val()}, function(databack2){
                                     if(databack2.success == 'true'){
-                                        alert("Emails sent");
+                                        alert("Results saved");
                                         $.fn.colorbox.close();
                                     } else {
-                                        alert("Problem, please contact admin...")
+                                        alert("Problem, please contact admin...");
                                     }
                                 });
                             }
                         });
                     } else {
-                        $("#colorbox #data").html("Error");
+                        $("#colorbox").html("Error");
                     }
                 });
             },

@@ -42,7 +42,7 @@ function bindColorboxLinks(linkId, aId, yourself) {
                                         alert("Emails sent");
                                         $.fn.colorbox.close();
                                     } else {
-                                        alert("Problem, please contact admin...")
+                                        alert("Problem, please contact admin...");
                                     }
                                 });
                             }

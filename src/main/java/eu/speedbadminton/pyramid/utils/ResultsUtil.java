@@ -7,7 +7,7 @@ package eu.speedbadminton.pyramid.utils;
  * @author Yoann Moranville
  */
 public abstract class ResultsUtil {
-    private static final String SEPARATION_OF_POINT = "/";
+    private static final String SEPARATION_OF_POINT = ":";
     private static final String SEPARATION_OF_SET = " - ";
 
     public static String createResultString(Result result) {

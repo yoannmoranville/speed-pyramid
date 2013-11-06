@@ -49,6 +49,17 @@ public class AjaxAbstractController {
         writer.write(aroundQuotes(email));
         writer.write(END_ITEM);
     }
+    protected static void writeResultData(Writer writer, String askerName, String askedName) throws IOException {
+        writer.write(START_ITEM);
+        writer.write(aroundQuotes("asker"));
+        writer.write(COLON);
+        writer.write(aroundQuotes(askerName));
+        writer.write(COMMA);
+        writer.write(aroundQuotes("asked"));
+        writer.write(COLON);
+        writer.write(aroundQuotes(askedName));
+        writer.write(END_ITEM);
+    }
     protected static void writeSimpleData(Writer writer, String id, String value) throws IOException {
         writer.write(START_ITEM);
         writer.write(aroundQuotes(id));

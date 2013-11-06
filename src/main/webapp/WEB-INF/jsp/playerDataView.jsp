@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript">
     $(document).ready(function() {
-        preparePlayer();
+        preparePlayer('${matchesWithoutResults}');
     });
 </script>
 <div id="player">
@@ -10,7 +11,7 @@
     <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">
             <br/>
-            ${match.player1.name} vs ${match.player2.name} <c:choose><c:when test="${not empty match.matchDate}">(${match.result} played on "${match.matchDate}")</c:when><c:otherwise>(enter results - todo: link)</c:otherwise></c:choose>
+            ${match.player1.name} vs ${match.player2.name} <c:choose><c:when test="${not empty match.matchDate}">(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")</c:when><c:otherwise>(<a href="#colorbox" id="link_${match.id}">enter results</a>)</c:otherwise></c:choose>
         </c:forEach>
     </c:if>
 </div>
@@ -26,17 +27,19 @@
                 </tr>
                 <tr>
                     <td id="name_player1">Name of Player1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
+                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
+                    <td><input type="text" maxlength="2" name="set31" id="set31"/></td>
                 </tr>
                 <tr>
                     <td id="name_player2">Name of Player2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
+                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
+                    <td><input type="text" maxlength="2" name="set32" id="set32"/></td>
                 </tr>
             </table>
+            <label for="dateMatchPlayed">Date of game (example 25-11-2013):</label>
+            <input type="text" id="dateMatchPlayed" name="dateMatchPlayed" />
             <input class="btn" type="button" id="btnSave" value="Save" />
         </form>
     </div>

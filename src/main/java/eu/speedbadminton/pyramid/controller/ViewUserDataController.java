@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.controller;
 
+import com.google.gson.Gson;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.SecurityContext;
@@ -42,12 +43,13 @@ public class ViewUserDataController {
             Player player = playerService.getPlayerById(id);
             modelAndView.addObject("player", player);
             List<String> matchIds = new ArrayList<String>();
-            for(Match match : player.getMatches()) {
+            LOG.info(playerService.getMatchesOfPlayer(player).size());
+            for(Match match : playerService.getMatchesOfPlayer(player)) {
                 if(match.getMatchDate() == null) {
                     matchIds.add(match.getId());
                 }
             }
-            modelAndView.addObject("matchesWithoutResults", matchIds);
+            modelAndView.addObject("matchesWithoutResults", new Gson().toJson(matchIds));
             modelAndView.addObject("matches", playerService.getMatchesOfPlayer(player));
         }
         return modelAndView;

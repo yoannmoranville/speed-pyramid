@@ -30,8 +30,6 @@ public class Player {
 
     private Gender gender;
 
-    private List<Match> matches;
-
     public Player() {}
 
     public Player(String name, String email, String password, Gender gender) {
@@ -61,16 +59,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Match> getMatches() {
-        if(matches == null)
-            return new ArrayList<Match>();
-        return matches;
-    }
-
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
     }
 
     public long getPyramidPosition() {

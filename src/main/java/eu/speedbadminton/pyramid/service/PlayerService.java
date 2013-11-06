@@ -89,7 +89,7 @@ public class PlayerService {
         for(long position = yourPosition-1; position >= untilPosition; position--) {
             Player player = getPlayerWithPosition(position);
             boolean isBusy = false;
-            for(Match match : player.getMatches()) {
+            for(Match match : getMatchesOfPlayer(player)) {
                 if(match.getMatchDate() == null) {
                     isBusy = true;
                 }
