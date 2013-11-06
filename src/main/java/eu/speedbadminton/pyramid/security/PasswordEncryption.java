@@ -9,7 +9,7 @@ import org.apache.commons.codec.binary.Base64;
  * User: Yoann Moranville
  * Date: 30/09/2013
  *
- * @author Yoann Moranville
+ * @author Bastiaan Verhoef
  */
 
 public class PasswordEncryption {

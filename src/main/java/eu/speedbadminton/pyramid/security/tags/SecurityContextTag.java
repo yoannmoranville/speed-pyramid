@@ -10,7 +10,7 @@ import java.io.IOException;
  * User: Yoann Moranville
  * Date: 30/09/2013
  *
- * @author Yoann Moranville
+ * @author Bastiaan Verhoef
  */
 public class SecurityContextTag extends SimpleTagSupport {
     private String var;

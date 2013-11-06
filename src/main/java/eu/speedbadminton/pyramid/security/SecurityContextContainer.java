@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * User: Yoann Moranville
  * Date: 30/09/2013
  *
- * @author Yoann Moranville
+ * @author Bastiaan Verhoef
  */
 
 public final class SecurityContextContainer implements HttpSessionListener {

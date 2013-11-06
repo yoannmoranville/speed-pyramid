@@ -14,7 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * User: Yoann Moranville
  * Date: 30/09/2013
  *
- * @author Yoann Moranville
+ * @author Bastiaan Verhoef
  */
 public final class SecurityContext implements HttpSessionBindingListener {
     private static final Logger LOGGER = Logger.getLogger(SecurityContext.class);
