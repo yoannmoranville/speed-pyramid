@@ -51,7 +51,6 @@ public class ResultsAjaxController extends AjaxAbstractController {
         }
     }
 
-    //TODO
     @RequestMapping(value={"/saveResults"}, method = RequestMethod.POST)
     public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws ParseException {
         try {
