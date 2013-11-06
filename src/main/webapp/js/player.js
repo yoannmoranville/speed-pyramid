@@ -29,7 +29,7 @@ function bindColorboxLinks(aId) {
 
                         $("#btnSave").click(function(){
                             if(confirm("Are you sure?")) {
-                                $.post("saveResults.html", {matchId: aId, asker: databack.askerId, asked: databack.askedId, results_set1_player1: $("#colorbox #set11").val(), results_set1_player2: $("#colorbox #set12").val(), results_set2_player1: $("#colorbox #set21").val(), results_set2_player2: $("#colorbox #set22").val(), results_set3_player1: $("#colorbox #set31").val(), results_set3_player2: $("#colorbox #set32").val(), datePlayed: $("#colorbox #dateMatchPlayed").val()}, function(databack2){
+                                $.post("saveResults.html", {matchId: aId, askerId: databack.askerId, askedId: databack.askedId, results_set1_player1: $("#colorbox #set11").val(), results_set1_player2: $("#colorbox #set12").val(), results_set2_player1: $("#colorbox #set21").val(), results_set2_player2: $("#colorbox #set22").val(), results_set3_player1: $("#colorbox #set31").val(), results_set3_player2: $("#colorbox #set32").val(), datePlayed: $("#colorbox #dateMatchPlayed").val()}, function(databack2){
                                     if(databack2.success == 'true'){
                                         alert("Results saved");
                                         $.fn.colorbox.close();

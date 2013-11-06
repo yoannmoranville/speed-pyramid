@@ -34,14 +34,14 @@ public class MatchService {
             match.setCreation(new Date());
             match.setChallenger(asker);
             match.setChallengee(asked);
-            save(match);
+            create(match);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    public void save(Match match) {
+    public void create(Match match) {
         if (!mongoTemplate.collectionExists(Match.class)) {
             mongoTemplate.createCollection(Match.class);
         }
@@ -49,11 +49,8 @@ public class MatchService {
         mongoTemplate.insert(match, COLLECTION_NAME);
     }
 
-    public void update(String matchId, String result, Date date) {
-        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(matchId)),
-                new Update().set("result", result), COLLECTION_NAME);
-        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(matchId)),
-                new Update().set("matchDate", date), COLLECTION_NAME);
+    public void update(Match match) {
+        mongoTemplate.save(match, COLLECTION_NAME);
     }
 
     public Match getMatchById(String matchId) {

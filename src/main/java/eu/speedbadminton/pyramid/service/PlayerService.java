@@ -37,7 +37,7 @@ public class PlayerService {
     private static final String COLLECTION_NAME_PLAYER = "player";
     private static final String COLLECTION_NAME_MATCH = "match";
 
-    public void save(Player player) {
+    public void create(Player player) {
         if (!mongoTemplate.collectionExists(Player.class)) {
             mongoTemplate.createCollection(Player.class);
         }
@@ -49,8 +49,8 @@ public class PlayerService {
         mongoTemplate.remove(player, COLLECTION_NAME_PLAYER);
     }
 
-    public void updatePlayer(Player player) {
-        mongoTemplate.insert(player, COLLECTION_NAME_PLAYER);
+    public void update(Player player) {
+        mongoTemplate.save(player, COLLECTION_NAME_PLAYER);
     }
 
     public void swap(Player challenger, Player challengee) {

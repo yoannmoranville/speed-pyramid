@@ -43,9 +43,9 @@ public class CreatePlayerController {
         player.setRole(Player.Role.NONE);
         player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
         if(StringUtils.hasText(player.getId())) {
-            playerService.updatePlayer(player);
+            playerService.update(player);
         } else {
-            playerService.save(player);
+            playerService.create(player);
         }
         return new RedirectView("viewPlayers.html");
     }

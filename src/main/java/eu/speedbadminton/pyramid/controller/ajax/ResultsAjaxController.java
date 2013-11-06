@@ -78,7 +78,8 @@ public class ResultsAjaxController extends AjaxAbstractController {
             match.setResult(resultString);
             match.setMatchDate(date);
 
-            matchService.update(matchId, resultString, date);
+            matchService.update(match);
+//            matchService.update(matchId, resultString, date);
 
             if(ResultsUtil.isChallengerWinner(result)) {
                 Player challenger = playerService.getPlayerById(challengerId);

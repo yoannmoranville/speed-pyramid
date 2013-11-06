@@ -3,9 +3,12 @@ package eu.speedbadminton.pyramid.listener;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
+import eu.speedbadminton.pyramid.utils.Result;
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +65,10 @@ public class InactivityTask {
                 if(match.getCreation().getTime() + MAX_TIME_TO_PLAY.getMilliseconds() <= System.currentTimeMillis()) {
                     LOGGER.info("Match has not been played in time... We need to switch places between both players and send both an email.");
                     playerService.swap(match.getChallenger(), match.getChallengee());
+
+                    match.setMatchDate(new Date());
+                    match.setResult(ResultsUtil.createResultString(new Result("16", "0", "16", "0", null, null)));
+                    matchService.update(match);
                 }
             }
         }
