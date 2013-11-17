@@ -83,7 +83,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 writeSimpleData(writer, "errors", "The date is empty");
                 continueTask = false;
             }
-            if(continueTask && match.getCreation().after(date)) {
+            if(continueTask && match.getCreation().after(date)) { //todo: also allowed to put the same day
                 writeSimpleData(writer, "errors", "The date is prior to the creation date, it should be after " + match.getCreation());
                 continueTask = false;
             }
@@ -99,8 +99,9 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 match.setMatchDate(date);
 
                 matchService.update(match);
-
+                LOG.info("The results of the match are saved.");
                 if(ResultsUtil.isChallengerWinner(result)) {
+                    LOG.info("The challenger won the match!");
                     Player challenger = playerService.getPlayerById(challengerId);
                     Player challengee = playerService.getPlayerById(challengeeId);
                     playerService.swap(challenger, challengee);
