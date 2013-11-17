@@ -36,14 +36,15 @@ public class Emailer {
     private static final String MAIL_ADDRESS_SEPARATOR = ";";
 
     private Session session;
-    private String emailFromAddress = "noreply@speedminton.eu";
+    private String EMAIL_FROM_ADDRESS = "noreply@speedminton.eu";
 
     public Emailer() {
         try {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             session = (Session) envCtx.lookup("mail/Session");
-            emailFromAddress = session.getProperty("mail.from");
+            if(session.getProperty("mail.from") != null)
+                EMAIL_FROM_ADDRESS = session.getProperty("mail.from");
         } catch (NamingException ne) {
             LOGGER.error(ne.getMessage(), ne);
             throw new RuntimeException(ne);
@@ -63,7 +64,7 @@ public class Emailer {
                     + " attachments");
             MimeMessage msg = new MimeMessage(session);
             msg.addHeader("X-Priority", emailComposer.getPriority().toString());
-            msg.setFrom(new InternetAddress(emailFromAddress));
+            msg.setFrom(new InternetAddress(EMAIL_FROM_ADDRESS));
             if (toRecipients != null) {
                 msg.setRecipients(Message.RecipientType.TO, convertToInternetAddress(toRecipients));
             }
