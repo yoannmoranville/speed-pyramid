@@ -37,7 +37,7 @@ public class ConfirmResultsController {
         ModelAndView modelAndView = new ModelAndView("confirmResultsView");
         String validationId = request.getParameter("id");
         Match match = null;
-        if(matchService.getMatchByValidationId(validationId) != null) {
+        if((match = matchService.getMatchByValidationId(validationId)) != null) {
 
             match.setValidationId(null);
             matchService.update(match);
