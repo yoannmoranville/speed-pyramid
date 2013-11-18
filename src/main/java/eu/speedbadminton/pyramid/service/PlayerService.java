@@ -56,11 +56,14 @@ public class PlayerService {
     public void swap(Player challenger, Player challengee) {
         long newChallengerPosition = challengee.getPyramidPosition();
         long newChallengeePosition = challenger.getPyramidPosition();
+        LOG.info("newChallengerPosition: " + newChallengerPosition);
+        LOG.info("newChallengeePosition: " + newChallengeePosition);
 
-        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(challenger.getId())),
-                new Update().set("pyramidPosition", newChallengerPosition), COLLECTION_NAME_PLAYER);
-        mongoTemplate.updateMulti(new Query(Criteria.where("_id").is(challengee.getId())),
-                new Update().set("pyramidPosition", newChallengeePosition), COLLECTION_NAME_PLAYER);
+        challenger.setPyramidPosition(newChallengerPosition);
+        challengee.setPyramidPosition(newChallengeePosition);
+
+        update(challenger);
+        update(challengee);
     }
 
     public Player getPlayerById(String playerId) {
