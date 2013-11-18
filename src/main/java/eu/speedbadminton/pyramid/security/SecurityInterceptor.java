@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author Yoann Moranville
  */
 public class SecurityInterceptor implements HandlerInterceptor {
-    private static final String[] ALLOWED_PAGES = new String[]{"viewPyramid.html", "login.html", "check_login.html"};
+    private static final String[] ALLOWED_PAGES = new String[]{"viewPyramid.html", "login.html", "check_login.html", "confirmResults.html"};
     private static final Logger LOG = Logger.getLogger(SecurityInterceptor.class);
     private String loginPage;
 
@@ -29,13 +29,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String page = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/") + 1);
         final SecurityContext securityContext = SecurityContext.get();
-
-        LOG.info("1 " + page);
-        //For the confirmation of results page
-        if(page.startsWith("confirmResults.html?id=")) {
-            LOG.info("Ok");
-            return true;
-        }
 
         if(securityContext != null || Arrays.asList(ALLOWED_PAGES).contains(page)) {
             return true;
