@@ -45,7 +45,7 @@ public abstract class ResultsUtil {
         Set set2 = new Set(Integer.parseInt(pointsSet[0]), Integer.parseInt(pointsSet[1]));
 
         Set set3 = null;
-        if(sets[2] != null) {
+        if(sets.length == 3 && sets[2] != null) {
             pointsSet = sets[2].split(SEPARATION_OF_POINT);
             set3 = new Set(Integer.parseInt(pointsSet[0]), Integer.parseInt(pointsSet[1]));
         }
