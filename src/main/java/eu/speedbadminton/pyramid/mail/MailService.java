@@ -32,11 +32,29 @@ public abstract class MailService {
     }
 
     public static void sendEmailPassword(String body, String to, String nameOfReceiver) {
-        EmailComposer emailComposer = new EmailComposer("emails/password.txt", "Account created!", true, false);
+        EmailComposer emailComposer = new EmailComposer("emails/basicMail.txt", "Account created!", true, false);
         emailComposer.setProperty("body", body);
         emailComposer.setProperty("nameOfReceiver", nameOfReceiver);
         emailComposer.setProperty("to", to);
         Emailer emailer = new Emailer();
         emailer.sendMessage(to, null, null, null, emailComposer);
+    }
+
+    public static void sendEmailResultsLooserValidation(String body, String email, String name) {
+        EmailComposer emailComposer = new EmailComposer("emails/basicMail.txt", "Please validate the match results!", true, false);
+        emailComposer.setProperty("body", body);
+        emailComposer.setProperty("nameOfReceiver", name);
+        emailComposer.setProperty("to", email);
+        Emailer emailer = new Emailer();
+        emailer.sendMessage(email, null, null, null, emailComposer);
+    }
+
+    public static void sendEmailResultsWaitingForLooserValidation(String body, String email, String name) {
+        EmailComposer emailComposer = new EmailComposer("emails/basicMail.txt", "Information to wait for the validation of your opponent", true, false);
+        emailComposer.setProperty("body", body);
+        emailComposer.setProperty("nameOfReceiver", name);
+        emailComposer.setProperty("to", email);
+        Emailer emailer = new Emailer();
+        emailer.sendMessage(email, null, null, null, emailComposer);
     }
 }

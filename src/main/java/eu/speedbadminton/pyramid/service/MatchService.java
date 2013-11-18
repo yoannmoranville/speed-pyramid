@@ -57,6 +57,10 @@ public class MatchService {
         return mongoTemplate.findOne(new Query(Criteria.where("_id").is(matchId)), Match.class, COLLECTION_NAME);
     }
 
+    public Match getMatchByValidationId(String validationId) {
+        return mongoTemplate.findOne(new Query(Criteria.where("validationId").is(validationId)), Match.class, COLLECTION_NAME);
+    }
+
     public List<Match> getMatches() {
         return mongoTemplate.findAll(Match.class, COLLECTION_NAME);
     }

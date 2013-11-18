@@ -170,4 +170,31 @@ public class PlayerService {
 
         MailService.sendEmailPassword(body, email, name);
     }
+
+    public void sendEmailResultsLooserValidation(Player looser, Player winner, Result result, String link) {
+        String body = "And the results of your match:\n" +
+                "Winner: " + winner.getName() + "\n" +
+                "Looser: " + looser.getName() + "\n" +
+                "\n" +
+                "You lost: " + ResultsUtil.createResultString(result) + "\n" +
+                "\n" +
+                "Please confirm that you lost by clicking this link: " + link + "\n" +
+                "\n";
+
+        MailService.sendEmailResultsLooserValidation(body, looser.getEmail(), looser.getName());
+    }
+
+    public void sendEmailResultsWaitingForLooserValidation(Player looser, Player winner, Result result) {
+        String body = "And the results of your match:\n" +
+                "Winner: " + winner.getName() + "\n" +
+                "Looser: " + looser.getName() + "\n" +
+                "\n" +
+                "You won: " + ResultsUtil.createResultString(result) + "\n" +
+                "\n" +
+                "Please wait for the looser to confirm the score, you will receive an email when this is done.\n" +
+                "If it takes too long, please write the admins about it\n" +
+                "\n";
+
+        MailService.sendEmailResultsWaitingForLooserValidation(body, winner.getEmail(), winner.getName());
+    }
 }

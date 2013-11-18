@@ -23,7 +23,9 @@ import org.apache.log4j.Logger;
  *
  */
 public class EmailComposer {
-    private static Logger LOGGER = Logger.getLogger(EmailComposer.class);
+    private static final Logger LOGGER = Logger.getLogger(EmailComposer.class);
+
+    private static final String PREFIX_TITLE = "[Speedy-Pyramid] ";
 
     public enum Priority {
         HIGH("1"), NORMAL("3"), LOW("5");
@@ -53,7 +55,7 @@ public class EmailComposer {
         this.filename = filename;
         this.classpath = classpath;
         this.html = html;
-        this.subject = subject;
+        this.subject = PREFIX_TITLE + subject;
     }
     public void setProperty(String key, String value){
         properties.put(key, value);

@@ -16,8 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * User: Yoann Moranville
  * Date: 16/09/2013

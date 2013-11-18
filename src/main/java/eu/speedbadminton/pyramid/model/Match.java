@@ -42,6 +42,8 @@ public class Match {
 
     private String result;
 
+    private String validationId;
+
     public String getId() {
         return id;
     }
@@ -88,6 +90,14 @@ public class Match {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public String getValidationId() {
+        return validationId;
+    }
+
+    public void setValidationId(String validationId) {
+        this.validationId = validationId;
     }
 
     @Override

@@ -34,7 +34,7 @@
                             <a href="login.html">Log in</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="logout.html">Log out</a>
+                            You are logged in as <span class="strong">${securityContext.name}</span> - <a href="logout.html">Log out</a>
                         </c:otherwise>
                     </c:choose>
                 </p>

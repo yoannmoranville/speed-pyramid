@@ -5,6 +5,7 @@
         <put-attribute name="title" value="" />
         <put-attribute name="body" value="" />
     </definition>
+    <definition name="base.empty" template="/WEB-INF/jsp/templates/empty.jsp" />
 
     <definition name="admin" extends="base.definition">
         <put-attribute name="title" value="Administration" />
@@ -47,5 +48,8 @@
         <put-attribute name="body" value="/WEB-INF/jsp/pyramidView.jsp" />
         <put-attribute name="css" value="pyramid.css" />
         <put-attribute name="js" value="pyramid.js" />
+    </definition>
+    <definition name="confirmResultsView" extends="base.empty">
+        <put-attribute name="body" value="/WEB-INF/jsp/confirmationResultsView.jsp.jsp" />
     </definition>
 </tiles-definitions>

@@ -2,6 +2,8 @@ package eu.speedbadminton.pyramid.controller.ajax;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.security.PasswordGenerator;
+import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.utils.Result;
@@ -31,6 +33,8 @@ import java.util.Locale;
 @Controller
 public class ResultsAjaxController extends AjaxAbstractController {
     private static final Logger LOG = Logger.getLogger(ResultsAjaxController.class);
+
+    private static final String LINK_ADDRESS = "https://54.214.239.189:8443/pyramid-system/confirmResults.html?id=";
 
     @Autowired
     private MatchService matchService;
@@ -100,16 +104,31 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 match.setResult(resultString);
                 match.setMatchDate(date);
 
-                matchService.update(match);
                 Player challenger = playerService.getPlayerById(challengerId);
                 Player challengee = playerService.getPlayerById(challengeeId);
                 boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
 
-                if(isChallengerWinner) {
-                    playerService.swap(challenger, challengee);
+                String validationId = PasswordGenerator.getRandomString();
+                match.setValidationId(validationId);
+                matchService.update(match);
+
+                String validationLink = LINK_ADDRESS + validationId;
+
+                if((SecurityContext.get().getPlayerId().equals(challenger.getId()) && !isChallengerWinner) || (SecurityContext.get().getPlayerId().equals(challengee.getId()) && isChallengerWinner)) {
+                    if(isChallengerWinner) {
+                        playerService.swap(challenger, challengee);
+                    }
+                    playerService.sendEmailResults(challenger, challengee, isChallengerWinner, result);
+                } else {
+                    if(isChallengerWinner) {
+                        playerService.sendEmailResultsLooserValidation(challengee, challenger, result, validationLink);
+                        playerService.sendEmailResultsWaitingForLooserValidation(challenger, challengee, result);
+                    } else {
+                        playerService.sendEmailResultsLooserValidation(challenger, challengee, result, validationLink);
+                        playerService.sendEmailResultsWaitingForLooserValidation(challengee, challenger, result);
+                    }
                 }
 
-                playerService.sendEmailResults(challenger, challengee, isChallengerWinner, result);
                 writeSimpleData(writer, "success", "true");
             }
             closeWriter(writer);

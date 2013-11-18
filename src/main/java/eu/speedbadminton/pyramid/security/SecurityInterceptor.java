@@ -29,6 +29,12 @@ public class SecurityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String page = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/") + 1);
         final SecurityContext securityContext = SecurityContext.get();
+
+        //For the confirmation of results page
+        if(page.startsWith("confirmResults.html?id=")) {
+            return true;
+        }
+
         if(securityContext != null || Arrays.asList(ALLOWED_PAGES).contains(page)) {
             return true;
         }
