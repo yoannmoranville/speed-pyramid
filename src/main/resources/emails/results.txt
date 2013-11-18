@@ -5,3 +5,6 @@ Hi ${nameOfReceiver} and ${nameOfSender},
 ${body}
 
 ---------------------------------------------------------------------------
+
+Speed well,
+The Pyramid team!

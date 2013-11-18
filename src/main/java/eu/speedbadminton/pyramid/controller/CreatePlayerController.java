@@ -2,6 +2,7 @@ package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.PasswordEncryption;
+import eu.speedbadminton.pyramid.security.PasswordGenerator;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,16 @@ public class CreatePlayerController {
 
     @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
     public View createPerson(@ModelAttribute Player player, ModelMap model) {
-        player.setPassword(PasswordEncryption.generateDigest(player.getPassword()));
+        String password = PasswordGenerator.getRandomString();
+        player.setPassword(PasswordEncryption.generateDigest(password));
+
         player.setRole(Player.Role.NONE);
         player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
         if(StringUtils.hasText(player.getId())) {
             playerService.update(player);
         } else {
             playerService.create(player);
+            playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
         }
         return new RedirectView("viewPlayers.html");
     }

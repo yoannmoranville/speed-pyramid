@@ -128,7 +128,6 @@ public class PlayerService {
     }
 
     public Player login(String email, String password) {
-//        LOG.info(password);
         Criteria criteria = new Criteria().andOperator(Criteria.where("email").is(email), Criteria.where("password").is(password));
         Query query = new Query(criteria);
         return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
@@ -139,10 +138,7 @@ public class PlayerService {
                 "Take care and reply to me so we can find a place where to meet and play together!\n" +
                 "\n" +
                 "Once you have played together, one of you will need to enter the results online.\n" +
-                "BE CAREFUL! You only have 21 days to play, after this, you will be automatically removed from your place!\n" +
-                "\n" +
-                "Speed well,\n" +
-                "The Pyramid team!";
+                "BE CAREFUL! You only have 21 days to play, after this, you will be automatically removed from your place!";
         MailService.sendEmailEncounter(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;
     }
@@ -161,11 +157,17 @@ public class PlayerService {
                 "\n" +
                 winnerName + " won!\n" +
                 "\n" +
-                asker.getName() + " vs " + asked.getName() + ": " + ResultsUtil.createResultString(result) + "\n" +
-                "\n" +
-                "Speed well,\n" +
-                "The Pyramid team!";
+                asker.getName() + " vs " + asked.getName() + ": " + ResultsUtil.createResultString(result);
+
         MailService.sendEmailResults(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;
+    }
+
+    public void sendEmailPassword(String name, String email, String password) {
+        String body = "In order to connect to the pyramid system of Gekkos Berlin, you will need to use those credentials:\n" +
+                "Username: " + email + "\n" +
+                "Password: " + password;
+
+        MailService.sendEmailPassword(body, email, name);
     }
 }

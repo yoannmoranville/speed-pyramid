@@ -30,4 +30,13 @@ public abstract class MailService {
         Emailer emailer = new Emailer();
         emailer.sendMessage(to, from, null, from, emailComposer);
     }
+
+    public static void sendEmailPassword(String body, String to, String nameOfReceiver) {
+        EmailComposer emailComposer = new EmailComposer("emails/password.txt", "Account created!", true, false);
+        emailComposer.setProperty("body", body);
+        emailComposer.setProperty("nameOfReceiver", nameOfReceiver);
+        emailComposer.setProperty("to", to);
+        Emailer emailer = new Emailer();
+        emailer.sendMessage(to, null, null, null, emailComposer);
+    }
 }
