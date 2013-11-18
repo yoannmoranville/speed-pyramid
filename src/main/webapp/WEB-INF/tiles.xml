@@ -50,6 +50,7 @@
         <put-attribute name="js" value="pyramid.js" />
     </definition>
     <definition name="confirmResultsView" extends="base.empty">
+        <put-attribute name="title" value="Confirmation of results" />
         <put-attribute name="body" value="/WEB-INF/jsp/confirmationResultsView.jsp.jsp" />
     </definition>
 </tiles-definitions>

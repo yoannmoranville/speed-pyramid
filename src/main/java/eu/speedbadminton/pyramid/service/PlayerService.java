@@ -113,7 +113,7 @@ public class PlayerService {
             Player player = getPlayerWithPosition(position);
             boolean isBusy = false;
             for(Match match : getMatchesOfPlayer(player)) {
-                if(match.getMatchDate() == null) {
+                if(match.getMatchDate() == null || match.getValidationId() != null) {
                     isBusy = true;
                 }
             }
@@ -184,7 +184,7 @@ public class PlayerService {
         MailService.sendEmailResultsLooserValidation(body, looser.getEmail(), looser.getName());
     }
 
-    public void sendEmailResultsWaitingForLooserValidation(Player looser, Player winner, Result result) {
+    public void sendEmailResultsWaitingForLooserValidation(Player winner, Player looser, Result result) {
         String body = "And the results of your match:\n" +
                 "Winner: " + winner.getName() + "\n" +
                 "Looser: " + looser.getName() + "\n" +

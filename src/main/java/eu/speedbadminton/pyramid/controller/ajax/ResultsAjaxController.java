@@ -90,7 +90,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
             }
 
             if(continueTask && !isDateCorrect(match.getCreation(), date)) {
-                writeSimpleData(writer, "errors", "The date is prior to the creation date, it should be after (or same day as) " + match.getCreation());
+                writeSimpleData(writer, "errors", "The date is prior to the creation date, it should be later than the creation date, but not after current date... Creation date was: " + match.getCreation());
                 continueTask = false;
             }
             if(continueTask && !ResultsUtil.isResultCorrect(result)) {

@@ -43,7 +43,7 @@ public class PyramidController {
 
             boolean isInChallenge = false;
             for(Match match : playerService.getMatchesOfPlayer(playerService.getPlayerById(id))) {
-                if(match.getMatchDate() == null) {
+                if(match.getMatchDate() == null || match.getValidationId() != null) {
                     isInChallenge = true;
                     break;
                 }
