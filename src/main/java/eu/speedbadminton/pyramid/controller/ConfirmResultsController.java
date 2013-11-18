@@ -36,7 +36,7 @@ public class ConfirmResultsController {
     public ModelAndView handleRequest(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("confirmResultsView");
         String validationId = request.getParameter("id");
-        Match match = null;
+        Match match;
         if((match = matchService.getMatchByValidationId(validationId)) != null) {
 
             match.setValidationId(null);
