@@ -108,11 +108,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 Player challengee = playerService.getPlayerById(challengeeId);
                 boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
 
-                String validationId = PasswordGenerator.getRandomString();
-                match.setValidationId(validationId);
                 matchService.update(match);
-
-                String validationLink = LINK_ADDRESS + validationId;
 
                 if((SecurityContext.get().getPlayerId().equals(challenger.getId()) && !isChallengerWinner) || (SecurityContext.get().getPlayerId().equals(challengee.getId()) && isChallengerWinner)) {
                     if(isChallengerWinner) {
@@ -120,6 +116,11 @@ public class ResultsAjaxController extends AjaxAbstractController {
                     }
                     playerService.sendEmailResults(challenger, challengee, isChallengerWinner, result);
                 } else {
+                    String validationId = PasswordGenerator.getRandomString();
+                    match.setValidationId(validationId);
+                    matchService.update(match);
+                    String validationLink = LINK_ADDRESS + validationId;
+
                     if(isChallengerWinner) {
                         playerService.sendEmailResultsLooserValidation(challengee, challenger, result, validationLink);
                         playerService.sendEmailResultsWaitingForLooserValidation(challenger, challengee, result);
