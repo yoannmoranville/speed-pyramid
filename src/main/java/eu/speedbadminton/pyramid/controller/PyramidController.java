@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.controller;
 
+import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.PlayerService;
@@ -39,8 +40,18 @@ public class PyramidController {
                 id = SecurityContext.get().getPlayerId();
             }
             modelAndView.addObject("yourself", id);
-            String ids = playerService.getAvailablePlayerIds(id);
-            modelAndView.addObject("availables", ids);
+
+            boolean isInChallenge = false;
+            for(Match match : playerService.getMatchesOfPlayer(playerService.getPlayerById(id))) {
+                if(match.getMatchDate() == null) {
+                    isInChallenge = true;
+                    break;
+                }
+            }
+            if(!isInChallenge) {
+                String ids = playerService.getAvailablePlayerIds(id);
+                modelAndView.addObject("availables", ids);
+            }
         }
         List<Player> players = playerService.getPlayers();
         modelAndView.addObject("players", players);

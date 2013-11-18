@@ -12,7 +12,7 @@
         <c:set var="jumpNb" value="1"/>
         <c:set var="currentJump" value="1"/>
         <c:forEach items="${players}" var="player" varStatus="currentPlayer">
-            <a href="#colorbox" class="spanLink" id="link_${player.id}"><span class="buildingBlock" id="${player.id}">${player.pyramidPosition}. ${player.name}</span></a>
+            <a href="#colorbox" class="spanLink" id="link_${player.id}"><div class="buildingBlock" id="${player.id}">${player.pyramidPosition}.<br/>${player.name}</div></a>
             <c:choose>
                 <c:when test="${jumpNb == currentJump}">
                     <div></div>
@@ -32,7 +32,11 @@
         <div id="colorbox" class="colorboxLeft">
             <form>
                 <img src="images/nobody.jpg" class="avatar" alt="Player avatar" />
-                <span id="data" class="middle">Nothing happens...</span>
+                <div id="data" class="middle">
+                    <div id="name" class="middle"></div>
+                    <%--<div id="position" class="middle"></div>--%>
+                    <%--<div id="gender" class="middle"></div>--%>
+                </div>
                 <div></div>
                 <input class="btn" type="button" id="btnEncounter" value="Ask for encounter" />
                 <input class="btn" type="button" id="btnCancel" value="Cancel" />
