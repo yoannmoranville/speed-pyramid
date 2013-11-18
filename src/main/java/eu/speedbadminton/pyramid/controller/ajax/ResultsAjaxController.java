@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -83,7 +84,8 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 writeSimpleData(writer, "errors", "The date is empty");
                 continueTask = false;
             }
-            if(continueTask && match.getCreation().after(date)) { //todo: also allowed to put the same day
+
+            if(continueTask && !isDateCorrect(match.getCreation(), date)) {
                 writeSimpleData(writer, "errors", "The date is prior to the creation date, it should be after " + match.getCreation());
                 continueTask = false;
             }
@@ -113,5 +115,18 @@ public class ResultsAjaxController extends AjaxAbstractController {
         } catch (IOException e) {
             LOG.error("Error...", e);
         }
+    }
+
+    private static boolean isDateCorrect(Date creationDate, Date matchDate) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(creationDate);
+        cal2.setTime(matchDate);
+        if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) {
+            return true;
+        } else if(!creationDate.after(matchDate)) {
+            return true;
+        }
+        return false;
     }
 }
