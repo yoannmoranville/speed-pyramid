@@ -39,7 +39,7 @@ public class LoginController {
         if (SecurityService.LoginResult.LoginResultType.LOGGED_IN.equals(loginResult.getType())){
             if(SecurityContext.get().isAdmin())
                 return new RedirectView("admin.html");
-            return new RedirectView("viewPlayerData.html");
+            return new RedirectView("viewPyramid.html");
         } else if (SecurityService.LoginResult.LoginResultType.INVALID_USERNAME_PASSWORD.equals(loginResult.getType())) {
             return new RedirectView("login.html?error=true");
         }
