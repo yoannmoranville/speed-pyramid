@@ -102,13 +102,16 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
                 matchService.update(match);
                 LOG.info("The results of the match are saved.");
-                if(ResultsUtil.isChallengerWinner(result)) {
+                Player challenger = playerService.getPlayerById(challengerId);
+                Player challengee = playerService.getPlayerById(challengeeId);
+                boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
+
+                if(isChallengerWinner) {
                     LOG.info("The challenger won the match!");
-                    Player challenger = playerService.getPlayerById(challengerId);
-                    Player challengee = playerService.getPlayerById(challengeeId);
                     playerService.swap(challenger, challengee);
                 }
 
+                playerService.sendEmailResults(challenger, challengee, isChallengerWinner, result);
                 writeSimpleData(writer, "success", "true");
             }
             closeWriter(writer);

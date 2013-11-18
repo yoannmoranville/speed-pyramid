@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.utils.Result;
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -143,7 +145,29 @@ public class PlayerService {
                 "\n" +
                 "Speed well,\n" +
                 "The Pyramid team!";
-        MailService.sendEmail(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
+        MailService.sendEmailEncounter(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
+        return true;
+    }
+
+    public boolean sendEmailResults(Player asker, Player asked, boolean isChallengerWinner, Result result) {
+        String winnerName;
+        if(isChallengerWinner) {
+            winnerName = asker.getName();
+        } else {
+            winnerName = asked.getName();
+        }
+
+        String body = "And the results of your match:\n" +
+                "Challenger: " + asker.getName() + "\n" +
+                "Challengee: " + asked.getName() + "\n" +
+                "\n" +
+                winnerName + " won!\n" +
+                "\n" +
+                asker.getName() + " vs " + asked.getName() + ResultsUtil.createResultString(result) + "\n" +
+                "\n" +
+                "Speed well,\n" +
+                "The Pyramid team!";
+        MailService.sendEmailResults(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;
     }
 }
