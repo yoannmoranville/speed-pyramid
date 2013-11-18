@@ -30,11 +30,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
         String page = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/") + 1);
         final SecurityContext securityContext = SecurityContext.get();
 
-        LOG.info("1");
-
+        LOG.info("1 " + page);
         //For the confirmation of results page
         if(page.startsWith("confirmResults.html?id=")) {
-            LOG.info("2 " + page);
+            LOG.info("Ok");
             return true;
         }
 
