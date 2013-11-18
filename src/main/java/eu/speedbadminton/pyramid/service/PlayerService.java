@@ -58,8 +58,6 @@ public class PlayerService {
     public void swap(Player challenger, Player challengee) {
         long newChallengerPosition = challengee.getPyramidPosition();
         long newChallengeePosition = challenger.getPyramidPosition();
-        LOG.info("newChallengerPosition: " + newChallengerPosition);
-        LOG.info("newChallengeePosition: " + newChallengeePosition);
 
         challenger.setPyramidPosition(newChallengerPosition);
         challengee.setPyramidPosition(newChallengeePosition);

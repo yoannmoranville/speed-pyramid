@@ -101,13 +101,11 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 match.setMatchDate(date);
 
                 matchService.update(match);
-                LOG.info("The results of the match are saved.");
                 Player challenger = playerService.getPlayerById(challengerId);
                 Player challengee = playerService.getPlayerById(challengeeId);
                 boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
 
                 if(isChallengerWinner) {
-                    LOG.info("The challenger won the match!");
                     playerService.swap(challenger, challengee);
                 }
 
