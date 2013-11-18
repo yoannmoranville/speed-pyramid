@@ -124,7 +124,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
         cal2.setTime(matchDate);
         if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) {
             return true;
-        } else if(!creationDate.after(matchDate)) {
+        } else if(!creationDate.after(matchDate) && matchDate.before(new Date())) {
             return true;
         }
         return false;
