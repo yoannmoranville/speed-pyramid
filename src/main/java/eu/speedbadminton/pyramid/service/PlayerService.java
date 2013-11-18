@@ -161,7 +161,7 @@ public class PlayerService {
                 "\n" +
                 winnerName + " won!\n" +
                 "\n" +
-                asker.getName() + " vs " + asked.getName() + ResultsUtil.createResultString(result) + "\n" +
+                asker.getName() + " vs " + asked.getName() + ": " + ResultsUtil.createResultString(result) + "\n" +
                 "\n" +
                 "Speed well,\n" +
                 "The Pyramid team!";
