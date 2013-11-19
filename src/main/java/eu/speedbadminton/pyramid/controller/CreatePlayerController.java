@@ -37,6 +37,12 @@ public class CreatePlayerController {
 
     @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
     public View createPerson(@ModelAttribute Player player, ModelMap model) {
+        for(Player player1 : playerService.getPlayers()) {
+            if(player1.getEmail().equals(player.getEmail())) {
+                return new RedirectView("viewPlayers.html?error=true");
+            }
+        }
+
         String password = PasswordGenerator.getRandomString();
         player.setPassword(PasswordEncryption.generateDigest(password));
 
