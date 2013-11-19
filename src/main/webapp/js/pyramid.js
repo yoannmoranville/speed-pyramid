@@ -14,7 +14,7 @@ function addAvailability(availables, yourself) {
     });
     $.each(array, function (index, value) {
         $("#" + value).addClass("available");
-        $("#link_" + value).removeClass("spanLink");
+//        $("#link_" + value).removeClass("spanLink");
         bindColorboxLinks("#link_" + value, value, yourself);
     });
 }
@@ -36,6 +36,9 @@ function bindColorboxLinks(linkId, aId, yourself) {
                 $.post("usersDataColorbox.html", {id: aId}, function(databack){
                     if(databack.username) {
                         $("#colorbox #data #name").html(databack.username + ' (' + databack.email + ')');
+                        if(database.avatarPath) {
+                            $("#colorbox #avatarPath").src(database.avatarPath);
+                        }
 //                        $("#colorbox #data #position").html("Position: " + databack.pyramidPosition);
 //                        $("#colorbox #data #gender").html("Gender: " + databack.gender);
                         $("#btnEncounter").click(function(){

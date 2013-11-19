@@ -31,7 +31,7 @@
     <div class="hidden">
         <div id="colorbox" class="colorboxLeft">
             <form>
-                <img src="images/nobody.jpg" class="avatar" alt="Player avatar" />
+                <img src="images/nobody.jpg" class="avatar" id="avatar" alt="Player avatar" />
                 <div id="data" class="middle">
                     <div id="name" class="middle"></div>
                     <%--<div id="position" class="middle"></div>--%>

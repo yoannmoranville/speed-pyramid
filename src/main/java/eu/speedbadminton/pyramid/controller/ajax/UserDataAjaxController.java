@@ -1,6 +1,5 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
-import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
