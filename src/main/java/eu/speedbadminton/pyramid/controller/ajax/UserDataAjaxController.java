@@ -35,7 +35,7 @@ public class UserDataAjaxController extends AjaxAbstractController {
             String userId = request.getParameter("id");
             Writer writer = getResponseWriter(response);
             Player player = playerService.getPlayerById(userId);
-            writeUserData(writer, player.getName(), player.getEmail());
+            writeUserData(writer, player.getName(), player.getEmail(), player.getAvatarPath());
             closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);
