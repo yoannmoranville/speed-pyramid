@@ -11,7 +11,7 @@
     <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">
             <br/>
-            ${match.challenger.name} vs ${match.challengee.name} <c:choose><c:when test="${not empty match.matchDate}">(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />"<c:if test="${not empty match.validationId}"> - waiting for confirmation by your opponent</c:if>)</c:when><c:otherwise>(<a href="#colorbox" id="link_${match.id}">enter results</a>)</c:otherwise></c:choose>
+            ${match.challenger.name} vs ${match.challengee.name} <c:choose><c:when test="${not empty match.matchDate}">(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />"<c:if test="${not empty match.validationId}"> - waiting for confirmation of the looser</c:if>)</c:when><c:otherwise>(<a href="#colorbox" id="link_${match.id}">enter results</a>)</c:otherwise></c:choose>
         </c:forEach>
     </c:if>
 </div>
