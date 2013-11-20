@@ -37,8 +37,11 @@ public class UserDataAjaxController extends AjaxAbstractController {
             Writer writer = getResponseWriter(response);
             Player player = playerService.getPlayerById(userId);
 
-            //todo: fix bug of avatar
-            writeUserData(writer, player.getName(), player.getEmail(), SpeedbadmintonConfig.getPathForAvatarFile() + player.getAvatarPath(), player.getGender().name(), player.getPyramidPosition());
+            if(SpeedbadmintonConfig.isDev() || player.getAvatarPath() == null)
+                writeUserData(writer, player.getName(), player.getEmail(), null, player.getGender().name(), player.getPyramidPosition());
+            else {
+                writeUserData(writer, player.getName(), player.getEmail(), SpeedbadmintonConfig.getPathForAvatarFile() + player.getAvatarPath(), player.getGender().name(), player.getPyramidPosition());
+            }
             closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);

@@ -12,13 +12,22 @@ import javax.servlet.ServletContextListener;
 public class SpeedbadmintonListener implements ServletContextListener {
 
     private static final String PATH_FOR_AVATAR = "PATH_FOR_AVATAR";
+    private static final String IS_DEV = "IS_DEV";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         SpeedbadmintonConfig config = new SpeedbadmintonConfig();
+
+        boolean isDev = true;
+        String isDevStr = servletContextEvent.getServletContext().getInitParameter(IS_DEV);
+        if(isDevStr != null) {
+            isDev = Boolean.parseBoolean(isDevStr);
+        }
+        SpeedbadmintonConfig.setDev(isDev);
+
         String pathForAvatar = servletContextEvent.getServletContext().getInitParameter(PATH_FOR_AVATAR);
-        if (pathForAvatar == null)
+        if (pathForAvatar == null && !isDev)
             throw new RuntimeException(PATH_FOR_AVATAR + " is not configured in TOMCAT");
-        config.setPathForAvatarFile(pathForAvatar);
+        SpeedbadmintonConfig.setPathForAvatarFile(pathForAvatar);
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

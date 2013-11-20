@@ -8,6 +8,7 @@ package eu.speedbadminton.pyramid.listener;
  */
 public class SpeedbadmintonConfig {
     private static String pathForAvatarFile;
+    private static boolean dev;
 
     public static String getPathForAvatarFile() {
         return pathForAvatarFile;
@@ -15,5 +16,13 @@ public class SpeedbadmintonConfig {
 
     public static void setPathForAvatarFile(String pathForAvatarFile) {
         SpeedbadmintonConfig.pathForAvatarFile = pathForAvatarFile;
+    }
+
+    public static boolean isDev() {
+        return dev;
+    }
+
+    public static void setDev(boolean dev) {
+        SpeedbadmintonConfig.dev = dev;
     }
 }
