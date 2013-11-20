@@ -53,6 +53,10 @@ public abstract class ResultsUtil {
         return new Result(set1, set2, set3);
     }
 
+    public static boolean isChallengerWinner(String resultStr) {
+        return isChallengerWinner(parseResultString(resultStr));
+    }
+
     public static boolean isChallengerWinner(Result result) {
         int winningSet = 0;
         if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {

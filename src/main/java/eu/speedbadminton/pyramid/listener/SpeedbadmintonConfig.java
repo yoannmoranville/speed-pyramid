@@ -9,6 +9,7 @@ package eu.speedbadminton.pyramid.listener;
 public class SpeedbadmintonConfig {
     private static String pathForAvatarFile;
     private static boolean dev;
+    private static String linkServer;
 
     public static String getPathForAvatarFile() {
         return pathForAvatarFile;
@@ -24,5 +25,13 @@ public class SpeedbadmintonConfig {
 
     public static void setDev(boolean dev) {
         SpeedbadmintonConfig.dev = dev;
+    }
+
+    public static String getLinkServer() {
+        return linkServer;
+    }
+
+    public static void setLinkServer(String linkServer) {
+        SpeedbadmintonConfig.linkServer = linkServer;
     }
 }

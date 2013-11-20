@@ -15,8 +15,11 @@
                 <c:choose>
                     <c:when test="${not empty match.matchDate}">
                         &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
-                        <c:if test="${not empty match.validationId}">
+                        <c:if test="${not empty match.validationId and empty matchNeedingConfirmation}">
                            &nbsp;- waiting for confirmation of the looser
+                        </c:if>
+                        <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
+                            &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
                         </c:if>
                     </c:when>
                     <c:otherwise>

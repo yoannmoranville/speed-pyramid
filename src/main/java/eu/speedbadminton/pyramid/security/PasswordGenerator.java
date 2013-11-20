@@ -12,7 +12,7 @@ public class PasswordGenerator {
 
     private static final int DEFAULT_PASSWORD_LENGTH = 15;
 
-    private static final String SPECIAL_CHARSET = "!#$";
+    private static final String SPECIAL_CHARSET = "!%$";
     private static final String LOWERCASE_CHARSET = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGIT_CHARSET = "0123456789";

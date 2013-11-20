@@ -24,6 +24,12 @@ public class SpeedbadmintonListener implements ServletContextListener {
         }
         SpeedbadmintonConfig.setDev(isDev);
 
+        if(isDev) {
+            SpeedbadmintonConfig.setLinkServer("https://localhost:8443/pyramid-system/confirmResults.html?id=");
+        } else {
+            SpeedbadmintonConfig.setLinkServer("https://54.214.239.189:8443/pyramid-system/confirmResults.html?id=");
+        }
+
         String pathForAvatar = servletContextEvent.getServletContext().getInitParameter(PATH_FOR_AVATAR);
         if (pathForAvatar == null && !isDev)
             throw new RuntimeException(PATH_FOR_AVATAR + " is not configured in TOMCAT");

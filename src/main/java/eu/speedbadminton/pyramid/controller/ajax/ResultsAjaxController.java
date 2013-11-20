@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.PasswordGenerator;
@@ -33,8 +34,6 @@ import java.util.Locale;
 @Controller
 public class ResultsAjaxController extends AjaxAbstractController {
     private static final Logger LOG = Logger.getLogger(ResultsAjaxController.class);
-
-    private static final String LINK_ADDRESS = "https://54.214.239.189:8443/pyramid-system/confirmResults.html?id=";
 
     @Autowired
     private MatchService matchService;
@@ -119,7 +118,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
                     String validationId = PasswordGenerator.getRandomString();
                     match.setValidationId(validationId);
                     matchService.update(match);
-                    String validationLink = LINK_ADDRESS + validationId;
+                    String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
 
                     if(isChallengerWinner) {
                         playerService.sendEmailResultsLooserValidation(challengee, challenger, result, validationLink);

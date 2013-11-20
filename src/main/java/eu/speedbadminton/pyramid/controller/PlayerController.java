@@ -1,6 +1,7 @@
 package eu.speedbadminton.pyramid.controller;
 
 import com.google.gson.Gson;
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.security.PasswordEncryption;
 import eu.speedbadminton.pyramid.security.PasswordGenerator;
@@ -8,6 +9,7 @@ import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.security.SecurityContextContainer;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,17 +63,22 @@ public class PlayerController {
             } else {
                 id = SecurityContext.get().getPlayerId();
             }
-            modelAndView.addObject("yourself", id);
             Player player = playerService.getPlayerById(id);
             modelAndView.addObject("player", player);
             List<String> matchIds = new ArrayList<String>();
-            for(Match match : playerService.getMatchesOfPlayer(player)) {
+            List<Match> matches = playerService.getMatchesOfPlayer(player);
+            for(Match match : matches) {
                 if(match.getMatchDate() == null) {
                     matchIds.add(match.getId());
+                } else if(match.getResult() != null && match.getValidationId() != null) {
+                    if((player.getId().equals(match.getChallengee().getId()) && ResultsUtil.isChallengerWinner(match.getResult())) || (player.getId().equals(match.getChallenger().getId()) && !ResultsUtil.isChallengerWinner(match.getResult()))) {
+                        modelAndView.addObject("matchNeedingConfirmation", match.getId());
+                        modelAndView.addObject("matchNeedingConfirmationLink", SpeedbadmintonConfig.getLinkServer() + URLEncoder.encode(match.getValidationId()));
+                    }
                 }
             }
             modelAndView.addObject("matchesWithoutResults", new Gson().toJson(matchIds));
-            modelAndView.addObject("matches", playerService.getMatchesOfPlayer(player));
+            modelAndView.addObject("matches", matches);
         }
         return modelAndView;
     }
