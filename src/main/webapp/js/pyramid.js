@@ -71,7 +71,11 @@ function bindColorboxLinks(linkId, aId, yourself) {
                             });
                         }
                     } else {
-                        $("#colorbox #data").html("Error");
+                        $("#colorbox").html("Sorry, there was an error, this window will close in a second...");
+                        setTimeout(function() {
+                            $.fn.colorbox.close();
+                            location.reload(true);
+                        }, 3000);
                     }
                 });
             },

@@ -16,7 +16,7 @@
                     <c:when test="${not empty match.matchDate}">
                         &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
                         <c:if test="${not empty match.validationId}">
-                           &nbsp;- waiting for confirmation of the loose
+                           &nbsp;- waiting for confirmation of the looser
                         </c:if>
                     </c:when>
                     <c:otherwise>
@@ -52,7 +52,10 @@
             </table>
             <label for="dateMatchPlayed">Date of game (example 25-11-2013):</label>
             <input type="text" id="dateMatchPlayed" name="dateMatchPlayed" />
+            <br/>
             <input class="btn" type="button" id="btnSave" value="Save" />
+            <br/>
+            <input class="btn" type="button" id="btnCancel" value="Cancel" />
         </form>
     </div>
 </div>
