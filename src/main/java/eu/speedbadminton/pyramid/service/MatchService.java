@@ -32,8 +32,8 @@ public class MatchService {
         try {
             Match match = new Match();
             match.setCreation(new Date());
-            match.setChallenger(asker);
-            match.setChallengee(asked);
+            match.setChallengerId(asker.getId());
+            match.setChallengerId(asked.getId());
             create(match);
             return true;
         } catch (Exception e) {

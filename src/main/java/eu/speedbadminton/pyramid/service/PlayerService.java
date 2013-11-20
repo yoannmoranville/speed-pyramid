@@ -55,6 +55,13 @@ public class PlayerService {
         mongoTemplate.save(player, COLLECTION_NAME_PLAYER);
     }
 
+    public void swap(String challengerId, String challengeeId) {
+        Player challengee = getPlayerById(challengeeId);
+        Player challenger = getPlayerById(challengerId);
+
+        swap(challenger, challengee);
+    }
+
     public void swap(Player challenger, Player challengee) {
         long newChallengerPosition = challengee.getPyramidPosition();
         long newChallengeePosition = challenger.getPyramidPosition();

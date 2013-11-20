@@ -46,8 +46,8 @@ public class ResultsAjaxController extends AjaxAbstractController {
             String matchId = request.getParameter("id");
             Writer writer = getResponseWriter(response);
             Match match = matchService.getMatchById(matchId);
-            Player asker = match.getChallenger();
-            Player asked = match.getChallengee();
+            Player asker = playerService.getPlayerById(match.getChallengerId());
+            Player asked = playerService.getPlayerById(match.getChallengeeId());
             writeResultData(writer, asker.getName(), asker.getId(), asked.getName(), asked.getId());
             closeWriter(writer);
         } catch (IOException e) {
