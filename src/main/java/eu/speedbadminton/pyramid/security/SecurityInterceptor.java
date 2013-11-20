@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author Yoann Moranville
  */
 public class SecurityInterceptor implements HandlerInterceptor {
-    private static final String[] ALLOWED_PAGES = new String[]{"viewPyramid.html", "login.html", "check_login.html", "confirmResults.html"};
+    private static final String[] ALLOWED_PAGES = new String[]{"viewPyramid.html", "login.html", "check_login.html", "confirmResults.html", "createAdmin.html"};
     private static final Logger LOG = Logger.getLogger(SecurityInterceptor.class);
     private String loginPage;
 
