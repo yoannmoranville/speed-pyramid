@@ -5,6 +5,7 @@ import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.security.PasswordEncryption;
 import eu.speedbadminton.pyramid.security.PasswordGenerator;
 import eu.speedbadminton.pyramid.security.SecurityContext;
+import eu.speedbadminton.pyramid.security.SecurityContextContainer;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.model.Player;
 import org.apache.commons.lang.StringUtils;
@@ -38,19 +39,12 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(value={"/viewPlayers"}, method= RequestMethod.GET)
-    public ModelAndView viewPlayer(HttpServletRequest request) {
-        String id = request.getParameter("id");
-
+    @RequestMapping(value={"/viewPlayers"})
+    public ModelAndView viewPlayer() {
         ModelAndView modelAndView = new ModelAndView("playerView");
-        List<Player> players;
-        if(StringUtils.isNotEmpty(id)) {
-            players = new ArrayList<Player>(1);
-            Player player = playerService.getPlayerById(id);
-            players.add(player);
-            modelAndView.addObject("matches", playerService.getMatchesOfPlayer(player));
-        } else {
-            players = playerService.getPlayers();
+        List<PlayerView> players = new ArrayList<PlayerView>();
+        for(Player player: playerService.getPlayers()) {
+            players.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
         }
         modelAndView.addObject("players", players);
         return modelAndView;
@@ -106,5 +100,23 @@ public class PlayerController {
             playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
         }
         return new RedirectView("viewPlayers.html");
+    }
+
+    public static class PlayerView {
+        private Player player;
+        private boolean inUse;
+
+        public PlayerView(Player player, boolean inUse) {
+            this.player = player;
+            this.inUse = inUse;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+        public boolean isInUse() {
+            return inUse;
+        }
     }
 }

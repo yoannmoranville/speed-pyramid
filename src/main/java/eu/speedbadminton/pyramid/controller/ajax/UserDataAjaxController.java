@@ -24,6 +24,9 @@ import java.io.Writer;
 @Controller
 public class UserDataAjaxController extends AjaxAbstractController {
     private static final Logger LOG = Logger.getLogger(UserDataAjaxController.class);
+    private static final String USER_ALREADY_IN_CHALLENGE = "1";
+    private static final String YOU_ALREADY_IN_CHALLENGE = "2";
+    private static final String USER_NOT_REACHABLE = "3";
 
     @Autowired
     private PlayerService playerService;

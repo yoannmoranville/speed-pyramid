@@ -1,10 +1,19 @@
 function preparePyramid(yourself, availables) { //1. your id, 2. list of available player ids
     addPlayerPosition(yourself);
+    bindAllColorbox();
     addAvailability(availables, yourself);
 }
 
 function addPlayerPosition(yourself) {
     $("#" + yourself).addClass("yourself");
+}
+function bindAllColorbox() {
+    $(".spanLink").each(function() {
+        $(this).removeClass("spanLink");
+        var ident = $(this).attr("id");
+        bindColorboxLinks('#' + ident, ident.replace('link_', ''), null);
+    });
+
 }
 
 function addAvailability(availables, yourself) {
@@ -14,7 +23,6 @@ function addAvailability(availables, yourself) {
     });
     $.each(array, function (index, value) {
         $("#" + value).addClass("available");
-//        $("#link_" + value).removeClass("spanLink");
         bindColorboxLinks("#link_" + value, value, yourself);
     });
 }
@@ -32,6 +40,11 @@ function bindColorboxLinks(linkId, aId, yourself) {
             },
             onLoad:function() {
                 $("#btnEncounter").unbind();
+                $("#btnEncounter").addClass("hidden");
+                $("#error_user_already_challenged").addClass("hidden");
+                $("#error_not_reachable").addClass("hidden");
+                $("#error_you_already_challenged").addClass("hidden");
+
                 $("#cboxClose").remove();
                 $.post("usersDataColorbox.html", {id: aId}, function(databack){
                     if(databack.username) {
@@ -41,19 +54,22 @@ function bindColorboxLinks(linkId, aId, yourself) {
                         }
                         $("#colorbox #data #position").html("Position: " + databack.pyramidPosition);
                         $("#colorbox #data #gender").html("Gender: " + databack.gender);
-                        $("#btnEncounter").click(function(){
-                            if(confirm("Are you sure?")) {
-                                $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
-                                    if(databack2.success == 'true'){
-                                        alert("Emails sent");
-                                        $.fn.colorbox.close();
-                                        location.reload(true);
-                                    } else {
-                                        alert("Problem, please contact admin...");
-                                    }
-                                });
-                            }
-                        });
+                        if(yourself != null) {
+                            $("#btnEncounter").removeClass("hidden");
+                            $("#btnEncounter").click(function(){
+                                if(confirm("Are you sure?")) {
+                                    $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
+                                        if(databack2.success == 'true'){
+                                            alert("Emails sent");
+                                            $.fn.colorbox.close();
+                                            location.reload(true);
+                                        } else {
+                                            alert("Problem, please contact admin...");
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     } else {
                         $("#colorbox #data").html("Error");
                     }

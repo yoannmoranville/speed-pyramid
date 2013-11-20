@@ -38,7 +38,10 @@
                     <div id="gender" class="middle"></div>
                 </div>
                 <div></div>
-                <input class="btn" type="button" id="btnEncounter" value="Ask for encounter" />
+                <div id="error_user_already_challenged">You can not challenge this player, because he/she is already in a challenge</div>
+                <div id="error_not_reachable">You can not challenge this player, because he/she is not reachable from your position</div>
+                <div id="error_you_already_challenged">You are already in a challenge, so you can not challenge anybody else</div>
+                <input class="btn hidden" type="button" id="btnEncounter" value="Ask for encounter" />
                 <input class="btn" type="button" id="btnCancel" value="Cancel" />
             </form>
         </div>

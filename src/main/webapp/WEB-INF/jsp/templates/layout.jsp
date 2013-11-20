@@ -34,7 +34,7 @@
                             <a href="login.html">Log in</a>
                         </c:when>
                         <c:otherwise>
-                            You are logged in as <span class="strong">${securityContext.name}</span> - <a href="logout.html">Log out</a>
+                            You are logged in as <span class="strong"><c:out value="${securityContext.name}"/></span> | <c:if test="${securityContext.child}"><a href="logout.html?parent=true">Switch back to <c:out value="${securityContext.parentName}"/></a> | </c:if><a href="logout.html">Log out</a>
                         </c:otherwise>
                     </c:choose>
                 </p>

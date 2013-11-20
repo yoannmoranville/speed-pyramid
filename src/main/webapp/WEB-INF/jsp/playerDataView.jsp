@@ -6,7 +6,7 @@
     });
 </script>
 <div id="player">
-    ${player.pyramidPosition}. <a href="viewPyramid.html?id=${player.id}">${player.name}</a>
+    ${player.pyramidPosition}. ${player.name}
 
     <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">

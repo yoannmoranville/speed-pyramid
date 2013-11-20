@@ -26,10 +26,10 @@
 #pyramid {
     text-align:center;
 }
-/*#pyramid .spanLink {*/
-    /*pointer-events: none;*/
-    /*cursor: default;*/
-/*}*/
+#pyramid .spanLink {
+    pointer-events: none;
+    cursor: default;
+}
 #pyramid a {
     color: black;
 }

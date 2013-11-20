@@ -40,16 +40,44 @@ public final class SecurityService {
         }
     }
 
-    public static void logout() {
+    public static void logout(boolean logoutToParent) {
         SecurityContext securityContext = SecurityContext.get();
         if (securityContext != null) {
-            securityContext.logout();
+            securityContext.logout(logoutToParent);
         }
+    }
+
+    public static LoginResult loginAsPlayer(String playerId) {
+        SecurityContext currentSecurityContext = SecurityContext.get();
+        SecurityContext context = null;
+        LoginResult.LoginResultType type = null;
+        if (currentSecurityContext != null && currentSecurityContext.isAdmin()) {
+            PlayerService playerService = (PlayerService) ApplicationContextSpeedminton.getApplicationContext().getBean("playerService");
+            Player player = playerService.getPlayerById(playerId);
+
+            if (player != null) {
+                context = new SecurityContext(player, currentSecurityContext);
+                if (SecurityContextContainer.checkAvailability(context)) {
+                    context.login();
+                    type = LoginResult.LoginResultType.LOGGED_IN;
+                } else {
+                    context = null;
+                    type = LoginResult.LoginResultType.ALREADY_IN_USE;
+                }
+
+            } else {
+                type = LoginResult.LoginResultType.NO_PLAYER;
+            }
+        } else {
+            type = LoginResult.LoginResultType.ACCESS_DENIED;
+        }
+        return new LoginResult(context, type);
+
     }
 
     public static class LoginResult {
         public enum LoginResultType {
-            LOGGED_IN, INVALID_USERNAME_PASSWORD
+            LOGGED_IN, INVALID_USERNAME_PASSWORD, ALREADY_IN_USE, NO_PLAYER, ACCESS_DENIED
         }
 
         private SecurityContext context;

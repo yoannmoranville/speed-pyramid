@@ -59,7 +59,7 @@ public class AjaxAbstractController {
         }
         if(StringUtils.isNotEmpty(gender)) {
             writer.write(COMMA);
-            writer.write(aroundQuotes("gendre"));
+            writer.write(aroundQuotes("gender"));
             writer.write(COLON);
             writer.write(aroundQuotes(gender));
         }
