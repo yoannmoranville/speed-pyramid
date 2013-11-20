@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
@@ -35,7 +36,9 @@ public class UserDataAjaxController extends AjaxAbstractController {
             String userId = request.getParameter("id");
             Writer writer = getResponseWriter(response);
             Player player = playerService.getPlayerById(userId);
-            writeUserData(writer, player.getName(), player.getEmail(), player.getAvatarPath());
+
+            //todo: fix bug of avatar
+            writeUserData(writer, player.getName(), player.getEmail(), SpeedbadmintonConfig.getPathForAvatarFile() + player.getAvatarPath(), player.getGender().name(), player.getPyramidPosition());
             closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);

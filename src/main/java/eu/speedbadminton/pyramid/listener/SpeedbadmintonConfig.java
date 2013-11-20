@@ -7,13 +7,13 @@ package eu.speedbadminton.pyramid.listener;
  * @author Yoann Moranville
  */
 public class SpeedbadmintonConfig {
-    private String pathForAvatarFile;
+    private static String pathForAvatarFile;
 
-    public String getPathForAvatarFile() {
+    public static String getPathForAvatarFile() {
         return pathForAvatarFile;
     }
 
-    public void setPathForAvatarFile(String pathForAvatarFile) {
-        this.pathForAvatarFile = pathForAvatarFile;
+    public static void setPathForAvatarFile(String pathForAvatarFile) {
+        SpeedbadmintonConfig.pathForAvatarFile = pathForAvatarFile;
     }
 }

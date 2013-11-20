@@ -34,8 +34,8 @@
                 <img src="images/nobody.jpg" class="avatar" id="avatar" alt="Player avatar" />
                 <div id="data" class="middle">
                     <div id="name" class="middle"></div>
-                    <%--<div id="position" class="middle"></div>--%>
-                    <%--<div id="gender" class="middle"></div>--%>
+                    <div id="position" class="middle"></div>
+                    <div id="gender" class="middle"></div>
                 </div>
                 <div></div>
                 <input class="btn" type="button" id="btnEncounter" value="Ask for encounter" />

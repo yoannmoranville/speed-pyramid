@@ -36,11 +36,11 @@ function bindColorboxLinks(linkId, aId, yourself) {
                 $.post("usersDataColorbox.html", {id: aId}, function(databack){
                     if(databack.username) {
                         $("#colorbox #data #name").html(databack.username + ' (' + databack.email + ')');
-                        if(database.avatarPath) {
-                            $("#colorbox #avatarPath").src(database.avatarPath);
+                        if(databack.avatarPath) {
+                            $("#colorbox #avatar").attr("src", databack.avatarPath);
                         }
-//                        $("#colorbox #data #position").html("Position: " + databack.pyramidPosition);
-//                        $("#colorbox #data #gender").html("Gender: " + databack.gender);
+                        $("#colorbox #data #position").html("Position: " + databack.pyramidPosition);
+                        $("#colorbox #data #gender").html("Gender: " + databack.gender);
                         $("#btnEncounter").click(function(){
                             if(confirm("Are you sure?")) {
                                 $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
