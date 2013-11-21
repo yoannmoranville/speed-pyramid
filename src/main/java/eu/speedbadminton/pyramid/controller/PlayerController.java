@@ -71,7 +71,7 @@ public class PlayerController {
                 if(match.getMatchDate() == null) {
                     matchIds.add(match.getId());
                 } else if(match.getResult() != null && match.getValidationId() != null) {
-                    if((player.getId().equals(match.getChallengeeId()) && ResultsUtil.isChallengerWinner(match.getResult())) || (player.getId().equals(match.getChallengerId()) && !ResultsUtil.isChallengerWinner(match.getResult()))) {
+                    if((player == match.getChallengee() && ResultsUtil.isChallengerWinner(match.getResult())) || (player == match.getChallenger() && !ResultsUtil.isChallengerWinner(match.getResult()))) {
                         modelAndView.addObject("matchNeedingConfirmation", match.getId());
                         modelAndView.addObject("matchNeedingConfirmationLink", SpeedbadmintonConfig.getLinkServer() + URLEncoder.encode(match.getValidationId()));
                     }
