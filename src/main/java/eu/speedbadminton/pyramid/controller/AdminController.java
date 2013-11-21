@@ -2,6 +2,8 @@ package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.SecurityContext;
+import eu.speedbadminton.pyramid.security.SecurityService;
+import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,11 +30,27 @@ public class AdminController {
     @Autowired
     private PlayerService playerService;
 
+    @Autowired
+    private MatchService matchService;
+
     @RequestMapping(value={"/admin"}, method = RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request) {
         if(SecurityContext.get().isAdmin())
             return new ModelAndView("admin");
         return null;
+    }
+
+    @RequestMapping(value = "/delete_user", method = RequestMethod.POST)
+    public View changeToPlayerAccount(HttpServletRequest request) {
+        String playerId = request.getParameter("id");
+        Player player = playerService.getPlayerById(playerId);
+        long positionDeletedPlayer = player.getPyramidPosition();
+
+        playerService.addOnePositionToPlayers(positionDeletedPlayer);
+        matchService.deleteMatchesOfPlayer(player);
+        playerService.delete(playerId);
+        //todo: send EMAIL...
+        return new RedirectView("viewPlayers.html");
     }
 
     @RequestMapping(value = {"/createAdmin"})

@@ -47,8 +47,23 @@ public class PlayerService {
         mongoTemplate.insert(player, COLLECTION_NAME_PLAYER);
     }
 
+    public void delete(String playerId) {
+        Player player = getPlayerById(playerId);
+        delete(player);
+    }
+
     public void delete(Player player) {
         mongoTemplate.remove(player, COLLECTION_NAME_PLAYER);
+    }
+
+    public void addOnePositionToPlayers(long firstPositionToBeFilled) {
+        List<Player> players = getPlayers();
+        for(Player player : players) {
+            if(player.getPyramidPosition() > firstPositionToBeFilled) {
+                player.setPyramidPosition(player.getPyramidPosition() - 1);
+                update(player);
+            }
+        }
     }
 
     public void update(Player player) {

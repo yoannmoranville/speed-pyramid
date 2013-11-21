@@ -69,4 +69,9 @@ public class MatchService {
         return mongoTemplate.findAll(Match.class, COLLECTION_NAME);
     }
 
+    public void deleteMatchesOfPlayer(Player player) {
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+        Query query = new Query(criteria);
+        mongoTemplate.remove(query, COLLECTION_NAME);
+    }
 }
