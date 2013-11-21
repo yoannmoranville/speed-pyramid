@@ -7,13 +7,31 @@ package eu.speedbadminton.pyramid.listener;
  * @author Yoann Moranville
  */
 public class SpeedbadmintonConfig {
-    private boolean defaultInactivityProcessing = true;
+    private static String pathForAvatarFile;
+    private static boolean dev;
+    private static String linkServer;
 
-    public boolean isDefaultInactivityProcessing() {
-        return defaultInactivityProcessing;
+    public static String getPathForAvatarFile() {
+        return pathForAvatarFile;
     }
 
-    public void setDefaultInactivityProcessing(boolean defaultInactivityProcessing) {
-        this.defaultInactivityProcessing = defaultInactivityProcessing;
+    public static void setPathForAvatarFile(String pathForAvatarFile) {
+        SpeedbadmintonConfig.pathForAvatarFile = pathForAvatarFile;
+    }
+
+    public static boolean isDev() {
+        return dev;
+    }
+
+    public static void setDev(boolean dev) {
+        SpeedbadmintonConfig.dev = dev;
+    }
+
+    public static String getLinkServer() {
+        return linkServer;
+    }
+
+    public static void setLinkServer(String linkServer) {
+        SpeedbadmintonConfig.linkServer = linkServer;
     }
 }

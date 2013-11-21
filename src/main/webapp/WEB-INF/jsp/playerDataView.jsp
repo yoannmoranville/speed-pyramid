@@ -6,12 +6,26 @@
     });
 </script>
 <div id="player">
-    ${player.pyramidPosition}. <a href="viewPyramid.html?id=${player.id}">${player.name}</a>
+    ${player.pyramidPosition}. ${player.name}
 
     <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">
             <br/>
-            ${match.challenger.name} vs ${match.challengee.name} <c:choose><c:when test="${not empty match.matchDate}">(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />"<c:if test="${not empty match.validationId}"> - waiting for confirmation by your opponent</c:if>)</c:when><c:otherwise>(<a href="#colorbox" id="link_${match.id}">enter results</a>)</c:otherwise></c:choose>
+            ${match.challengerName} vs ${match.challengeeName}
+                <c:choose>
+                    <c:when test="${not empty match.matchDate}">
+                        &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
+                        <c:if test="${not empty match.validationId and empty matchNeedingConfirmation}">
+                           &nbsp;- waiting for confirmation of the looser
+                        </c:if>
+                        <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
+                            &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        (<a href="#colorbox" id="link_${match.id}">enter results</a>)
+                    </c:otherwise>
+                </c:choose>
         </c:forEach>
     </c:if>
 </div>
@@ -41,7 +55,10 @@
             </table>
             <label for="dateMatchPlayed">Date of game (example 25-11-2013):</label>
             <input type="text" id="dateMatchPlayed" name="dateMatchPlayed" />
+            <br/>
             <input class="btn" type="button" id="btnSave" value="Save" />
+            <br/>
+            <input class="btn" type="button" id="btnCancel" value="Cancel" />
         </form>
     </div>
 </div>

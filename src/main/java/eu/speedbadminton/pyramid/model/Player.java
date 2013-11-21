@@ -30,6 +30,8 @@ public class Player {
 
     private Gender gender;
 
+    private String avatarPath;
+
     public Player() {}
 
     public Player(String name, String email, String password, Gender gender) {
@@ -107,6 +109,14 @@ public class Player {
 
     public enum Gender {
         MALE, FEMALE
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
     }
 
     @Override

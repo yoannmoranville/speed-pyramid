@@ -1,11 +1,11 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 /**
@@ -38,7 +38,7 @@ public class AjaxAbstractController {
     protected static String aroundQuotes(String data) {
         return "\"" + data + "\"";
     }
-    protected static void writeUserData(Writer writer, String name, String email) throws IOException {
+    protected static void writeUserData(Writer writer, String name, String email, String avatarPath, String gender, Long pyramidPosition) throws IOException {
         writer.write(START_ITEM);
         writer.write(aroundQuotes("username"));
         writer.write(COLON);
@@ -47,6 +47,22 @@ public class AjaxAbstractController {
         writer.write(aroundQuotes("email"));
         writer.write(COLON);
         writer.write(aroundQuotes(email));
+        writer.write(COMMA);
+        writer.write(aroundQuotes("pyramidPosition"));
+        writer.write(COLON);
+        writer.write(aroundQuotes(""+pyramidPosition));
+        if(StringUtils.isNotEmpty(avatarPath)) {
+            writer.write(COMMA);
+            writer.write(aroundQuotes("avatarPath"));
+            writer.write(COLON);
+            writer.write(aroundQuotes(avatarPath));
+        }
+        if(StringUtils.isNotEmpty(gender)) {
+            writer.write(COMMA);
+            writer.write(aroundQuotes("gender"));
+            writer.write(COLON);
+            writer.write(aroundQuotes(gender));
+        }
         writer.write(END_ITEM);
     }
     protected static void writeResultData(Writer writer, String askerName, String askerId, String askedName, String askedId) throws IOException {

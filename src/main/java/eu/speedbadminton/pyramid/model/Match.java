@@ -32,9 +32,13 @@ public class Match {
     @Id
     private String id;
 
-    private Player challenger;
+    private String challengerId;
 
-    private Player challengee;
+    private String challengeeId;
+
+    private String challengerName;
+
+    private String challengeeName;
 
     private Date creation;
 
@@ -52,20 +56,36 @@ public class Match {
         this.id = id;
     }
 
-    public Player getChallenger() {
-        return challenger;
+    public String getChallengerId() {
+        return challengerId;
     }
 
-    public void setChallenger(Player challenger) {
-        this.challenger = challenger;
+    public void setChallengerId(String challengerId) {
+        this.challengerId = challengerId;
     }
 
-    public Player getChallengee() {
-        return challengee;
+    public String getChallengeeId() {
+        return challengeeId;
     }
 
-    public void setChallengee(Player challengee) {
-        this.challengee = challengee;
+    public void setChallengeeId(String challengeeId) {
+        this.challengeeId = challengeeId;
+    }
+
+    public String getChallengerName() {
+        return challengerName;
+    }
+
+    public void setChallengerName(String challengerName) {
+        this.challengerName = challengerName;
+    }
+
+    public String getChallengeeName() {
+        return challengeeName;
+    }
+
+    public void setChallengeeName(String challengeeName) {
+        this.challengeeName = challengeeName;
     }
 
     public Date getCreation() {
@@ -102,6 +122,6 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match [id=" + id + ", challenger=" + challenger + ", challengee=" + challengee + ", matchDate=" + matchDate + ", result=" + result + "]";
+        return "Match [id=" + id + ", challengerId=" + challengerId + ", challengeeId=" + challengeeId + ", matchDate=" + matchDate + ", result=" + result + "]";
     }
 }

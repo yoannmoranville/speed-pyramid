@@ -1,6 +1,6 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
-import eu.speedbadminton.pyramid.model.Match;
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
@@ -24,6 +24,9 @@ import java.io.Writer;
 @Controller
 public class UserDataAjaxController extends AjaxAbstractController {
     private static final Logger LOG = Logger.getLogger(UserDataAjaxController.class);
+    private static final String USER_ALREADY_IN_CHALLENGE = "1";
+    private static final String YOU_ALREADY_IN_CHALLENGE = "2";
+    private static final String USER_NOT_REACHABLE = "3";
 
     @Autowired
     private PlayerService playerService;
@@ -36,7 +39,12 @@ public class UserDataAjaxController extends AjaxAbstractController {
             String userId = request.getParameter("id");
             Writer writer = getResponseWriter(response);
             Player player = playerService.getPlayerById(userId);
-            writeUserData(writer, player.getName(), player.getEmail());
+
+            if(SpeedbadmintonConfig.isDev() || player.getAvatarPath() == null)
+                writeUserData(writer, player.getName(), player.getEmail(), null, player.getGender().name(), player.getPyramidPosition());
+            else {
+                writeUserData(writer, player.getName(), player.getEmail(), SpeedbadmintonConfig.getPathForAvatarFile() + player.getAvatarPath(), player.getGender().name(), player.getPyramidPosition());
+            }
             closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);

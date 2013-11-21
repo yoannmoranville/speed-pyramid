@@ -26,6 +26,12 @@ public final class SecurityContext implements HttpSessionBindingListener {
     private Player.Role role;
     private boolean admin;
     private String sessionId;
+    private SecurityContext parent;
+
+    protected SecurityContext(Player player, SecurityContext parent) {
+        this(player);
+        this.parent = parent;
+    }
 
     protected SecurityContext(Player player) {
         role = player.getRole();
@@ -55,6 +61,19 @@ public final class SecurityContext implements HttpSessionBindingListener {
         return admin;
     }
 
+    public String getParentName() {
+        if (parent != null) {
+            return parent.getName();
+        }
+        return null;
+    }
+    protected SecurityContext getParent(){
+        return parent;
+    }
+    public boolean isChild() {
+        return parent != null;
+    }
+
     @Override
     public boolean equals(Object obj) {
         SecurityContext otherSecurityContext = (SecurityContext) obj;
@@ -71,11 +90,15 @@ public final class SecurityContext implements HttpSessionBindingListener {
         return ((SecurityContext) session.getAttribute(VAR_SECURITY_CONTEXT));
     }
 
-    protected void logout() {
+    protected void logout(boolean logoutToParent) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        request.getSession().removeAttribute(VAR_SECURITY_CONTEXT);
-        request.getSession().invalidate();
+        if (logoutToParent) {
+            parent.login();
+        } else {
+            request.getSession().removeAttribute(VAR_SECURITY_CONTEXT);
+            request.getSession().invalidate();
+        }
     }
 
     protected void login() {

@@ -47,8 +47,8 @@ public class EmailComposer {
     private boolean classpath;
     private boolean html;
     private Map<String, String> properties = new HashMap<String, String>();
-    private static final String START_KEY = "\\$\\{";
-    private static final String END_KEY = "\\}";
+    private static final String START_KEY = "${";
+    private static final String END_KEY = "}";
     private Priority priority = Priority.HIGH;
 
     public EmailComposer(String filename, String subject, boolean classpath, boolean html){
@@ -83,7 +83,7 @@ public class EmailComposer {
     public String getContent() throws IOException{
         String emailContent = retrieveTemplate();
         for (Map.Entry<String, String> property: properties.entrySet()){
-            emailContent = emailContent.replaceAll(START_KEY + property.getKey() + END_KEY , property.getValue());
+            emailContent = emailContent.replace(START_KEY + property.getKey() + END_KEY , property.getValue());
         }
         return emailContent;
     }

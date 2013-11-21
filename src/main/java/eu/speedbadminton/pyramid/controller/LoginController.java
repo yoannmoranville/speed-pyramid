@@ -46,9 +46,24 @@ public class LoginController {
         return null;
     }
 
+    @RequestMapping(value = "/switch_to_player", method = RequestMethod.POST)
+    public View changeToPlayerAccount(HttpServletRequest request) {
+        SecurityService.LoginResult loginResult = SecurityService.loginAsPlayer(request.getParameter("id"));
+
+        if (SecurityService.LoginResult.LoginResultType.LOGGED_IN.equals(loginResult.getType()))
+            return new RedirectView("viewPyramid.html");
+        return new RedirectView("login.html?error=true");
+    }
+
     @RequestMapping(value={"/logout"}, method = RequestMethod.GET)
-    public ModelAndView handleRequestLogout(HttpServletRequest request) {
-        SecurityService.logout();
-        return new ModelAndView("login");
+    public View handleRequestLogout(HttpServletRequest request) {
+        if(request.getParameter("parent") != null) {
+            SecurityService.logout(true);
+            if(SecurityContext.get().isAdmin())
+                return new RedirectView("admin.html");
+        }
+        if(SecurityContext.get() != null)
+            SecurityService.logout(false);
+        return new RedirectView("login.html");
     }
 }

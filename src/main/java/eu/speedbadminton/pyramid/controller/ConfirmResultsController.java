@@ -42,8 +42,8 @@ public class ConfirmResultsController {
             match.setValidationId(null);
             matchService.update(match);
 
-            Player challenger = match.getChallenger();
-            Player challengee = match.getChallengee();
+            Player challenger = playerService.getPlayerById(match.getChallengerId());
+            Player challengee = playerService.getPlayerById(match.getChallengeeId());
             Result result = ResultsUtil.parseResultString(match.getResult());
             boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
             if(isChallengerWinner) {

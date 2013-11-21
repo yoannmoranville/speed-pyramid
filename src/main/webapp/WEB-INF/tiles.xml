@@ -13,6 +13,13 @@
         <put-attribute name="css" value="default.css" />
         <put-attribute name="js" value="pyramid.js" />
     </definition>
+    <definition name="createAdminView" extends="base.definition">
+        <put-attribute name="title" value="Create admin!" />
+        <put-attribute name="body" value="/WEB-INF/jsp/createAdminView.jsp" />
+        <put-attribute name="css" value="default.css" />
+        <put-attribute name="js" value="pyramid.js" />
+    </definition>
+
     <definition name="createPlayerView" extends="base.definition">
         <put-attribute name="title" value="Create player" />
         <put-attribute name="body" value="/WEB-INF/jsp/createPlayerView.jsp" />

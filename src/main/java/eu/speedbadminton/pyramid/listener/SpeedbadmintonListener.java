@@ -11,14 +11,31 @@ import javax.servlet.ServletContextListener;
  */
 public class SpeedbadmintonListener implements ServletContextListener {
 
+    private static final String PATH_FOR_AVATAR = "PATH_FOR_AVATAR";
+    private static final String IS_DEV = "IS_DEV";
+
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         SpeedbadmintonConfig config = new SpeedbadmintonConfig();
-        if (config.isDefaultInactivityProcessing()){
-//            InactivityDaemon.start();
+
+        boolean isDev = true;
+        String isDevStr = servletContextEvent.getServletContext().getInitParameter(IS_DEV);
+        if(isDevStr != null) {
+            isDev = Boolean.parseBoolean(isDevStr);
         }
+        SpeedbadmintonConfig.setDev(isDev);
+
+        if(isDev) {
+            SpeedbadmintonConfig.setLinkServer("https://localhost:8443/pyramid-system/confirmResults.html?id=");
+        } else {
+            SpeedbadmintonConfig.setLinkServer("https://54.214.239.189:8443/pyramid-system/confirmResults.html?id=");
+        }
+
+        String pathForAvatar = servletContextEvent.getServletContext().getInitParameter(PATH_FOR_AVATAR);
+        if (pathForAvatar == null && !isDev)
+            throw new RuntimeException(PATH_FOR_AVATAR + " is not configured in TOMCAT");
+        SpeedbadmintonConfig.setPathForAvatarFile(pathForAvatar);
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-//        InactivityDaemon.stop();
     }
 }

@@ -32,8 +32,10 @@ public class MatchService {
         try {
             Match match = new Match();
             match.setCreation(new Date());
-            match.setChallenger(asker);
-            match.setChallengee(asked);
+            match.setChallengerId(asker.getId());
+            match.setChallengeeId(asked.getId());
+            match.setChallengerName(asker.getName());
+            match.setChallengeeName(asked.getName());
             create(match);
             return true;
         } catch (Exception e) {
