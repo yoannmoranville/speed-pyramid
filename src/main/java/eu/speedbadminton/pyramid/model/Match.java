@@ -36,6 +36,10 @@ public class Match {
 
     private String challengeeId;
 
+    private String challengerName;
+
+    private String challengeeName;
+
     private Date creation;
 
     private Date matchDate;
@@ -66,6 +70,22 @@ public class Match {
 
     public void setChallengeeId(String challengeeId) {
         this.challengeeId = challengeeId;
+    }
+
+    public String getChallengerName() {
+        return challengerName;
+    }
+
+    public void setChallengerName(String challengerName) {
+        this.challengerName = challengerName;
+    }
+
+    public String getChallengeeName() {
+        return challengeeName;
+    }
+
+    public void setChallengeeName(String challengeeName) {
+        this.challengeeName = challengeeName;
     }
 
     public Date getCreation() {

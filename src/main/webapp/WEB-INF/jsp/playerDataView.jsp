@@ -11,7 +11,7 @@
     <c:if test="${not empty matches}">
         <c:forEach items="${matches}" var="match">
             <br/>
-            ${match.challenger.name} vs ${match.challengee.name}
+            ${match.challengerName} vs ${match.challengeeName}
                 <c:choose>
                     <c:when test="${not empty match.matchDate}">
                         &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
