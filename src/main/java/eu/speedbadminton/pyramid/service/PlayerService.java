@@ -91,14 +91,14 @@ public class PlayerService {
     }
 
     public List<Match> getMatchesOfPlayer(Player player) {
-        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger_id").is(player.getId()), Criteria.where("challengee_id").is(player.getId()));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challengerId").is(player.getId()), Criteria.where("challengeeId").is(player.getId()));
         Query query = new Query(criteria);
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }
 
     //todo: Use inside the colorbox of users when requesting an encounter
     public List<Match> getPlayedMatchesOfPlayer(Player player) {
-        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger_id").is(player.getId()), Criteria.where("challengee_id").is(player.getId())).andOperator(Criteria.where("matchDate").exists(true));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challengerId").is(player.getId()), Criteria.where("challengeeId").is(player.getId())).andOperator(Criteria.where("matchDate").exists(true));
         Query query = new Query(criteria);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
