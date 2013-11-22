@@ -147,6 +147,8 @@ public class PlayerController {
         if(!file.isEmpty()) {
             if(!file.getContentType().equals("image/jpeg")) {
                 //todo: error
+                LOG.error("Not jpeg...");
+                return new RedirectView("viewPlayerData.html");
             }
             try {
                 BufferedImage image = ImageIO.read(file.getInputStream());
@@ -155,6 +157,7 @@ public class PlayerController {
                 if(width > 100 && height > 150) {
                     //todo: error
                     LOG.error("Width or Height too big...");
+                    return new RedirectView("viewPlayerData.html");
                 }
 
                 String playerId = SecurityContext.get().getPlayerId();
