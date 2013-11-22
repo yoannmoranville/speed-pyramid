@@ -110,6 +110,34 @@ public class PlayerController {
         return new RedirectView("viewPlayers.html");
     }
 
+    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+    public View changePassword(HttpServletRequest request) {
+        String oldpwd = request.getParameter("oldpassword");
+        String newpwd = request.getParameter("newpassword");
+        String newpwdrepeat = request.getParameter("newpasswordrepeat");
+        boolean error = false;
+        if(StringUtils.isEmpty(oldpwd) || StringUtils.isEmpty(newpwd) || StringUtils.isEmpty(newpwdrepeat)) {
+            //todo: error
+            error = true;
+        } else if(!newpwd.equals(newpwdrepeat)) {
+            //todo: error
+            error = true;
+        } else {
+            Player player = playerService.getPlayerById(SecurityContext.get().getPlayerId());
+            if(!player.getPassword().equals(PasswordEncryption.generateDigest(oldpwd))) {
+                //todo: error
+                error = true;
+            } else {
+                player.setPassword(PasswordEncryption.generateDigest(newpwd));
+                playerService.update(player);
+            }
+        }
+        if(error)
+            return new RedirectView("viewPlayerData.html?error=password");
+        //todo send email
+        return new RedirectView("viewPlayerData.html");
+    }
+
     public static class PlayerView {
         private Player player;
         private boolean inUse;
