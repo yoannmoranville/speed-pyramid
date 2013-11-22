@@ -30,8 +30,9 @@ public class PyramidController {
     @RequestMapping(value={"/viewPyramid"}, method= RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("pyramidView");
+        String id = "";
         if(SecurityContext.get() != null) {
-            String id;
+
             if(SecurityContext.get().isAdmin() && request.getParameter("id") != null) {
                 id = request.getParameter("id");
             } else {
@@ -50,9 +51,14 @@ public class PyramidController {
                 String ids = playerService.getAvailablePlayerIds(id);
                 modelAndView.addObject("availables", ids);
             }
+            // if logged in add available players
+            modelAndView.addObject("available_players", playerService.getAvailablePlayers(id));
+
         }
         List<Player> players = playerService.getPlayers();
+
         modelAndView.addObject("players", players);
+        modelAndView.addObject("current_player_id",id);
         return modelAndView;
     }
 

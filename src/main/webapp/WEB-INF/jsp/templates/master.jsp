@@ -33,19 +33,16 @@
             </button>
             <a class="navbar-brand" href="#">Speed Pyramid</a>
         </div>
-        <!--
+
         <div class="navbar-collapse collapse">
             <form class="navbar-form navbar-right">
                 <div class="form-group">
-                    <input type="text" placeholder="Email" class="form-control">
+                    <a href="login.html">Login</a>
                 </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
+
             </form>
         </div>
-        -->
+
     </div>
 </div>
 
