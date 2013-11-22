@@ -71,7 +71,7 @@ public class PlayerController {
                 if(match.getMatchDate() == null) {
                     matchIds.add(match.getId());
                 } else if(match.getResult() != null && match.getValidationId() != null) {
-                    if((player.getId().equals(match.getChallengeeId()) && ResultsUtil.isChallengerWinner(match.getResult())) || (player.getId().equals(match.getChallengerId()) && !ResultsUtil.isChallengerWinner(match.getResult()))) {
+                    if((player == match.getChallengee() && ResultsUtil.isChallengerWinner(match.getResult())) || (player == match.getChallenger() && !ResultsUtil.isChallengerWinner(match.getResult()))) {
                         modelAndView.addObject("matchNeedingConfirmation", match.getId());
                         modelAndView.addObject("matchNeedingConfirmationLink", SpeedbadmintonConfig.getLinkServer() + URLEncoder.encode(match.getValidationId()));
                     }
@@ -108,6 +108,34 @@ public class PlayerController {
             playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
         }
         return new RedirectView("viewPlayers.html");
+    }
+
+    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+    public View changePassword(HttpServletRequest request) {
+        String oldpwd = request.getParameter("oldpassword");
+        String newpwd = request.getParameter("newpassword");
+        String newpwdrepeat = request.getParameter("newpasswordrepeat");
+        boolean error = false;
+        if(StringUtils.isEmpty(oldpwd) || StringUtils.isEmpty(newpwd) || StringUtils.isEmpty(newpwdrepeat)) {
+            //todo: error
+            error = true;
+        } else if(!newpwd.equals(newpwdrepeat)) {
+            //todo: error
+            error = true;
+        } else {
+            Player player = playerService.getPlayerById(SecurityContext.get().getPlayerId());
+            if(!player.getPassword().equals(PasswordEncryption.generateDigest(oldpwd))) {
+                //todo: error
+                error = true;
+            } else {
+                player.setPassword(PasswordEncryption.generateDigest(newpwd));
+                playerService.update(player);
+            }
+        }
+        if(error)
+            return new RedirectView("viewPlayerData.html?error=password");
+        //todo send email
+        return new RedirectView("viewPlayerData.html");
     }
 
     public static class PlayerView {

@@ -6,28 +6,42 @@
     });
 </script>
 <div id="player">
-    ${player.pyramidPosition}. ${player.name}
+    <div>
+        Change password:<br/>
+        <form action="changepassword.html" method="post">
+            <label for="oldpassword">Old password: </label>
+            <input type="password" name="oldpassword" id="oldpassword"/>
+            <label for="newpassword">New password: </label>
+            <input type="password" name="newpassword" id="newpassword"/>
+            <label for="newpasswordrepeat">Repeat new password: </label>
+            <input type="password" name="newpasswordrepeat" id="newpasswordrepeat"/>
+            <input type="submit" value="Change" />
+        </form>
+    </div>
+    <div>
+        ${player.pyramidPosition}. ${player.name}
 
-    <c:if test="${not empty matches}">
-        <c:forEach items="${matches}" var="match">
-            <br/>
-            ${match.challengerName} vs ${match.challengeeName}
-                <c:choose>
-                    <c:when test="${not empty match.matchDate}">
-                        &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
-                        <c:if test="${not empty match.validationId and empty matchNeedingConfirmation}">
-                           &nbsp;- waiting for confirmation of the looser
-                        </c:if>
-                        <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
-                            &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
-                        </c:if>
-                    </c:when>
-                    <c:otherwise>
-                        (<a href="#colorbox" id="link_${match.id}">enter results</a>)
-                    </c:otherwise>
-                </c:choose>
-        </c:forEach>
-    </c:if>
+        <c:if test="${not empty matches}">
+            <c:forEach items="${matches}" var="match">
+                <br/>
+                ${match.challenger.name} vs ${match.challengee.name}
+                    <c:choose>
+                        <c:when test="${not empty match.matchDate}">
+                            &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
+                            <c:if test="${not empty match.validationId and empty matchNeedingConfirmation}">
+                               &nbsp;- waiting for confirmation of the looser
+                            </c:if>
+                            <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
+                                &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            (<a href="#colorbox" id="link_${match.id}">enter results</a>)
+                        </c:otherwise>
+                    </c:choose>
+            </c:forEach>
+        </c:if>
+    </div>
 </div>
 <div class="hidden">
     <div id="colorbox" class="colorboxLeft">

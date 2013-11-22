@@ -68,7 +68,7 @@ public class InactivityTask {
                         Result result = ResultsUtil.parseResultString(match.getResult());
                         ResultsUtil.isChallengerWinner(result);
                     } else */if(match.getMatchDate() == null) {
-                        playerService.swap(match.getChallengerId(), match.getChallengeeId());
+                        playerService.swap(match.getChallenger(), match.getChallengee());
                         match.setMatchDate(new Date());
                         match.setResult(ResultsUtil.createResultString(new Result("16", "0", "16", "0", null, null)));
                     }

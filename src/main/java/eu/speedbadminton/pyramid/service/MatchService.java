@@ -32,10 +32,12 @@ public class MatchService {
         try {
             Match match = new Match();
             match.setCreation(new Date());
-            match.setChallengerId(asker.getId());
-            match.setChallengeeId(asked.getId());
-            match.setChallengerName(asker.getName());
-            match.setChallengeeName(asked.getName());
+            match.setChallenger(asker);
+            match.setChallengee(asked);
+//            match.setChallengerId(asker.getId());
+//            match.setChallengeeId(asked.getId());
+//            match.setChallengerName(asker.getName());
+//            match.setChallengeeName(asked.getName());
             create(match);
             return true;
         } catch (Exception e) {
@@ -67,4 +69,9 @@ public class MatchService {
         return mongoTemplate.findAll(Match.class, COLLECTION_NAME);
     }
 
+    public void deleteMatchesOfPlayer(Player player) {
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+        Query query = new Query(criteria);
+        mongoTemplate.remove(query, COLLECTION_NAME);
+    }
 }

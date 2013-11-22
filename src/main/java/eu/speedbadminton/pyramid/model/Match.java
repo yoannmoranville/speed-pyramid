@@ -1,6 +1,8 @@
 package eu.speedbadminton.pyramid.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -31,14 +33,18 @@ import java.util.Date;
 public class Match {
     @Id
     private String id;
+    @DBRef
+    private Player challenger;
+    @DBRef
+    private Player challengee;
 
-    private String challengerId;
-
-    private String challengeeId;
-
-    private String challengerName;
-
-    private String challengeeName;
+//    private String challengerId;
+//
+//    private String challengeeId;
+//
+//    private String challengerName;
+//
+//    private String challengeeName;
 
     private Date creation;
 
@@ -56,37 +62,53 @@ public class Match {
         this.id = id;
     }
 
-    public String getChallengerId() {
-        return challengerId;
+    public Player getChallenger() {
+        return challenger;
     }
 
-    public void setChallengerId(String challengerId) {
-        this.challengerId = challengerId;
+    public void setChallenger(Player challenger) {
+        this.challenger = challenger;
     }
 
-    public String getChallengeeId() {
-        return challengeeId;
+    public Player getChallengee() {
+        return challengee;
     }
 
-    public void setChallengeeId(String challengeeId) {
-        this.challengeeId = challengeeId;
+    public void setChallengee(Player challengee) {
+        this.challengee = challengee;
     }
 
-    public String getChallengerName() {
-        return challengerName;
-    }
-
-    public void setChallengerName(String challengerName) {
-        this.challengerName = challengerName;
-    }
-
-    public String getChallengeeName() {
-        return challengeeName;
-    }
-
-    public void setChallengeeName(String challengeeName) {
-        this.challengeeName = challengeeName;
-    }
+//    public String getChallengerId() {
+//        return challengerId;
+//    }
+//
+//    public void setChallengerId(String challengerId) {
+//        this.challengerId = challengerId;
+//    }
+//
+//    public String getChallengeeId() {
+//        return challengeeId;
+//    }
+//
+//    public void setChallengeeId(String challengeeId) {
+//        this.challengeeId = challengeeId;
+//    }
+//
+//    public String getChallengerName() {
+//        return challengerName;
+//    }
+//
+//    public void setChallengerName(String challengerName) {
+//        this.challengerName = challengerName;
+//    }
+//
+//    public String getChallengeeName() {
+//        return challengeeName;
+//    }
+//
+//    public void setChallengeeName(String challengeeName) {
+//        this.challengeeName = challengeeName;
+//    }
 
     public Date getCreation() {
         return creation;
@@ -122,6 +144,6 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match [id=" + id + ", challengerId=" + challengerId + ", challengeeId=" + challengeeId + ", matchDate=" + matchDate + ", result=" + result + "]";
+        return "Match [id=" + id + ", challenger=" + challenger + ", challengee=" + challengee + ", matchDate=" + matchDate + ", result=" + result + "]";
     }
 }

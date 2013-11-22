@@ -20,6 +20,12 @@
                         </c:otherwise>
                     </c:choose>
                     </td>
+                    <td>
+                        <form action="delete_user.html" method="post">
+                            <input type="hidden" name="id" value="${playerView.player.id}" />
+                            <input type="submit" value="Delete this player" />
+                        </form>
+                    </td>
                 </c:if>
             </tr>
         </c:forEach>

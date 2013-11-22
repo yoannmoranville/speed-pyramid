@@ -8,6 +8,9 @@ function addPlayerPosition(yourself) {
     $("#" + yourself).addClass("yourself");
 }
 function bindAllColorbox() {
+    $("#btnCancel").click(function() {
+        $.fn.colorbox.close();
+    });
     $(".spanLink").each(function() {
         $(this).removeClass("spanLink");
         var ident = $(this).attr("id");

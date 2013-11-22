@@ -47,8 +47,23 @@ public class PlayerService {
         mongoTemplate.insert(player, COLLECTION_NAME_PLAYER);
     }
 
+    public void delete(String playerId) {
+        Player player = getPlayerById(playerId);
+        delete(player);
+    }
+
     public void delete(Player player) {
         mongoTemplate.remove(player, COLLECTION_NAME_PLAYER);
+    }
+
+    public void addOnePositionToPlayers(long firstPositionToBeFilled) {
+        List<Player> players = getPlayers();
+        for(Player player : players) {
+            if(player.getPyramidPosition() > firstPositionToBeFilled) {
+                player.setPyramidPosition(player.getPyramidPosition() - 1);
+                update(player);
+            }
+        }
     }
 
     public void update(Player player) {
@@ -91,14 +106,14 @@ public class PlayerService {
     }
 
     public List<Match> getMatchesOfPlayer(Player player) {
-        Criteria criteria = new Criteria().orOperator(Criteria.where("challengerId").is(player.getId()), Criteria.where("challengeeId").is(player.getId()));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
         Query query = new Query(criteria);
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }
 
     //todo: Use inside the colorbox of users when requesting an encounter
     public List<Match> getPlayedMatchesOfPlayer(Player player) {
-        Criteria criteria = new Criteria().orOperator(Criteria.where("challengerId").is(player.getId()), Criteria.where("challengeeId").is(player.getId())).andOperator(Criteria.where("matchDate").exists(true));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId())).andOperator(Criteria.where("matchDate").exists(true));
         Query query = new Query(criteria);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
