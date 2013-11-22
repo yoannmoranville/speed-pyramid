@@ -19,11 +19,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +139,34 @@ public class PlayerController {
         if(error)
             return new RedirectView("viewPlayerData.html?error=password");
         //todo send email
+        return new RedirectView("viewPlayerData.html");
+    }
+
+    @RequestMapping(value = "uploadpicture", method = RequestMethod.POST)
+    public View uploadPicture(@RequestParam("avatar") MultipartFile file) {
+        if(!file.isEmpty()) {
+            if(!file.getContentType().equals("image/jpeg")) {
+                //todo: error
+            }
+            try {
+                BufferedImage image = ImageIO.read(file.getInputStream());
+                Integer width = image.getWidth();
+                Integer height = image.getHeight();
+                if(width > 100 && height > 150) {
+                    //todo: error
+                    LOG.error("Width or Height too big...");
+                }
+
+                String playerId = SecurityContext.get().getPlayerId();
+                File savedFile = new File(SpeedbadmintonConfig.getSavePathForAvatarFile() + playerId + ".jpg");
+                file.transferTo(savedFile);
+                Player player = playerService.getPlayerById(playerId);
+                player.setAvatarPath(playerId + ".jpg");
+                playerService.update(player);
+            } catch( IOException e ) {
+                //todo: error
+            }
+        }
         return new RedirectView("viewPlayerData.html");
     }
 
