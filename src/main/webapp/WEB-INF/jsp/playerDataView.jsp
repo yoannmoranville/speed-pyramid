@@ -19,6 +19,13 @@
         </form>
     </div>
     <div>
+        Upload picture: (todo)<br/>
+        <form action="uploadpicture.html" enctype="multipart/form-data" method="post">
+            <input type="file" id="avatar" name="avatar" />
+            <input type="submit" value="Submit" id="submit" />
+        </form>
+    </div>
+    <div>
         ${player.pyramidPosition}. ${player.name}
 
         <c:if test="${not empty matches}">

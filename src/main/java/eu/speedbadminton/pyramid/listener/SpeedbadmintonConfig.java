@@ -7,6 +7,7 @@ package eu.speedbadminton.pyramid.listener;
  * @author Yoann Moranville
  */
 public class SpeedbadmintonConfig {
+    private static String savePathForAvatarFile;
     private static String pathForAvatarFile;
     private static boolean dev;
     private static String linkServer;
@@ -33,5 +34,13 @@ public class SpeedbadmintonConfig {
 
     public static void setLinkServer(String linkServer) {
         SpeedbadmintonConfig.linkServer = linkServer;
+    }
+
+    public static String getSavePathForAvatarFile() {
+        return savePathForAvatarFile;
+    }
+
+    public static void setSavePathForAvatarFile(String savePathForAvatarFile) {
+        SpeedbadmintonConfig.savePathForAvatarFile = savePathForAvatarFile;
     }
 }
