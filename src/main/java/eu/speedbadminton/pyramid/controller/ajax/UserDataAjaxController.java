@@ -59,12 +59,18 @@ public class UserDataAjaxController extends AjaxAbstractController {
         Player askedPlayer = playerService.getPlayerById(askedId);
         try {
             Writer writer = getResponseWriter(response);
-            if(playerService.sendEmail(askerPlayer, askedPlayer)) {
-                writeSimpleData(writer, "success", "true");
-                matchService.createMatch(askerPlayer, askedPlayer);
-            } else {
-                writeSimpleData(writer, "success", "false");
+
+            if (matchService.createMatch(askerPlayer, askedPlayer)){
+                // TODO enable email notification - best would be by a config parameter (bypass on dev/localhost)
+                if(true /*playerService.sendEmail(askerPlayer, askedPlayer*/) {
+                    writeSimpleData(writer, "success", "true");
+
+                } else {
+                    writeSimpleData(writer, "success", "false");
+                }
             }
+
+
             closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);

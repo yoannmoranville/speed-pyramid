@@ -128,21 +128,7 @@ public class PlayerService {
     }
 
     public String getAvailablePlayerIds(String yourId) {
-        long yourPosition = getPlayerById(yourId).getPyramidPosition();
-        long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
-        List<String> availablePlayerIds = new ArrayList<String>();
-        for(long position = yourPosition-1; position >= untilPosition; position--) {
-            Player player = getPlayerWithPosition(position);
-            boolean isBusy = false;
-            for(Match match : getMatchesOfPlayer(player)) {
-                if(match.getMatchDate() == null || match.getValidationId() != null) {
-                    isBusy = true;
-                }
-            }
-            if(!isBusy)
-                availablePlayerIds.add(getPlayerWithPosition(position).getId());
-        }
-        return new Gson().toJson(availablePlayerIds);
+        return new Gson().toJson(getAvailablePlayers(yourId));
     }
 
     public Player getPlayerWithPosition(long position) {
@@ -218,5 +204,26 @@ public class PlayerService {
                 "\n";
 
         MailService.sendEmailResultsWaitingForLooserValidation(body, winner.getEmail(), winner.getName());
+    }
+
+    public List<String> getAvailablePlayers(String id) {
+        long yourPosition = getPlayerById(id).getPyramidPosition();
+        long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
+        List<String> availablePlayerIds = new ArrayList<String>();
+        for(long position = yourPosition-1; position >= untilPosition; position--) {
+            Player player = getPlayerWithPosition(position);
+
+            assert player!=null;
+
+            boolean isBusy = false;
+            for(Match match : getMatchesOfPlayer(player)) {
+                if(match.getMatchDate() == null || match.getValidationId() != null) {
+                    isBusy = true;
+                }
+            }
+            if(!isBusy)
+                availablePlayerIds.add(getPlayerWithPosition(position).getId());
+        }
+        return availablePlayerIds;
     }
 }
