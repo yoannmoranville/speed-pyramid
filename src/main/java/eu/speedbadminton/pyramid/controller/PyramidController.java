@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.controller;
 
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.SecurityContext;
@@ -57,6 +58,7 @@ public class PyramidController {
         }
         List<Player> players = playerService.getPlayers();
 
+        modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
         modelAndView.addObject("players", players);
         modelAndView.addObject("current_player_id",id);
         return modelAndView;
