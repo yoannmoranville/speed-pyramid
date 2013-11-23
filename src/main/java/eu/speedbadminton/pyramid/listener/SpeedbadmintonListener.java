@@ -40,7 +40,7 @@ public class SpeedbadmintonListener implements ServletContextListener {
         String savePathForAvatar = servletContextEvent.getServletContext().getInitParameter(SAVE_PATH_FOR_AVATAR);
         if (savePathForAvatar == null && !isDev)
             throw new RuntimeException(SAVE_PATH_FOR_AVATAR + " is not configured in TOMCAT");
-        if(!new File(savePathForAvatar).canWrite() && !new File(savePathForAvatar).isDirectory())
+        if(!isDev && !new File(savePathForAvatar).canWrite() && !new File(savePathForAvatar).isDirectory())
             throw new RuntimeException(SAVE_PATH_FOR_AVATAR + " is not a writable directory...");
         SpeedbadmintonConfig.setSavePathForAvatarFile(savePathForAvatar);
     }
