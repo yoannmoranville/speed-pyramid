@@ -70,7 +70,9 @@ public class InactivityTask {
                     } else */if(match.getMatchDate() == null) {
                         playerService.swap(match.getChallenger(), match.getChallengee());
                         match.setMatchDate(new Date());
-                        match.setResult(ResultsUtil.createResultString(new Result("16", "0", "16", "0", null, null)));
+                        Result result = new Result("16", "0", "16", "0", null, null);
+                        match.setResult(ResultsUtil.createResultString(result));
+                        playerService.sendEmailResults(match.getChallenger(), match.getChallengee(), true, result);
                     }
                     matchService.update(match);
                 }
