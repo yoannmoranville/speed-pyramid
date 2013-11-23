@@ -33,12 +33,7 @@ public class PyramidController {
         ModelAndView modelAndView = new ModelAndView("pyramidView");
         String id = "";
         if(SecurityContext.get() != null) {
-
-            if(SecurityContext.get().isAdmin() && request.getParameter("id") != null) {
-                id = request.getParameter("id");
-            } else {
-                id = SecurityContext.get().getPlayerId();
-            }
+            id = SecurityContext.get().getPlayerId();
             modelAndView.addObject("yourself", id);
 
             boolean isInChallenge = false;
@@ -56,7 +51,7 @@ public class PyramidController {
             modelAndView.addObject("available_players", playerService.getAvailablePlayers(id));
 
         }
-        List<Player> players = playerService.getPlayers();
+        List<Player> players = playerService.getEnabledPlayers();
 
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
         modelAndView.addObject("players", players);

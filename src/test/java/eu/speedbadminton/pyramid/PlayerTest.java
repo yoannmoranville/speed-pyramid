@@ -33,6 +33,12 @@ public class PlayerTest {
     @Test
     public void testReadPlayers() {
         List<Player> players = playerService.getPlayers();
+        LOG.info("All players (" + players.size() + ")");
+        for(Player player : players) {
+            LOG.info("Player name: " + player.getName());
+        }
+        players = playerService.getEnabledPlayers();
+        LOG.info("Only enabled players (" + players.size() + ")");
         for(Player player : players) {
             LOG.info("Player name: " + player.getName());
         }

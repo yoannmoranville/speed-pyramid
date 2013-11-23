@@ -98,6 +98,12 @@ public class PlayerService {
         return mongoTemplate.find(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 
+    public List<Player> getEnabledPlayers() {
+        Query query = new Query(Criteria.where("enabled").is(true));
+        query.with(new Sort(Sort.Direction.ASC, "pyramidPosition"));
+        return mongoTemplate.find(query, Player.class, COLLECTION_NAME_PLAYER);
+    }
+
     public long getLastPlayerPosition() {
         Query query = new Query().limit(1);
         query.with(new Sort(Sort.Direction.DESC, "pyramidPosition"));
