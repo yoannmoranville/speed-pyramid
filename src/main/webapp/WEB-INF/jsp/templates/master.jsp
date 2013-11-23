@@ -37,7 +37,6 @@
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="viewPyramid.html">View pyramid</a></li>
                 <c:if test="${not empty securityContext}">
                     <li><a href="viewPlayerData.html">View your user data</a></li>
 
@@ -64,7 +63,7 @@
     <c:choose>
         <c:when test="${not empty securityContext}">
             <div class="well">
-                Hi <span class="strong"><c:out value="${securityContext.name}"/></span> | <c:if test="${securityContext.child}"><a href="logout.html?parent=true">Switch back to <c:out value="${securityContext.parentName}"/></a> | </c:if>
+                Hi <span class="strong"><c:out value="${securityContext.name}"/></span><c:if test="${securityContext.child}"> | <a href="logout.html?parent=true">Switch back to <c:out value="${securityContext.parentName}"/></a></c:if>
             </div>
         </c:when>
     </c:choose>
