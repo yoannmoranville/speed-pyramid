@@ -30,9 +30,6 @@ public class AdminController {
     @Autowired
     private PlayerService playerService;
 
-    @Autowired
-    private MatchService matchService;
-
     @RequestMapping(value={"/admin"}, method = RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request) {
         if(SecurityContext.get().isAdmin())
@@ -40,15 +37,27 @@ public class AdminController {
         return null;
     }
 
-    @RequestMapping(value = "/delete_user", method = RequestMethod.POST)
-    public View changeToPlayerAccount(HttpServletRequest request) {
+    @RequestMapping(value = "/disable_user", method = RequestMethod.POST)
+    public View disableAccount(HttpServletRequest request) {
         String playerId = request.getParameter("id");
         Player player = playerService.getPlayerById(playerId);
         long positionDeletedPlayer = player.getPyramidPosition();
 
         playerService.addOnePositionToPlayers(positionDeletedPlayer);
-        matchService.deleteMatchesOfPlayer(player);
-        playerService.delete(playerId);
+        player.setPyramidPosition(-1);
+        player.setEnabled(false);
+        playerService.update(player);
+        //todo: send EMAIL...
+        return new RedirectView("viewPlayers.html");
+    }
+
+    @RequestMapping(value = "/enable_user", method = RequestMethod.POST)
+    public View enableAccount(HttpServletRequest request) {
+        String playerId = request.getParameter("id");
+        Player player = playerService.getPlayerById(playerId);
+        player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
+        player.setEnabled(true);
+        playerService.update(player);
         //todo: send EMAIL...
         return new RedirectView("viewPlayers.html");
     }

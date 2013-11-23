@@ -32,6 +32,8 @@ public class Player {
 
     private String avatarPath;
 
+    private boolean enabled;
+
     public Player() {}
 
     public Player(String name, String email, String password, Gender gender) {
@@ -40,6 +42,7 @@ public class Player {
         this.email = email;
         this.password = encrypt(password);
         this.gender = gender;
+        this.enabled = true;
     }
 
     //todo
@@ -117,6 +120,14 @@ public class Player {
 
     public void setAvatarPath(String avatarPath) {
         this.avatarPath = avatarPath;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

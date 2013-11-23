@@ -21,10 +21,20 @@
                     </c:choose>
                     </td>
                     <td>
-                        <form action="delete_user.html" method="post">
-                            <input type="hidden" name="id" value="${playerView.player.id}" />
-                            <input type="submit" value="Delete this player" />
-                        </form>
+                        <c:choose>
+                            <c:when test="${playerView.player.enabled}">
+                                <form action="disable_user.html" method="post">
+                                    <input type="hidden" name="id" value="${playerView.player.id}" />
+                                    <input type="submit" value="Disable this player" />
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <form action="enable_user.html" method="post">
+                                    <input type="hidden" name="id" value="${playerView.player.id}" />
+                                    <input type="submit" value="Enable this player" />
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </c:if>
             </tr>

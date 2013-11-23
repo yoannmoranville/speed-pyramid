@@ -49,11 +49,17 @@ public class PlayerController {
     @RequestMapping(value={"/viewPlayers"})
     public ModelAndView viewPlayer() {
         ModelAndView modelAndView = new ModelAndView("playerView");
-        List<PlayerView> players = new ArrayList<PlayerView>();
+        List<PlayerView> playersEnabled = new ArrayList<PlayerView>();
+        List<PlayerView> playersDisabled = new ArrayList<PlayerView>();
         for(Player player: playerService.getPlayers()) {
-            players.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
+            if(player.isEnabled())
+                playersEnabled.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
+            else
+                playersDisabled.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
         }
-        modelAndView.addObject("players", players);
+        playersEnabled.addAll(playersDisabled);
+        modelAndView.addObject("players", playersEnabled);
+//        modelAndView.addObject("playersDisabled", playersDisabled);
         return modelAndView;
     }
 
@@ -103,6 +109,7 @@ public class PlayerController {
         String password = PasswordGenerator.getRandomString();
         player.setPassword(PasswordEncryption.generateDigest(password));
 
+        player.setEnabled(true);
         player.setRole(Player.Role.NONE);
         player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
         if(org.springframework.util.StringUtils.hasText(player.getId())) {
