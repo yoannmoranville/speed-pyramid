@@ -93,35 +93,6 @@ public class PlayerController {
         return modelAndView;
     }
 
-    @RequestMapping(value={"/createPlayer"})
-    public ModelAndView handleRequest() {
-        return new ModelAndView("createPlayerView");
-    }
-
-    @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
-    public View createPerson(@ModelAttribute Player player, ModelMap model) {
-        for(Player player1 : playerService.getPlayers()) {
-            if(player1.getEmail().equals(player.getEmail())) {
-                return new RedirectView("viewPlayers.html?error=true");
-            }
-        }
-
-        String password = PasswordGenerator.getRandomString();
-        player.setPassword(PasswordEncryption.generateDigest(password));
-
-        player.setEnabled(true);
-        player.setRole(Player.Role.NONE);
-        player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
-        if(org.springframework.util.StringUtils.hasText(player.getId())) {
-            playerService.update(player);
-        } else {
-            playerService.create(player);
-            // TODO create config variable to bypass email notification for local testing
-            //playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
-        }
-        return new RedirectView("viewPlayers.html");
-    }
-
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
     public View changePassword(HttpServletRequest request) {
         String oldpwd = request.getParameter("oldpassword");
