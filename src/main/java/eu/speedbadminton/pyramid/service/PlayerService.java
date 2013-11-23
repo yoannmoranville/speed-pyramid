@@ -211,6 +211,21 @@ public class PlayerService {
         MailService.sendEmailResultsWaitingForLooserValidation(body, winner.getEmail(), winner.getName());
     }
 
+    public void sendEmailDisablePlayer(String name, String email) {
+        String body = "You player account has been disabled by the administrator.\n";
+        MailService.sendEmailDisablePlayer(body, email, name);
+    }
+
+    public void sendEmailEnablePlayer(String name, String email) {
+        String body = "You player account has been enabled by the administrator.\n";
+        MailService.sendEmailEnablePlayer(body, email, name);
+    }
+
+    public void sendEmailChangePassword(String name, String email) {
+        String body = "Your password has been changed!\n";
+        MailService.sendEmailChangePassword(body, email, name);
+    }
+
     public List<String> getAvailablePlayers(String id) {
         long yourPosition = getPlayerById(id).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);

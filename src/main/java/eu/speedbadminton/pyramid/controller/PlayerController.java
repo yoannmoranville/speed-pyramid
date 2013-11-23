@@ -113,11 +113,11 @@ public class PlayerController {
             } else {
                 player.setPassword(PasswordEncryption.generateDigest(newpwd));
                 playerService.update(player);
+                playerService.sendEmailChangePassword(player.getName(), player.getEmail());
             }
         }
         if(error)
             return new RedirectView("viewPlayerData.html?error=password");
-        //todo send email
         return new RedirectView("viewPlayerData.html");
     }
 

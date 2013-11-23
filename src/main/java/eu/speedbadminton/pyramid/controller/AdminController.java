@@ -51,7 +51,7 @@ public class AdminController {
         player.setPyramidPosition(-1);
         player.setEnabled(false);
         playerService.update(player);
-        //todo: send EMAIL...
+        playerService.sendEmailDisablePlayer(player.getName(), player.getEmail());
         return new RedirectView("viewPlayers.html");
     }
 
@@ -62,7 +62,7 @@ public class AdminController {
         player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
         player.setEnabled(true);
         playerService.update(player);
-        //todo: send EMAIL...
+        playerService.sendEmailEnablePlayer(player.getName(), player.getEmail());
         return new RedirectView("viewPlayers.html");
     }
 
@@ -113,8 +113,6 @@ public class AdminController {
         player.setRole(Player.Role.ADMIN);
         player.setPyramidPosition(1);
         playerService.create(player);
-        // TODO create config variable to bypass email notification for local testing
-        //playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
         return new RedirectView("login.html");
     }
 }

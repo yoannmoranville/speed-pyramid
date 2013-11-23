@@ -57,4 +57,31 @@ public abstract class MailService {
         Emailer emailer = new Emailer();
         emailer.sendMessage(email, null, null, null, emailComposer);
     }
+
+    public static void sendEmailDisablePlayer(String body, String email, String name) {
+        EmailComposer emailComposer = new EmailComposer("emails/basicMail.txt", "Player account disabled", true, false);
+        emailComposer.setProperty("body", body);
+        emailComposer.setProperty("nameOfReceiver", name);
+        emailComposer.setProperty("to", email);
+        Emailer emailer = new Emailer();
+        emailer.sendMessage(email, null, null, null, emailComposer);
+    }
+
+    public static void sendEmailEnablePlayer(String body, String email, String name) {
+        EmailComposer emailComposer = new EmailComposer("emails/basicMail.txt", "Player account enabled", true, false);
+        emailComposer.setProperty("body", body);
+        emailComposer.setProperty("nameOfReceiver", name);
+        emailComposer.setProperty("to", email);
+        Emailer emailer = new Emailer();
+        emailer.sendMessage(email, null, null, null, emailComposer);
+    }
+
+    public static void sendEmailChangePassword(String body, String email, String name) {
+        EmailComposer emailComposer = new EmailComposer("emails/basicMail.txt", "Change password", true, false);
+        emailComposer.setProperty("body", body);
+        emailComposer.setProperty("nameOfReceiver", name);
+        emailComposer.setProperty("to", email);
+        Emailer emailer = new Emailer();
+        emailer.sendMessage(email, null, null, null, emailComposer);
+    }
 }
