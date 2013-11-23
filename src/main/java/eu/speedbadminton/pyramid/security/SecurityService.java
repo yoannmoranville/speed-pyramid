@@ -28,7 +28,7 @@ public final class SecurityService {
             SecurityContext context = null;
             LoginResult.LoginResultType type = null;
             if (loginPlayer != null) {
-                if(!loginPlayer.isEnabled()) {
+                if(!loginPlayer.isEnabled() && !loginPlayer.getRole().equals(Player.Role.ADMIN)) {
                     type = LoginResult.LoginResultType.DISABLED_USER;
                 } else {
                     context = new SecurityContext(loginPlayer);

@@ -24,7 +24,7 @@ public class Player {
 
     private String email;
 
-    private String password; //todo: TO BE ENCRYPTED
+    private String password;
 
     private Role role;
 
@@ -40,14 +40,9 @@ public class Player {
         super();
         this.name = name;
         this.email = email;
-        this.password = encrypt(password);
+        this.password = password;
         this.gender = gender;
         this.enabled = true;
-    }
-
-    //todo
-    private String encrypt(String password) {
-        return password;
     }
 
     public String getId() {

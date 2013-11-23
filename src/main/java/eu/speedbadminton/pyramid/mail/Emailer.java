@@ -22,6 +22,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -118,7 +119,7 @@ public class Emailer {
     }
 
     private void sendMessage(Message message) throws MessagingException, IOException {
-        String mailToDirname = session.getProperty("mail.to.dir");
+        String mailToDirname = SpeedbadmintonConfig.getSendMailPath();
         Date currentDate = new Date();
         message.setSentDate(currentDate);
         if (StringUtils.isNotBlank(mailToDirname)) {

@@ -117,7 +117,6 @@ public class PlayerService {
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }
 
-    //todo: Use inside the colorbox of users when requesting an encounter
     public List<Match> getPlayedMatchesOfPlayer(Player player) {
         Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId())).andOperator(Criteria.where("matchDate").exists(true));
         Query query = new Query(criteria);

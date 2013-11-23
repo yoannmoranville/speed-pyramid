@@ -89,8 +89,7 @@ public class AdminController {
             playerService.update(player);
         } else {
             playerService.create(player);
-            // TODO create config variable to bypass email notification for local testing
-            //playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
+            playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
         }
         return new RedirectView("viewPlayers.html");
     }
