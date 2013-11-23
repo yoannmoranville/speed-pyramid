@@ -13,7 +13,7 @@
             <br/>
         </c:if>
         <c:if test="${not empty changepassword}">
-            Your password has been changed
+            Your password has been changed!
             <br/>
         </c:if>
         <form action="changepassword.html" method="post">
@@ -27,7 +27,7 @@
         </form>
     </div>
     <div>
-        Upload picture: (todo)<br/>
+        Upload picture:<br/>
         <c:if test="${not empty erroravatar}">
             ${erroravatar}
             <br/>
