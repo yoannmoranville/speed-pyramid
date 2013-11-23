@@ -21,7 +21,7 @@
             $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
-
+                    location.reload();
                 } else {
                     $(this).removeAttr("disabled");
                     console.log(data);
