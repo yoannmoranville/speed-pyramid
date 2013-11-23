@@ -95,7 +95,7 @@
     <hr>
 
     <footer>
-        <p>&copy; Speed-Pyramid 2013</p>
+        <p><a target="_blank" href="https://github.com/yoannmoranville/speed-pyramid">&copy; Speed-Pyramid 2013</a></p>
     </footer>
 </div> <!-- /container -->
 
