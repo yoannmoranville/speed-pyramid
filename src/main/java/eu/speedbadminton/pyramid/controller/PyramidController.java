@@ -44,7 +44,6 @@ public class PyramidController {
                 }
             }
             if(!isInChallenge) {
-                String ids = playerService.getAvailablePlayerIds(id);
                 modelAndView.addObject("available_players", playerService.getAvailablePlayers(id));
             }
         }
