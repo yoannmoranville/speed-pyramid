@@ -41,7 +41,9 @@ public class LoginController {
                 return new RedirectView("admin.html");
             return new RedirectView("viewPyramid.html");
         } else if (SecurityService.LoginResult.LoginResultType.INVALID_USERNAME_PASSWORD.equals(loginResult.getType())) {
-            return new RedirectView("login.html?error=true");
+            return new RedirectView("login.html?error=wrong");
+        } else if (SecurityService.LoginResult.LoginResultType.DISABLED_USER.equals(loginResult.getType())) {
+            return new RedirectView("login.html?error=disabled");
         }
         return null;
     }
