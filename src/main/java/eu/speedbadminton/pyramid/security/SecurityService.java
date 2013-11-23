@@ -28,9 +28,13 @@ public final class SecurityService {
             SecurityContext context = null;
             LoginResult.LoginResultType type = null;
             if (loginPlayer != null) {
-                context = new SecurityContext(loginPlayer);
-                context.login();
-                type = LoginResult.LoginResultType.LOGGED_IN;
+                if(!loginPlayer.isEnabled() && !loginPlayer.getRole().equals(Player.Role.ADMIN)) {
+                    type = LoginResult.LoginResultType.DISABLED_USER;
+                } else {
+                    context = new SecurityContext(loginPlayer);
+                    context.login();
+                    type = LoginResult.LoginResultType.LOGGED_IN;
+                }
             } else {
                 type = LoginResult.LoginResultType.INVALID_USERNAME_PASSWORD;
             }
@@ -77,7 +81,7 @@ public final class SecurityService {
 
     public static class LoginResult {
         public enum LoginResultType {
-            LOGGED_IN, INVALID_USERNAME_PASSWORD, ALREADY_IN_USE, NO_PLAYER, ACCESS_DENIED
+            LOGGED_IN, INVALID_USERNAME_PASSWORD, ALREADY_IN_USE, NO_PLAYER, ACCESS_DENIED, DISABLED_USER
         }
 
         private SecurityContext context;

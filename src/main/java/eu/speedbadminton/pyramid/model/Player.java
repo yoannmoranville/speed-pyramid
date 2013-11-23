@@ -24,7 +24,7 @@ public class Player {
 
     private String email;
 
-    private String password; //todo: TO BE ENCRYPTED
+    private String password;
 
     private Role role;
 
@@ -32,19 +32,17 @@ public class Player {
 
     private String avatarPath;
 
+    private boolean enabled;
+
     public Player() {}
 
     public Player(String name, String email, String password, Gender gender) {
         super();
         this.name = name;
         this.email = email;
-        this.password = encrypt(password);
+        this.password = password;
         this.gender = gender;
-    }
-
-    //todo
-    private String encrypt(String password) {
-        return password;
+        this.enabled = true;
     }
 
     public String getId() {
@@ -117,6 +115,14 @@ public class Player {
 
     public void setAvatarPath(String avatarPath) {
         this.avatarPath = avatarPath;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

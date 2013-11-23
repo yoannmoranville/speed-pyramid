@@ -98,6 +98,12 @@ public class PlayerService {
         return mongoTemplate.find(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 
+    public List<Player> getEnabledPlayers() {
+        Query query = new Query(Criteria.where("enabled").is(true));
+        query.with(new Sort(Sort.Direction.ASC, "pyramidPosition"));
+        return mongoTemplate.find(query, Player.class, COLLECTION_NAME_PLAYER);
+    }
+
     public long getLastPlayerPosition() {
         Query query = new Query().limit(1);
         query.with(new Sort(Sort.Direction.DESC, "pyramidPosition"));
@@ -111,7 +117,6 @@ public class PlayerService {
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME_MATCH);
     }
 
-    //todo: Use inside the colorbox of users when requesting an encounter
     public List<Match> getPlayedMatchesOfPlayer(Player player) {
         Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId())).andOperator(Criteria.where("matchDate").exists(true));
         Query query = new Query(criteria);
@@ -204,6 +209,21 @@ public class PlayerService {
                 "\n";
 
         MailService.sendEmailResultsWaitingForLooserValidation(body, winner.getEmail(), winner.getName());
+    }
+
+    public void sendEmailDisablePlayer(String name, String email) {
+        String body = "You player account has been disabled by the administrator.\n";
+        MailService.sendEmailDisablePlayer(body, email, name);
+    }
+
+    public void sendEmailEnablePlayer(String name, String email) {
+        String body = "You player account has been enabled by the administrator.\n";
+        MailService.sendEmailEnablePlayer(body, email, name);
+    }
+
+    public void sendEmailChangePassword(String name, String email) {
+        String body = "Your password has been changed!\n";
+        MailService.sendEmailChangePassword(body, email, name);
     }
 
     public List<String> getAvailablePlayers(String id) {

@@ -73,7 +73,6 @@ public abstract class ResultsUtil {
         return winningSet == 2;
     }
 
-    //todo: Do JUnit test for this, it has problems
     public static boolean isResultCorrect(Result result) {
         final int SET_POINT = 16;
         final int MINIMUM_DIFF = 2;

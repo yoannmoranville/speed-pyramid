@@ -53,7 +53,7 @@
             </c:choose>
 
                 <div class="mybox" data-playerid="${player.id}">
-                    <a href="Player">${player.name}</a> <!--<span class="glyphicon glyphicon-arrow-up"></span> -->
+                    <a href="Player">${player.pyramidPosition}. ${player.name}</a> <!--<span class="glyphicon glyphicon-arrow-up"></span> -->
                     <div class="player_actions">
                         <c:if test="${current_player_id == player.id}">
                             <span class="label label-info">That's you.</span>
@@ -75,7 +75,10 @@
                                 <h4 class="modal-title" id="myModalLabel">${player.name}</h4>
                             </div>
                             <div class="modal-body">
-                                <img src="${player.avatarPath}" alt="Avatar" class="img-circle">
+                                <c:choose>
+                                    <c:when test="${empty player.avatarPath}"><img src="images/nobody.jpg" alt="Avatar" class="img-circle"></c:when>
+                                    <c:otherwise><img src="${avatarPath}${player.avatarPath}" alt="Avatar" class="img-circle"></c:otherwise>
+                                </c:choose>
                                 <div class="well">
                                     <p>${player.name}</p>
                                     <p>${player.email}</p>

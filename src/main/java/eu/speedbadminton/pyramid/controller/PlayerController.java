@@ -46,29 +46,15 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(value={"/viewPlayers"})
-    public ModelAndView viewPlayer() {
-        ModelAndView modelAndView = new ModelAndView("playerView");
-        List<PlayerView> players = new ArrayList<PlayerView>();
-        for(Player player: playerService.getPlayers()) {
-            players.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
-        }
-        modelAndView.addObject("players", players);
-        return modelAndView;
-    }
-
-    @RequestMapping(value={"/viewPlayerData"}, method= RequestMethod.GET)
-    public ModelAndView viewPlayerData(HttpServletRequest request) {
+    private ModelAndView createPlayerDataView() {
         ModelAndView modelAndView = new ModelAndView("playerDataView");
+        String id = SecurityContext.get().getPlayerId();
+
+        Player player = playerService.getPlayerById(id);
+        modelAndView.addObject("player", player);
+
         if(SecurityContext.get() != null) {
-            String id;
-            if(SecurityContext.get().isAdmin() && request.getParameter("id") != null) {
-                id = request.getParameter("id");
-            } else {
-                id = SecurityContext.get().getPlayerId();
-            }
-            Player player = playerService.getPlayerById(id);
-            modelAndView.addObject("player", player);
+
             List<String> matchIds = new ArrayList<String>();
             List<Match> matches = playerService.getMatchesOfPlayer(player);
             for(Match match : matches) {
@@ -87,108 +73,65 @@ public class PlayerController {
         return modelAndView;
     }
 
-    @RequestMapping(value={"/createPlayer"})
-    public ModelAndView handleRequest() {
-        return new ModelAndView("createPlayerView");
-    }
-
-    @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
-    public View createPerson(@ModelAttribute Player player, ModelMap model) {
-        for(Player player1 : playerService.getPlayers()) {
-            if(player1.getEmail().equals(player.getEmail())) {
-                return new RedirectView("viewPlayers.html?error=true");
-            }
-        }
-
-        String password = PasswordGenerator.getRandomString();
-        player.setPassword(PasswordEncryption.generateDigest(password));
-
-        player.setRole(Player.Role.NONE);
-        player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
-        if(org.springframework.util.StringUtils.hasText(player.getId())) {
-            playerService.update(player);
-        } else {
-            playerService.create(player);
-            // TODO create config variable to bypass email notification for local testing
-            //playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
-        }
-        return new RedirectView("viewPlayers.html");
+    @RequestMapping(value={"/viewPlayerData"}, method= RequestMethod.GET)
+    public ModelAndView viewPlayerData() {
+        return createPlayerDataView();
     }
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-    public View changePassword(HttpServletRequest request) {
+    public ModelAndView changePassword(HttpServletRequest request) {
+        ModelAndView modelAndView = createPlayerDataView();
         String oldpwd = request.getParameter("oldpassword");
         String newpwd = request.getParameter("newpassword");
         String newpwdrepeat = request.getParameter("newpasswordrepeat");
-        boolean error = false;
         if(StringUtils.isEmpty(oldpwd) || StringUtils.isEmpty(newpwd) || StringUtils.isEmpty(newpwdrepeat)) {
-            //todo: error
-            error = true;
+            modelAndView.addObject("errorpwd", "All fields need to be filled.");
         } else if(!newpwd.equals(newpwdrepeat)) {
-            //todo: error
-            error = true;
+            modelAndView.addObject("errorpwd", "The new passwords do not match.");
         } else {
             Player player = playerService.getPlayerById(SecurityContext.get().getPlayerId());
             if(!player.getPassword().equals(PasswordEncryption.generateDigest(oldpwd))) {
-                //todo: error
-                error = true;
+                modelAndView.addObject("errorpwd", "The old password does not match the current one.");
             } else {
                 player.setPassword(PasswordEncryption.generateDigest(newpwd));
                 playerService.update(player);
+                playerService.sendEmailChangePassword(player.getName(), player.getEmail());
+                modelAndView.addObject("changepassword", "true");
             }
         }
-        if(error)
-            return new RedirectView("viewPlayerData.html?error=password");
-        //todo send email
-        return new RedirectView("viewPlayerData.html");
+        return modelAndView;
     }
 
     @RequestMapping(value = "uploadpicture", method = RequestMethod.POST)
-    public View uploadPicture(@RequestParam("avatar") MultipartFile file) {
+    public ModelAndView uploadPicture(@RequestParam("avatar") MultipartFile file) {
+        ModelAndView modelAndView = createPlayerDataView();
+
         if(!file.isEmpty()) {
             if(!file.getContentType().equals("image/jpeg")) {
-                //todo: error
                 LOG.error("Not jpeg...");
-                return new RedirectView("viewPlayerData.html");
+                modelAndView.addObject("erroravatar", "The file is not a JPG image.");
+                return modelAndView;
             }
             try {
                 BufferedImage image = ImageIO.read(file.getInputStream());
                 Integer width = image.getWidth();
                 Integer height = image.getHeight();
                 if(width > 100 && height > 150) {
-                    //todo: error
                     LOG.error("Width or Height too big...");
-                    return new RedirectView("viewPlayerData.html");
+                    modelAndView.addObject("erroravatar", "The file is not of the correct size.");
+                    return modelAndView;
                 }
-
                 String playerId = SecurityContext.get().getPlayerId();
                 File savedFile = new File(SpeedbadmintonConfig.getSavePathForAvatarFile() + playerId + ".jpg");
                 file.transferTo(savedFile);
                 Player player = playerService.getPlayerById(playerId);
                 player.setAvatarPath(playerId + ".jpg");
                 playerService.update(player);
+                modelAndView.addObject("uploadpicture", "true");
             } catch( IOException e ) {
-                //todo: error
+                modelAndView.addObject("erroravatar", "An error occurred when uploading a picture, please contact the administrator.");
             }
         }
-        return new RedirectView("viewPlayerData.html");
-    }
-
-    public static class PlayerView {
-        private Player player;
-        private boolean inUse;
-
-        public PlayerView(Player player, boolean inUse) {
-            this.player = player;
-            this.inUse = inUse;
-        }
-
-        public Player getPlayer() {
-            return player;
-        }
-
-        public boolean isInUse() {
-            return inUse;
-        }
+        return modelAndView;
     }
 }

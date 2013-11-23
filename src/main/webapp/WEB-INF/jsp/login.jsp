@@ -10,8 +10,11 @@
 
             <form class="form-signin" action="check_login.html" method="post">
                 <h2 class="form-signin-heading">Please sign in</h2>
-                <c:if test="${error == 'true'}">
+                <c:if test="${error == 'wrong'}">
                     <div class="alert alert-danger">Your username or your password is wrong...</div>
+                </c:if>
+                <c:if test="${error == 'disabled'}">
+                    <div class="alert alert-danger">You user is disabled, contact an admin...</div>
                 </c:if>
                 <input name="email" id="email" type="text" class="form-control" placeholder="Email address" required autofocus>
                 <input name="password" id="password" type="password" class="form-control" placeholder="Password" required>

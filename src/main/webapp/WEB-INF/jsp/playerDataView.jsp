@@ -8,6 +8,14 @@
 <div id="player">
     <div>
         Change password:<br/>
+        <c:if test="${not empty errorpwd}">
+            ${errorpwd}
+            <br/>
+        </c:if>
+        <c:if test="${not empty changepassword}">
+            Your password has been changed
+            <br/>
+        </c:if>
         <form action="changepassword.html" method="post">
             <label for="oldpassword">Old password: </label>
             <input type="password" name="oldpassword" id="oldpassword"/>
@@ -20,6 +28,14 @@
     </div>
     <div>
         Upload picture: (todo)<br/>
+        <c:if test="${not empty erroravatar}">
+            ${erroravatar}
+            <br/>
+        </c:if>
+        <c:if test="${not empty uploadpicture}">
+            Your new avatar has been saved!
+            ]<br/>
+        </c:if>
         <form action="uploadpicture.html" enctype="multipart/form-data" method="post">
             <input type="file" id="avatar" name="avatar" />
             <input type="submit" value="Submit" id="submit" />

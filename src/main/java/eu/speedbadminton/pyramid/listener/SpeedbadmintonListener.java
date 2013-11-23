@@ -15,16 +15,20 @@ public class SpeedbadmintonListener implements ServletContextListener {
     private static final String PATH_FOR_AVATAR = "PATH_FOR_AVATAR";
     private static final String SAVE_PATH_FOR_AVATAR = "SAVE_PATH_FOR_AVATAR";
     private static final String IS_DEV = "IS_DEV";
+    private static final String SEND_MAIL_PATH = "SEND_MAIL_PATH";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        SpeedbadmintonConfig config = new SpeedbadmintonConfig();
-
         boolean isDev = true;
         String isDevStr = servletContextEvent.getServletContext().getInitParameter(IS_DEV);
         if(isDevStr != null) {
             isDev = Boolean.parseBoolean(isDevStr);
         }
         SpeedbadmintonConfig.setDev(isDev);
+
+        String sendMailPath = servletContextEvent.getServletContext().getInitParameter(SEND_MAIL_PATH);
+        if (sendMailPath == null && isDev)
+            throw new RuntimeException(SAVE_PATH_FOR_AVATAR + " is not configured in TOMCAT");
+        SpeedbadmintonConfig.setSendMailPath(sendMailPath);
 
         if(isDev) {
             SpeedbadmintonConfig.setLinkServer("https://localhost:8443/pyramid-system/confirmResults.html?id=");
