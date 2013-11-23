@@ -1,10 +1,7 @@
 package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.security.PasswordEncryption;
-import eu.speedbadminton.pyramid.security.PasswordGenerator;
-import eu.speedbadminton.pyramid.security.SecurityContext;
-import eu.speedbadminton.pyramid.security.SecurityService;
+import eu.speedbadminton.pyramid.security.*;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
@@ -20,6 +17,8 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Yoann Moranville
@@ -114,5 +113,40 @@ public class AdminController {
         player.setPyramidPosition(1);
         playerService.create(player);
         return new RedirectView("login.html");
+    }
+
+    @RequestMapping(value={"/viewPlayers"})
+    public ModelAndView viewPlayer() {
+        ModelAndView modelAndView = new ModelAndView("playerView");
+        List<PlayerView> players = new ArrayList<PlayerView>();
+        List<PlayerView> playersDisabled = new ArrayList<PlayerView>();
+        for(Player player: playerService.getPlayers()) {
+            if(player.isEnabled())
+                players.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
+            else
+                playersDisabled.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
+        }
+        players.addAll(playersDisabled);
+        modelAndView.addObject("players", players);
+        return modelAndView;
+    }
+
+
+    public static class PlayerView {
+        private Player player;
+        private boolean inUse;
+
+        public PlayerView(Player player, boolean inUse) {
+            this.player = player;
+            this.inUse = inUse;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+        public boolean isInUse() {
+            return inUse;
+        }
     }
 }
