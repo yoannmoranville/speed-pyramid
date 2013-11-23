@@ -34,7 +34,7 @@
         </c:if>
         <c:if test="${not empty uploadpicture}">
             Your new avatar has been saved!
-            ]<br/>
+            <br/>
         </c:if>
         <form action="uploadpicture.html" enctype="multipart/form-data" method="post">
             <input type="file" id="avatar" name="avatar" />

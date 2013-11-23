@@ -53,7 +53,7 @@
             </c:choose>
 
                 <div class="mybox" data-playerid="${player.id}">
-                    <a href="Player">${player.pyramidPosition}. ${player.name}</a> <!--<span class="glyphicon glyphicon-arrow-up"></span> -->
+                    ${player.pyramidPosition}. ${player.name}
                     <div class="player_actions">
                         <c:if test="${current_player_id == player.id}">
                             <span class="label label-info">That's you.</span>
