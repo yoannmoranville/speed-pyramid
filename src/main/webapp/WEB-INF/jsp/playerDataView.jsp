@@ -12,6 +12,10 @@
             ${errorpwd}
             <br/>
         </c:if>
+        <c:if test="${not empty changepassword}">
+            Your password has been changed
+            <br/>
+        </c:if>
         <form action="changepassword.html" method="post">
             <label for="oldpassword">Old password: </label>
             <input type="password" name="oldpassword" id="oldpassword"/>
@@ -27,6 +31,10 @@
         <c:if test="${not empty erroravatar}">
             ${erroravatar}
             <br/>
+        </c:if>
+        <c:if test="${not empty uploadpicture}">
+            Your new avatar has been saved!
+            ]<br/>
         </c:if>
         <form action="uploadpicture.html" enctype="multipart/form-data" method="post">
             <input type="file" id="avatar" name="avatar" />
