@@ -3,6 +3,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
+<speedbadminton:securityContext var="securityContext" />
 <html lang="en">
 <head>
 
@@ -31,24 +32,45 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Speed Pyramid</a>
+            <a class="navbar-brand" href="viewPyramid.html">Speed Pyramid</a>
         </div>
 
-        <div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <a href="login.html">Login</a>
-                </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="viewPyramid.html">View pyramid</a></li>
+                <c:if test="${not empty securityContext}">
+                    <li><a href="viewPlayerData.html">View your user data</a></li>
 
-            </form>
-        </div>
+                    <c:if test="${securityContext.admin}">
+                        <li><a href="createPlayer.html">New Player</a></li>
+                        <li><a href="viewPlayers.html">Player List</a></li>
+                        <li><a href="viewMatches.html">Matches</a></li>
+                    </c:if>
+                    <li><a href="logout.html">Log out</a></li>
+                </c:if>
+                <c:if test="${empty securityContext}">
+                    <form class="navbar-form navbar-right" action="login.html" method="GET">
+                        <button type="submit" class="btn btn-success">Sign in</button>
+                    </form>
+                </c:if>
+            </ul>
+        </div><!--/.nav-collapse -->
+
+
 
     </div>
 </div>
 
-
-<tiles:insertAttribute name="body"/>
-
+    <c:choose>
+        <c:when test="${not empty securityContext}">
+            <div class="well">
+                Hi <span class="strong"><c:out value="${securityContext.name}"/></span> | <c:if test="${securityContext.child}"><a href="logout.html?parent=true">Switch back to <c:out value="${securityContext.parentName}"/></a> | </c:if>
+            </div>
+        </c:when>
+    </c:choose>
+<div class="main">
+    <tiles:insertAttribute name="body"/>
+</div>
 
 
 <div class="container">

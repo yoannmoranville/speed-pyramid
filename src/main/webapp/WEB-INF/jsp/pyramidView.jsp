@@ -2,31 +2,98 @@
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
 <speedbadminton:securityContext var="securityContext" />
 
+    <script type="text/javascript">
+
+        $(document).on('click','.mybox', function(){
+            var modal_id = '#modal_'+$(this).data('playerid');
+            console.log('model_id:'+modal_id);
+
+            $(modal_id).modal({});
+
+        });
+
+        $(document).on('click','.btn-challenge',function(){
+            $(this).attr("disabled", "disabled");
+            var logged_player = '${yourself}';
+            var challenge_player = $(this).data('challenge_player');
+            console.log('player '+logged_player+' is challenging '+challenge_player);
+
+            $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+                if(data.success == 'true'){
+                    console.log("sucessfully challenged. emails sent.");
+
+                } else {
+                    $(this).removeAttr("disabled");
+                    console.log(data);
+                    alert("Sorry a problem occured, please contact admin...");
+                }
+            });
+            $(this).text("Player challenged.");
+        });
+
+
+    </script>
+
     <div class="centermain">
         <c:set var="row_pos" value="1"/>
         <c:set var="max_per_row" value="1"/>
 
+
         <c:forEach items="${players}" var="player" varStatus="currentPlayer">
+            <c:set var="can_be_challenged" value="false"/>
+            <c:forEach items="${available_players}" var="aplayer_id">
+                <c:if test="${player.id == aplayer_id}">
+                    <c:set var="can_be_challenged" value="true"/>
+                </c:if>
+            </c:forEach>
             <c:choose>
                 <c:when test="${row_pos == 1}">
                     <div class="centerboxes">
                 </c:when>
             </c:choose>
 
-                <div class="mybox">
+                <div class="mybox" data-playerid="${player.id}">
                     <a href="Player">${player.name}</a> <!--<span class="glyphicon glyphicon-arrow-up"></span> -->
                     <div class="player_actions">
                         <c:if test="${current_player_id == player.id}">
                             <span class="label label-info">That's you.</span>
                         </c:if>
-                        <c:forEach items="${available_players}" var="aplayer_id">
-                            <c:if test="${player.id == aplayer_id}">
-                                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs">Challenge</button>
-                            </c:if>
-                        </c:forEach>
+                        <c:if test="${can_be_challenged}">
+                            <span class="label label-success">challenge me!</span>
+                        </c:if>
 
                     </div>
                 </div>
+
+                <!-- player profile + challenge dialog -->
+                <!-- Modal -->
+                <div class="modal fade" id="modal_${player.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">${player.name}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <img src="${player.avatarPath}" alt="Avatar" class="img-circle">
+                                <div class="well">
+                                    <p>${player.name}</p>
+                                    <p>${player.email}</p>
+                                    <p>${player.gender}</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <c:if test="${can_be_challenged}">
+                                    <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}">Challenge this player.</button>
+                                </c:if>
+                                <c:if test="${!can_be_challenged}">
+                                    <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
+                                </c:if>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
             <c:choose>
                 <c:when test="${row_pos == max_per_row}">
@@ -48,25 +115,6 @@
         </c:if>
 
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Challenge Player</h4>
-                </div>
-                <div class="modal-body">
-                    In this dialog you can challenge Player xy...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Confirm</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
     <div class="hidden">
         <div id="colorbox" class="colorboxLeft">
