@@ -140,18 +140,18 @@
             <div class="alert alert-success">Your password has been changed!</div>
 
         </c:if>
-        <form class="form-inline" role="form" action="changepassword.html" method="post">
+        <form class="form-inline" action="changepassword.html" method="post">
             <div class="form-group">
                 <label class="sr-only" for="oldpassword">Email address</label>
-                <input type="password" class="form-control" id="oldpassword" placeholder="Old password">
+                <input type="password" class="form-control" id="oldpassword" name="oldpassword" placeholder="Old password">
             </div>
             <div class="form-group">
                 <label class="sr-only" for="newpassword">Password</label>
-                <input type="password" class="form-control" id="newpassword" placeholder="Password">
+                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Password">
             </div>
             <div class="form-group">
                 <label class="sr-only" for="newpasswordrepeat">Password</label>
-                <input type="password" class="form-control" id="newpasswordrepeat" placeholder="Password">
+                <input type="password" class="form-control" id="newpasswordrepeat" name="newpasswordrepeat" placeholder="Confirm Password">
             </div>
 
             <button type="submit" class="btn btn-default">Change Password</button>
