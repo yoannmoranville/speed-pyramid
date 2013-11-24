@@ -27,12 +27,12 @@
         datePlayed: $("#dateMatchPlayed").val()
         },
         function(data){
-            alert(data);
+            console.log(data);
             if(data.errors) {
                 alert("Error "+data.errors)
             } else if(data.success == 'true'){
                 alert("Results received, you will receive an email shortly.");
-                //location.reload(true);
+                location.reload(true);
             } else {
                 alert("Problem, please contact admin...");
             }
