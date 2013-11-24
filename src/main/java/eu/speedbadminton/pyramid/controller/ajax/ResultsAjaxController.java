@@ -60,11 +60,11 @@ public class ResultsAjaxController extends AjaxAbstractController {
         try {
             Writer writer = getResponseWriter(response);
 
-            String matchId = request.getParameter("matchId");
+            String matchId = request.getParameter("matchid");
             Match match = matchService.getMatchById(matchId);
 
-            String challengerId = request.getParameter("askerId");
-            String challengeeId = request.getParameter("askedId");
+            String challengerId = request.getParameter("challengerid");
+            String challengeeId = request.getParameter("challengeeid");
 
             String resultSet1Player1 = request.getParameter("results_set1_player1");
             String resultSet1Player2 = request.getParameter("results_set1_player2");
@@ -138,15 +138,31 @@ public class ResultsAjaxController extends AjaxAbstractController {
     }
 
     private static boolean isDateCorrect(Date creationDate, Date matchDate) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(creationDate);
-        cal2.setTime(matchDate);
-        if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) {
-            return true;
-        } else if(!creationDate.after(matchDate) && matchDate.before(new Date())) {
+        Calendar calCreation = Calendar.getInstance();
+        Calendar calMatchDate = Calendar.getInstance();
+        Calendar calTomorrow = Calendar.getInstance();
+        zeroOutTimeFromCalendar(calCreation);
+        zeroOutTimeFromCalendar(calMatchDate);
+        zeroOutTimeFromCalendar(calTomorrow);
+
+        calTomorrow.setTime(new Date());
+        calTomorrow.add(Calendar.DAY_OF_MONTH, 1);
+        calCreation.setTime(creationDate);
+        calCreation.add(Calendar.DAY_OF_MONTH, -1); // subtract one day to make >= work
+
+        calMatchDate.setTime(matchDate);
+
+        if(calMatchDate.after(calCreation) && calMatchDate.before(calTomorrow)){
             return true;
         }
+
         return false;
+    }
+
+    private static void zeroOutTimeFromCalendar(Calendar calendar){
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
     }
 }

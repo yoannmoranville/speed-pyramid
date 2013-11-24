@@ -1,32 +1,164 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript">
-    $(document).ready(function() {
-        preparePlayer('${matchesWithoutResults}');
+    $(document).on('click','.enter_result_button', function(){
+        var modal_id = '#modal_'+$(this).data('matchid');
+        console.log('modal_id:'+modal_id);
+
+        $(modal_id).modal({});
+
     });
+
+
+    $(document).on('click','#savematch', function(){
+        console.log("saving match id:"+$("#matchform").data('matchid'));
+
+        $.post("saveResults.html",
+
+        {   matchid: $("#matchform").data('matchid'),
+            challengerid: $("#matchform").data('challengerid'),
+            challengeeid: $("#matchform").data('challengeeid'),
+        results_set1_player1: $("#set11").val(),
+        results_set1_player2: $("#set12").val(),
+        results_set2_player1: $("#set21").val(),
+        results_set2_player2: $("#set22").val(),
+        results_set3_player1: $("#set31").val(),
+        results_set3_player2: $("#set32").val(),
+        datePlayed: $("#dateMatchPlayed").val()
+        },
+        function(data){
+            console.log(data);
+            if(data.errors) {
+                alert("Error "+data.errors)
+            } else if(data.success == 'true'){
+                alert("Results received, you will receive an email shortly.");
+                location.reload(true);
+            } else {
+                alert("Problem, please contact admin...");
+            }
+        });
+
+
+
+    });
+
+    $(document).ready(function(){
+        $('#dateMatchPlayed').datepicker()
+    });
+
 </script>
 <div id="player">
-    <div>
-        Change password:<br/>
+
+    <div class="well">
+        <h3>${player.name} <small>Your Rank: ${player.pyramidPosition}</small></h3>
+
+
+        <c:if test="${not empty matches}">
+            <c:forEach items="${matches}" var="match">
+                <br/>
+                ${match.challenger.name} vs ${match.challengee.name}
+                <c:choose>
+                    <c:when test="${not empty match.matchDate}">
+                        &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
+                        <c:if test="${not empty match.validationId and empty matchNeedingConfirmation}">
+                            &nbsp;- waiting for confirmation of the looser
+                        </c:if>
+                        <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
+                            &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        (<button class="btn btn-success enter_result_button" data-matchid="${match.id}">enter results</button>)
+
+                        <!-- player profile + challenge dialog -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal_${match.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">${match.challenger.name} vs. ${match.challengee.name}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="matchform" data-matchid="${match.id}" data-challengerid="${match.challenger.id}" data-challengeeid="${match.challengee.id}">
+                                            <table class="table">
+                                                <tr>
+                                                    <th></th>
+                                                    <th>${match.challenger.name}</th>
+                                                    <th>${match.challengee.name}</th>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Set 1</td>
+
+                                                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
+                                                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Set 2</td>
+
+                                                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
+                                                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Set 3</td>
+
+                                                    <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
+                                                    <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
+                                                </tr>
+                                            </table>
+                                            <label>Date of game </label>
+                                            <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success" id="savematch">Save Result</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+                    </c:otherwise>
+                </c:choose>
+
+
+
+            </c:forEach>
+        </c:if>
+    </div>
+
+    <div class="well">
+        <h3>Change password:</h3>
         <c:if test="${not empty errorpwd}">
-            ${errorpwd}
-            <br/>
+            <div class="alert alert-danger">${errorpwd}</div>
+
         </c:if>
         <c:if test="${not empty changepassword}">
-            Your password has been changed!
-            <br/>
+            <div class="alert alert-success">Your password has been changed!</div>
+
         </c:if>
-        <form action="changepassword.html" method="post">
-            <label for="oldpassword">Old password: </label>
-            <input type="password" name="oldpassword" id="oldpassword"/>
-            <label for="newpassword">New password: </label>
-            <input type="password" name="newpassword" id="newpassword"/>
-            <label for="newpasswordrepeat">Repeat new password: </label>
-            <input type="password" name="newpasswordrepeat" id="newpasswordrepeat"/>
-            <input type="submit" value="Change" />
+        <form class="form-inline" action="changepassword.html" method="post">
+            <div class="form-group">
+                <label class="sr-only" for="oldpassword">Email address</label>
+                <input type="password" class="form-control" id="oldpassword" name="oldpassword" placeholder="Old password">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="newpassword">Password</label>
+                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="newpasswordrepeat">Password</label>
+                <input type="password" class="form-control" id="newpasswordrepeat" name="newpasswordrepeat" placeholder="Confirm Password">
+            </div>
+
+            <button type="submit" class="btn btn-default">Change Password</button>
         </form>
+
     </div>
-    <div>
+    <div class="well">
         Upload picture:<br/>
         <c:if test="${not empty erroravatar}">
             ${erroravatar}
@@ -36,66 +168,20 @@
             Your new avatar has been saved!
             <br/>
         </c:if>
-        <form action="uploadpicture.html" enctype="multipart/form-data" method="post">
-            <input type="file" id="avatar" name="avatar" />
-            <input type="submit" value="Submit" id="submit" />
-        </form>
-    </div>
-    <div>
-        ${player.pyramidPosition}. ${player.name}
 
-        <c:if test="${not empty matches}">
-            <c:forEach items="${matches}" var="match">
-                <br/>
-                ${match.challenger.name} vs ${match.challengee.name}
-                    <c:choose>
-                        <c:when test="${not empty match.matchDate}">
-                            &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
-                            <c:if test="${not empty match.validationId and empty matchNeedingConfirmation}">
-                               &nbsp;- waiting for confirmation of the looser
-                            </c:if>
-                            <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
-                                &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
-                            </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            (<a href="#colorbox" id="link_${match.id}">enter results</a>)
-                        </c:otherwise>
-                    </c:choose>
-            </c:forEach>
-        </c:if>
-    </div>
-</div>
-<div class="hidden">
-    <div id="colorbox" class="colorboxLeft">
-        <div id="error" class="error strong"></div>
-        <form>
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Set 1</th>
-                    <th>Set 2</th>
-                    <th>Set 3</th>
-                </tr>
-                <tr>
-                    <td id="name_player1">Name of Player1</td>
-                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
-                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
-                    <td><input type="text" maxlength="2" name="set31" id="set31"/></td>
-                </tr>
-                <tr>
-                    <td id="name_player2">Name of Player2</td>
-                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
-                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
-                    <td><input type="text" maxlength="2" name="set32" id="set32"/></td>
-                </tr>
-            </table>
-            <label for="dateMatchPlayed">Date of game (example 25-11-2013):</label>
-            <input type="text" id="dateMatchPlayed" name="dateMatchPlayed" />
-            <br/>
-            <input class="btn" type="button" id="btnSave" value="Save" />
-            <br/>
-            <input class="btn" type="button" id="btnCancel" value="Cancel" />
+        <form role="form" action="uploadpicture.html" enctype="multipart/form-data" method="post">
+
+            <div class="form-group">
+                <label for="avatar">Choose your avatar picture</label>
+                <input type="file" id="avatar" name="avatar">
+                <p class="help-block">Size should be in square format and maximum 800px</p>
+            </div>
+
+            <button type="submit" class="btn btn-default">Upload</button>
         </form>
+
     </div>
+
 </div>
+
+

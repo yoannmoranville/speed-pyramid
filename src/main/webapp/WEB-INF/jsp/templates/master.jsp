@@ -14,9 +14,11 @@
     <title><tiles:getAsString name="title" ignore="true"/></title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="css/customstyles.css" type="text/css" />
+    <link rel="stylesheet" href="bootstrap/datepicker/css/datepicker.css" type="text/css" />
 
     <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="bootstrap/datepicker/js/bootstrap-datepicker.js"></script>
 
 </head>
 
