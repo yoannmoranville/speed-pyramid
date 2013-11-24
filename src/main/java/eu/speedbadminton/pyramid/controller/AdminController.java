@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,7 +72,12 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
-    public View createPerson(@ModelAttribute Player player, ModelMap model) {
+    public View createPerson(@ModelAttribute Player player, BindingResult result) {
+        PlayerValidator playerValidator = new PlayerValidator();
+        playerValidator.validate(player, result);
+        if(result.hasErrors()) {
+            //todo
+        }
         for(Player player1 : playerService.getPlayers()) {
             if(player1.getEmail().equals(player.getEmail())) {
                 return new RedirectView("viewPlayers.html?error=true");
@@ -101,7 +107,12 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/saveAdmin"}, method = RequestMethod.POST)
-    public View handleRequest(@ModelAttribute Player player) {
+    public View handleRequest(@ModelAttribute Player player, BindingResult result) {
+        PlayerValidator playerValidator = new PlayerValidator();
+        playerValidator.validate(player, result);
+        if(result.hasErrors()) {
+            //todo
+        }
         for(Player player1 : playerService.getPlayers()) {
             if(player1.getEmail().equals(player.getEmail())) {
                 return new RedirectView("createAdminView.html?error=true");
