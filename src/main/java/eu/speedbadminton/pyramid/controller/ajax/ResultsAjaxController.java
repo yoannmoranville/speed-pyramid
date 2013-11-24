@@ -60,11 +60,11 @@ public class ResultsAjaxController extends AjaxAbstractController {
         try {
             Writer writer = getResponseWriter(response);
 
-            String matchId = request.getParameter("matchId");
+            String matchId = request.getParameter("matchid");
             Match match = matchService.getMatchById(matchId);
 
-            String challengerId = request.getParameter("askerId");
-            String challengeeId = request.getParameter("askedId");
+            String challengerId = request.getParameter("challengerid");
+            String challengeeId = request.getParameter("challengeeid");
 
             String resultSet1Player1 = request.getParameter("results_set1_player1");
             String resultSet1Player2 = request.getParameter("results_set1_player2");
