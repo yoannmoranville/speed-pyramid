@@ -40,7 +40,7 @@
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="inactivityJobTask" />
         <property name="cronExpression" value="0 0 23 * * ?" />
-        <!--<property name="cronExpression" value="0/30 * * * * ?" />--> <!-- For tests -->
+        <!--<property name="cronExpression" value="0/30 * * * * ?" />-->
     </bean>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
