@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <speedbadminton:securityContext var="securityContext" />
     <script type="text/javascript">
         $(document).ready(function() {
@@ -88,5 +89,18 @@
                 </div>
             </c:forEach>
         </c:if>
-
+        <div id="lastResults">
+            <h3>Last results:</h3>
+            <c:forEach items="${lastResults}" var="lastResult">
+                ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
+                <br/>
+            </c:forEach>
+        </div>
+        <div id="openChallenges">
+            <h3>Open challenges:</h3>
+            <c:forEach items="${openChallenges}" var="openChallenge">
+                ${openChallenge.challenger.name} vs ${openChallenge.challengee.name}: created on <fmt:formatDate value="${openChallenge.creation}" pattern="dd-MM-yyyy" />
+                <br/>
+            </c:forEach>
+        </div>
     </div>

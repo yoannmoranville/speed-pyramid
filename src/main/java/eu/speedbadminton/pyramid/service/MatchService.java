@@ -3,6 +3,7 @@ package eu.speedbadminton.pyramid.service;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,10 +35,6 @@ public class MatchService {
             match.setCreation(new Date());
             match.setChallenger(asker);
             match.setChallengee(asked);
-//            match.setChallengerId(asker.getId());
-//            match.setChallengeeId(asked.getId());
-//            match.setChallengerName(asker.getName());
-//            match.setChallengeeName(asked.getName());
             create(match);
             return true;
         } catch (Exception e) {
@@ -73,5 +70,21 @@ public class MatchService {
         Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
         Query query = new Query(criteria);
         mongoTemplate.remove(query, COLLECTION_NAME);
+    }
+
+    public List<Match> getLastMatchesWithResults() {
+        final int MAX_LIMIT = 5;
+        Criteria criteria = Criteria.where("matchDate").exists(true);
+        Query query = new Query(criteria).limit(MAX_LIMIT);
+        query.with(new Sort(Sort.Direction.DESC, "matchDate"));
+        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+    }
+
+    public List<Match> getOpenChallenges() {
+        final int MAX_LIMIT = 5;
+        Criteria criteria = Criteria.where("matchDate").exists(false);
+        Query query = new Query(criteria).limit(MAX_LIMIT);
+        query.with(new Sort(Sort.Direction.DESC, "creation"));
+        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
 }

@@ -4,6 +4,7 @@ import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.SecurityContext;
+import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class PyramidController {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private MatchService matchService;
 
     @RequestMapping(value={"/viewPyramid"}, method= RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request) {
@@ -57,6 +61,10 @@ public class PyramidController {
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
         modelAndView.addObject("players", players);
         modelAndView.addObject("current_player_id",id);
+
+        modelAndView.addObject("lastResults", matchService.getLastMatchesWithResults());
+        modelAndView.addObject("openChallenges", matchService.getOpenChallenges());
+
         return modelAndView;
     }
 
