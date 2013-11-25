@@ -33,11 +33,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="viewPyramid.html">Speed Pyramid</a>
                 </div>
 
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
+                        <li><a href="viewPyramid.html">Speed Pyramid</a></li>
                         <c:if test="${not empty securityContext}">
                             <li><a href="viewPlayerData.html">View your user data</a></li>
                             <c:if test="${securityContext.admin}">
@@ -45,11 +45,13 @@
                                 <li><a href="viewPlayers.html">List of players</a></li>
                                 <li><a href="viewMatches.html">List of matches</a></li>
                             </c:if>
-                            <li><a href="logout.html">Log out</a></li>
+                            <form class="navbar-form navbar-right" action="logout.html" method="GET">
+                                <button type="submit" class="btn btn-warning">Sign out</button>
+                            </form>
                         </c:if>
                         <c:if test="${empty securityContext}">
                             <form class="navbar-form navbar-right" action="login.html" method="GET">
-                                <button type="submit" class="btn btn-success">Log in</button>
+                                <button type="submit" class="btn btn-success">Sign in</button>
                             </form>
                         </c:if>
                     </ul>
