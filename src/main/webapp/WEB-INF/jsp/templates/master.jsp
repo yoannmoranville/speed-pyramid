@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="bootstrap/datepicker/css/datepicker.css" type="text/css" />
 
     <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/pyramid.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="bootstrap/datepicker/js/bootstrap-datepicker.js"></script>
 

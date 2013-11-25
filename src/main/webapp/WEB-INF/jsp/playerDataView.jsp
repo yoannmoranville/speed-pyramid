@@ -1,51 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript">
-    $(document).on('click','.enter_result_button', function(){
-        var modal_id = '#modal_'+$(this).data('matchid');
-        console.log('modal_id:'+modal_id);
-
-        $(modal_id).modal({});
-
-    });
-
-
-    $(document).on('click','#savematch', function(){
-        console.log("saving match id:"+$("#matchform").data('matchid'));
-
-        $.post("saveResults.html",
-
-        {   matchid: $("#matchform").data('matchid'),
-            challengerid: $("#matchform").data('challengerid'),
-            challengeeid: $("#matchform").data('challengeeid'),
-        results_set1_player1: $("#set11").val(),
-        results_set1_player2: $("#set12").val(),
-        results_set2_player1: $("#set21").val(),
-        results_set2_player2: $("#set22").val(),
-        results_set3_player1: $("#set31").val(),
-        results_set3_player2: $("#set32").val(),
-        datePlayed: $("#dateMatchPlayed").val()
-        },
-        function(data){
-            console.log(data);
-            if(data.errors) {
-                alert("Error "+data.errors)
-            } else if(data.success == 'true'){
-                alert("Results received, you will receive an email shortly.");
-                location.reload(true);
-            } else {
-                alert("Problem, please contact admin...");
-            }
-        });
-
-
-
-    });
-
     $(document).ready(function(){
-        $('#dateMatchPlayed').datepicker()
+        preparePlayerData();
     });
-
 </script>
 <div id="player">
 

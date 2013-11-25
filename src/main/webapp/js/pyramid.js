@@ -1,90 +1,26 @@
-function preparePyramid(yourself, availables) { //1. your id, 2. list of available player ids
-    addPlayerPosition(yourself);
-    bindAllColorbox();
-    addAvailability(availables, yourself);
-}
-
-function addPlayerPosition(yourself) {
-    $("#" + yourself).addClass("yourself");
-}
-function bindAllColorbox() {
-    $("#btnCancel").click(function() {
-        $.fn.colorbox.close();
-    });
-    $(".spanLink").each(function() {
-        $(this).removeClass("spanLink");
-        var ident = $(this).attr("id");
-        bindColorboxLinks('#' + ident, ident.replace('link_', ''), null);
+function preparePyramid(yourself) {
+    $(".mybox").click(function() {
+//    $(document).on('click','.mybox', function(){
+        var modal_id = '#modal_' + $(this).data('playerid');
+        $(modal_id).modal({});
     });
 
-}
+    $(".btn-challenge").click(function(){
+//    $(document).on('click','.btn-challenge',function(){
+        $(this).attr("disabled", "disabled");
+        var challenge_player = $(this).data('challenge_player');
+        console.log('player '+yourself+' is challenging '+challenge_player);
 
-function addAvailability(availables, yourself) {
-    var array = $.parseJSON(availables);
-    $("#btnCancel").click(function() {
-        $.fn.colorbox.close();
+        $.post("usersEncounterQuestion.html", {asker: yourself, asked: challenge_player}, function(data){
+            if(data.success == 'true'){
+                console.log("sucessfully challenged. emails sent.");
+                location.reload();
+            } else {
+                $(this).removeAttr("disabled");
+                console.log(data);
+                alert("Sorry a problem occured, please contact admin...");
+            }
+        });
+        $(this).text("Player challenged.");
     });
-    $.each(array, function (index, value) {
-        $("#" + value).addClass("available");
-        bindColorboxLinks("#link_" + value, value, yourself);
-    });
-}
-
-function bindColorboxLinks(linkId, aId, yourself) {
-    $(linkId).colorbox(
-        {
-            width:"80%",
-            height:"400px",
-            inline:true,
-            overlayClose:false,
-            escKey:false,
-            onOpen:function() {
-                $(document).unbind('keydown.cbox_close');
-            },
-            onLoad:function() {
-                $("#btnEncounter").unbind();
-                $("#btnEncounter").addClass("hidden");
-                $("#error_user_already_challenged").addClass("hidden");
-                $("#error_not_reachable").addClass("hidden");
-                $("#error_you_already_challenged").addClass("hidden");
-
-                $("#cboxClose").remove();
-                $.post("usersDataColorbox.html", {id: aId}, function(databack){
-                    if(databack.username) {
-                        $("#colorbox #data #name").html(databack.username + ' (' + databack.email + ')');
-                        if(databack.avatarPath) {
-                            $("#colorbox #avatar").attr("src", databack.avatarPath);
-                        }
-                        $("#colorbox #data #position").html("Position: " + databack.pyramidPosition);
-                        $("#colorbox #data #gender").html("Gender: " + databack.gender);
-                        if(yourself != null) {
-                            $("#btnEncounter").removeClass("hidden");
-                            $("#btnEncounter").click(function(){
-                                if(confirm("Are you sure?")) {
-                                    $.post("usersEncounterQuestion.html", {asker: yourself, asked: aId}, function(databack2){
-                                        if(databack2.success == 'true'){
-                                            alert("Emails sent");
-                                            $.fn.colorbox.close();
-                                            location.reload(true);
-                                        } else {
-                                            alert("Problem, please contact admin...");
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    } else {
-                        $("#colorbox").html("Sorry, there was an error, this window will close in a second...");
-                        setTimeout(function() {
-                            $.fn.colorbox.close();
-                            location.reload(true);
-                        }, 3000);
-                    }
-                });
-            },
-            onCleanup:function() {
-            },
-            href:"#colorbox"
-        }
-    );
 }
