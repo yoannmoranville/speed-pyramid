@@ -6,6 +6,6 @@
     <c:otherwise>
         The results have been saved, you will receive a mail with the final results.
         <br/>
-        You can already log in and check your new position.
+        You can now close this window.
     </c:otherwise>
 </c:choose>

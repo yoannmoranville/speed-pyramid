@@ -64,7 +64,7 @@
                             &nbsp;- waiting for confirmation of the looser
                         </c:if>
                         <c:if test="${not empty match.validationId and matchNeedingConfirmation == match.id}">
-                            &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
+                            &nbsp;- <a target="_blank" href="${matchNeedingConfirmationLink}">please confirm game results</a>
                         </c:if>
                     </c:when>
                     <c:otherwise>
