@@ -41,7 +41,7 @@
                         <c:if test="${not empty securityContext}">
                             <li><a href="viewPlayerData.html">View your user data</a></li>
                             <c:if test="${securityContext.admin}">
-                                <li><a href="createPlayer.html">New player</a></li>
+                                <li><a href="createPlayer.html">Create new player</a></li>
                                 <li><a href="viewPlayers.html">List of players</a></li>
                                 <li><a href="viewMatches.html">List of matches</a></li>
                             </c:if>
