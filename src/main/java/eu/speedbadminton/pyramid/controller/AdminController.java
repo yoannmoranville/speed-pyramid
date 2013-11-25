@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -72,20 +73,25 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/create_player_save", method = RequestMethod.POST)
-    public View createPerson(@ModelAttribute Player player, BindingResult result) {
+    public ModelAndView createPerson(@ModelAttribute Player player, BindingResult result) {
+        ModelAndView modelAndView = new ModelAndView("createPlayerView");
         PlayerValidator playerValidator = new PlayerValidator();
         playerValidator.validate(player, result);
-        if(result.hasErrors()) {
-            //todo
-        }
         for(Player player1 : playerService.getPlayers()) {
             if(player1.getEmail().equals(player.getEmail())) {
-                return new RedirectView("viewPlayers.html?error=true");
+                result.rejectValue("email", "Email already exists");
             }
+        }
+        if(result.hasErrors()) {
+            if(result.hasFieldErrors("name"))
+                modelAndView.addObject("error_name", result.getFieldError("name").getCode());
+            if(result.hasFieldErrors("email"))
+                modelAndView.addObject("error_email", result.getFieldError("email").getCode());
+            return modelAndView;
         }
 
         String password = PasswordGenerator.getRandomString();
-        LOG.info("Password for "+player.getEmail()+" is "+password);
+//        LOG.info("Password for "+player.getEmail()+" is "+password);
         player.setPassword(PasswordEncryption.generateDigest(password));
 
         player.setEnabled(true);
@@ -97,7 +103,7 @@ public class AdminController {
             playerService.create(player);
             playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
         }
-        return new RedirectView("viewPlayers.html");
+        return new ModelAndView("redirect:viewPlayers.html");
     }
 
     @RequestMapping(value = {"/createAdmin"})
@@ -108,23 +114,33 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/saveAdmin"}, method = RequestMethod.POST)
-    public View handleRequest(@ModelAttribute Player player, BindingResult result) {
+    public ModelAndView handleRequest(@ModelAttribute Player player, BindingResult result) {
+        ModelAndView modelAndView = new ModelAndView("createAdminView");
         PlayerValidator playerValidator = new PlayerValidator();
         playerValidator.validate(player, result);
-        if(result.hasErrors()) {
-            //todo
-        }
         for(Player player1 : playerService.getPlayers()) {
             if(player1.getEmail().equals(player.getEmail())) {
-                return new RedirectView("createAdminView.html?error=true");
+                result.rejectValue("email", "Email already exists");
             }
+        }
+        if(StringUtils.isEmpty(player.getPassword())) {
+            result.rejectValue("password", "Password can not be empty");
+        }
+        if(result.hasErrors()) {
+            if(result.hasFieldErrors("name"))
+                modelAndView.addObject("error_name", result.getFieldError("name").getCode());
+            if(result.hasFieldErrors("email"))
+                modelAndView.addObject("error_email", result.getFieldError("email").getCode());
+            if(result.hasFieldErrors("password"))
+                modelAndView.addObject("error_password", result.getFieldError("password").getCode());
+            return modelAndView;
         }
         player.setPassword(PasswordEncryption.generateDigest(player.getPassword()));
         player.setEnabled(true);
         player.setRole(Player.Role.ADMIN);
         player.setPyramidPosition(1);
         playerService.create(player);
-        return new RedirectView("login.html");
+        return new ModelAndView("redirect:login.html");
     }
 
     @RequestMapping(value={"/viewPlayers"})
