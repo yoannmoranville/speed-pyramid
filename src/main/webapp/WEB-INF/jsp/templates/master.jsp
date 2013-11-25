@@ -12,6 +12,7 @@
 
         <title><tiles:getAsString name="title" ignore="true"/></title>
 
+        <link href="favicon.ico" rel="shortcut icon" />
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" />
         <link rel="stylesheet" href="css/customstyles.css" type="text/css" />
         <link rel="stylesheet" href="bootstrap/datepicker/css/datepicker.css" type="text/css" />
