@@ -6,10 +6,7 @@ package eu.speedbadminton.pyramid.service;
  *
  * @author Yoann Moranville
  */
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import com.google.gson.Gson;
 import eu.speedbadminton.pyramid.mail.MailService;
@@ -245,5 +242,20 @@ public class PlayerService {
                 availablePlayerIds.add(getPlayerWithPosition(position).getId());
         }
         return availablePlayerIds;
+    }
+
+    //todo: Add this in a helper static class
+    public int getDaysUntilTimeout(Date creation) {
+        if(creation == null)
+            return -1;
+        Calendar calendarCreation = Calendar.getInstance();
+        calendarCreation.setTime(creation);
+        calendarCreation.add(Calendar.DATE, 21);
+        int daysTimeout = calendarCreation.get(Calendar.DAY_OF_YEAR);
+
+        Calendar calendarToday = Calendar.getInstance();
+        calendarToday.setTime(new Date());
+        int daysToday = calendarToday.get(Calendar.DAY_OF_YEAR);
+        return daysTimeout - daysToday;
     }
 }

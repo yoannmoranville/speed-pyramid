@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,12 +38,16 @@ public class PyramidController {
             modelAndView.addObject("yourself", id);
 
             boolean isInChallenge = false;
+            Date creationDate = null;
             for(Match match : playerService.getMatchesOfPlayer(playerService.getPlayerById(id))) {
                 if(match.getMatchDate() == null || match.getValidationId() != null) {
                     isInChallenge = true;
+                    creationDate = match.getCreation();
                     break;
                 }
             }
+            modelAndView.addObject("isInChallenge", isInChallenge);
+            modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(creationDate));
             if(!isInChallenge) {
                 modelAndView.addObject("available_players", playerService.getAvailablePlayers(id));
             }

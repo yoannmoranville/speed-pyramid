@@ -3,7 +3,7 @@
 <speedbadminton:securityContext var="securityContext" />
     <script type="text/javascript">
         $(document).ready(function() {
-            preparePyramid('${yourself}');
+            preparePyramid('${yourself}', ${isInChallenge}, ${isInChallengeDate});
         });
     </script>
 
