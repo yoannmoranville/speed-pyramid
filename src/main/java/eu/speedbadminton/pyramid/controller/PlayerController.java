@@ -7,6 +7,7 @@ import eu.speedbadminton.pyramid.security.PasswordEncryption;
 import eu.speedbadminton.pyramid.security.PasswordGenerator;
 import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.security.SecurityContextContainer;
+import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
@@ -48,12 +49,12 @@ public class PlayerController {
 
     private ModelAndView createPlayerDataView() {
         ModelAndView modelAndView = new ModelAndView("playerDataView");
-        String id = SecurityContext.get().getPlayerId();
-
-        Player player = playerService.getPlayerById(id);
-        modelAndView.addObject("player", player);
 
         if(SecurityContext.get() != null) {
+            String id = SecurityContext.get().getPlayerId();
+
+            Player player = playerService.getPlayerById(id);
+            modelAndView.addObject("player", player);
 
             List<String> matchIds = new ArrayList<String>();
             List<Match> matches = playerService.getMatchesOfPlayer(player);

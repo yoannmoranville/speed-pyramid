@@ -73,16 +73,32 @@ public class MatchService {
     }
 
     public List<Match> getLastMatchesWithResults() {
+        return getLastMatchesWithResults(null);
+    }
+
+    public List<Match> getLastMatchesWithResults(Player player) {
         final int MAX_LIMIT = 5;
         Criteria criteria = Criteria.where("matchDate").exists(true);
+        if(player != null) {
+            Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+            criteria.andOperator(criteriaOr);
+        }
         Query query = new Query(criteria).limit(MAX_LIMIT);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
 
     public List<Match> getOpenChallenges() {
+        return getOpenChallenges(null);
+    }
+
+    public List<Match> getOpenChallenges(Player player) {
         final int MAX_LIMIT = 5;
         Criteria criteria = Criteria.where("matchDate").exists(false);
+        if(player != null) {
+            Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+            criteria.andOperator(criteriaOr);
+        }
         Query query = new Query(criteria).limit(MAX_LIMIT);
         query.with(new Sort(Sort.Direction.DESC, "creation"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
