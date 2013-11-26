@@ -72,6 +72,10 @@ public class MatchService {
         mongoTemplate.remove(query, COLLECTION_NAME);
     }
 
+    public void delete(Match match) {
+        mongoTemplate.remove(match, COLLECTION_NAME);
+    }
+
     public List<Match> getLastMatchesWithResults() {
         return getLastMatchesWithResults(null);
     }

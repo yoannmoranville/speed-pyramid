@@ -4,7 +4,8 @@
 <speedbadminton:securityContext var="securityContext" />
     <script type="text/javascript">
         $(document).ready(function() {
-            preparePyramid('${yourself}', ${isInChallenge}, ${isInChallengeDate});
+            <c:if test="${not empty yourself}">preparePyramid('${yourself}', ${isInChallenge}, ${isInChallengeDate});</c:if>
+            <c:if test="${empty yourself}">preparePyramidLoggedout();</c:if>
         });
     </script>
 
@@ -54,7 +55,7 @@
                                 </c:choose>
                                 <div class="well">
                                     <p>${player.name}</p>
-                                    <p>${player.email}</p>
+                                    <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
                                     <p>${player.gender}</p>
                                 </div>
                                 <c:if test="${not empty lastResultsOfPlayer}">

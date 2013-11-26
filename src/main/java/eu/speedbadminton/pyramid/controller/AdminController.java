@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.controller;
 
+import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.security.*;
 import eu.speedbadminton.pyramid.service.MatchService;
@@ -35,6 +36,9 @@ public class AdminController {
     @Autowired
     private PlayerService playerService;
 
+    @Autowired
+    private MatchService matchService;
+
     @RequestMapping(value={"/admin"}, method = RequestMethod.GET)
     public ModelAndView handleRequest(HttpServletRequest request) {
         if(SecurityContext.get().isAdmin())
@@ -53,6 +57,11 @@ public class AdminController {
         player.setEnabled(false);
         playerService.update(player);
         playerService.sendEmailDisablePlayer(player.getName(), player.getEmail());
+        List<Match> openChallenge = matchService.getOpenChallenges(player);
+        if(openChallenge.size() > 0) {
+            Match match = openChallenge.get(0);
+            matchService.delete(match);
+        }
         return new RedirectView("viewPlayers.html");
     }
 
