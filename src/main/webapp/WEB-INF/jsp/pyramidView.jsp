@@ -58,13 +58,13 @@
                                     <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
                                     <p>${player.gender}</p>
                                 </div>
-                                <div class="well lastResultPlayer">
+                                <div class="well" id="lastResultPlayer_${player.id}">
                                     <h5>Last results of player:</h5>
-                                    <div class="lastResultPlayerData"></div>
+                                    <div id="lastResultPlayerData_${player.id}"></div>
                                 </div>
-                                <div class="well openChallengePlayer">
+                                <div class="well" id="openChallengePlayer_${player.id}">
                                     <h5>Open challenge:</h5>
-                                    <div class="openChallengePlayerData"></div>
+                                    <div id="openChallengePlayerData_${player.id}"></div>
                                 </div>
                             </div>
                             <div class="modal-footer">

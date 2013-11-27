@@ -1,30 +1,34 @@
 function preparePyramidLoggedout() {
     $(".mybox").click(function() {
-        var modal_id = '#modal_' + $(this).data('playerid');
+        var playerId = $(this).data('playerid');
+        var modal_id = '#modal_' + playerId;
         $(modal_id).modal({});
-        $(".lastResultPlayer").removeClass("hidden");
-        $(".openChallengePlayer").removeClass("hidden");
-        $(".lastResultPlayerData").html("rotating image to load"); //todo
-        $(".openChallengePlayerData").html("rotating image to load"); //todo
-        $.post("getUserMatchData.html", {playerid: $(this).data('playerid')}, function(data){
-            $(".lastResultPlayerData").html("");
-            $(".openChallengePlayerData").html("");
-            if(data) {
-                $.each(data.lastResults, function(i, item) {
-                    $(".lastResultPlayerData").append(item + "<br/>");
-                });
-                if(data.lastResults.length == 0) {
-                    $(".lastResultPlayer").addClass("hidden");
-                }
-                if(data.openChallenge) {
-                    $(".openChallengePlayerData").append(data.openChallenge);
+        $("#lastResultPlayer_"+$(this).data('playerid')).removeClass("hidden");
+        $("#openChallengePlayer_"+$(this).data('playerid')).removeClass("hidden");
+        $("#lastResultPlayerData_"+$(this).data('playerid')).html("<img src='images/loader.gif' />");
+        $("#openChallengePlayerData_"+$(this).data('playerid')).html("<img src='images/loader.gif' />");
+
+        $(modal_id).on('shown.bs.modal', function() {
+            $.post("getUserMatchData.html", {playerid: playerId}, function(data) {
+                $("#lastResultPlayerData_" + playerId).html("");
+                $("#openChallengePlayerData_" + playerId).html("");
+                if(data) {
+                    $.each(data.lastResults, function(i, item) {
+                        $("#lastResultPlayerData_" + playerId).append(item + "<br/>");
+                    });
+                    if(data.lastResults.length == 0) {
+                        $("#lastResultPlayer_" + playerId).addClass("hidden");
+                    }
+                    if(data.openChallenge) {
+                        $("#openChallengePlayerData_" + playerId).append(data.openChallenge);
+                    } else {
+                        $("#openChallengePlayer_" + playerId).addClass("hidden");
+                    }
                 } else {
-                    $(".openChallengePlayer").addClass("hidden");
+                    $("#lastResultPlayer_" + playerId).addClass("hidden");
+                    $("#openChallengePlayer_" + playerId).addClass("hidden");
                 }
-            } else {
-                $(".lastResultPlayer").addClass("hidden");
-                $(".openChallengePlayer").addClass("hidden");
-            }
+            });
         });
     });
 }
