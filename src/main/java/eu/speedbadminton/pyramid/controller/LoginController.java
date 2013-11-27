@@ -64,6 +64,6 @@ public class LoginController {
         }
         if(SecurityContext.get() != null)
             SecurityService.logout(false);
-        return new RedirectView("login.html");
+        return new RedirectView("viewPyramid.html");
     }
 }
