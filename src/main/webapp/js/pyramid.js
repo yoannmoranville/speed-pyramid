@@ -4,8 +4,8 @@ function preparePyramidLoggedout() {
         $(modal_id).modal({});
         $(".lastResultPlayer").removeClass("hidden");
         $(".openChallengePlayer").removeClass("hidden");
-        $(".lastResultPlayerData").html("rotating image to load");
-        $(".openChallengePlayerData").html("rotating image to load");
+        $(".lastResultPlayerData").html("rotating image to load"); //todo
+        $(".openChallengePlayerData").html("rotating image to load"); //todo
         $.post("getUserMatchData.html", {playerid: $(this).data('playerid')}, function(data){
             $(".lastResultPlayerData").html("");
             $(".openChallengePlayerData").html("");
