@@ -57,13 +57,13 @@ public class LoginController {
 
     @RequestMapping(value={"/logout"}, method = RequestMethod.GET)
     public View handleRequestLogout(HttpServletRequest request) {
-        if(request.getParameter("parent") != null) {
-            SecurityService.logout(true);
-            if(SecurityContext.get().isAdmin())
-                return new RedirectView("viewPyramid.html");
+        if(SecurityContext.get() != null) {
+            if(request.getParameter("parent") != null) {
+                SecurityService.logout(true);
+            } else {
+                SecurityService.logout(false);
+            }
         }
-        if(SecurityContext.get() != null)
-            SecurityService.logout(false);
         return new RedirectView("viewPyramid.html");
     }
 }
