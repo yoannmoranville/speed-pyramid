@@ -55,10 +55,6 @@ public class PyramidController {
             if(!isInChallenge) {
                 modelAndView.addObject("available_players", playerService.getAvailablePlayers(id));
             }
-
-            Player player = playerService.getPlayerById(id);
-            modelAndView.addObject("lastResultsOfPlayer", matchService.getLastMatchesWithResults(player));
-            modelAndView.addObject("openChallengesOfPlayer", matchService.getOpenChallenges(player));
         }
         List<Player> players = playerService.getEnabledPlayers();
 

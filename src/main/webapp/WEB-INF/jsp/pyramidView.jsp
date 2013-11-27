@@ -58,24 +58,14 @@
                                     <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
                                     <p>${player.gender}</p>
                                 </div>
-                                <c:if test="${not empty lastResultsOfPlayer}">
-                                    <div class="well">
-                                        <h5>Last results:</h5>
-                                        <c:forEach items="${lastResultsOfPlayer}" var="lastResult">
-                                            ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
-                                            <br/>
-                                        </c:forEach>
-                                    </div>
-                                </c:if>
-                                <c:if test="${not empty openChallengesOfPlayer}">
-                                    <div class="well">
-                                        <h5>Open challenge:</h5>
-                                        <c:forEach items="${openChallengesOfPlayer}" var="openChallenge">
-                                            ${openChallenge.challenger.name} vs ${openChallenge.challengee.name}: created on <fmt:formatDate value="${openChallenge.creation}" pattern="dd-MM-yyyy" />
-                                            <br/>
-                                        </c:forEach>
-                                    </div>
-                                </c:if>
+                                <div class="well lastResultPlayer">
+                                    <h5>Last results of player:</h5>
+                                    <div class="lastResultPlayerData"></div>
+                                </div>
+                                <div class="well openChallengePlayer">
+                                    <h5>Open challenge:</h5>
+                                    <div class="openChallengePlayerData"></div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -1,6 +1,7 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
 import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
+import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 /**
  * User: Yoann Moranville
@@ -33,32 +35,15 @@ public class UserDataAjaxController extends AjaxAbstractController {
     @Autowired
     private MatchService matchService;
 
-    @RequestMapping(value={"/usersDataColorbox"}, method = RequestMethod.POST)
-    public void getUserData(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String userId = request.getParameter("id");
-            Writer writer = getResponseWriter(response);
-            Player player = playerService.getPlayerById(userId);
-
-            if(SpeedbadmintonConfig.isDev() || player.getAvatarPath() == null)
-                writeUserData(writer, player.getName(), player.getEmail(), null, player.getGender().name(), player.getPyramidPosition());
-            else {
-                writeUserData(writer, player.getName(), player.getEmail(), SpeedbadmintonConfig.getPathForAvatarFile() + player.getAvatarPath(), player.getGender().name(), player.getPyramidPosition());
-            }
-            closeWriter(writer);
-        } catch (IOException e) {
-            LOG.error("Error...", e);
-        }
-    }
-
     @RequestMapping(value = {"/usersEncounterQuestion"}, method = RequestMethod.POST)
-    public void sendEncounter(HttpServletRequest request, HttpServletResponse response) {
+    public void sendEncounter(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String askerId = request.getParameter("asker");
         Player askerPlayer = playerService.getPlayerById(askerId);
         String askedId = request.getParameter("asked");
         Player askedPlayer = playerService.getPlayerById(askedId);
+        Writer writer = null;
         try {
-            Writer writer = getResponseWriter(response);
+            writer = getResponseWriter(response);
 
             if (matchService.createMatch(askerPlayer, askedPlayer)){
                 if(playerService.sendEmail(askerPlayer, askedPlayer)) {
@@ -67,10 +52,31 @@ public class UserDataAjaxController extends AjaxAbstractController {
                     writeSimpleData(writer, "success", "false");
                 }
             }
-
-            closeWriter(writer);
         } catch (IOException e) {
             LOG.error("Error...", e);
+        } finally {
+            closeWriter(writer);
+        }
+    }
+
+    @RequestMapping(value = {"/getUserMatchData"}, method = RequestMethod.POST)
+    public void getUserMatchData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String playerId = request.getParameter("playerid");
+        Player player = playerService.getPlayerById(playerId);
+        Writer writer = null;
+        try {
+            writer = getResponseWriter(response);
+            List<Match> lastResults = matchService.getLastMatchesWithResults(player);
+            List<Match> openChallenges = matchService.getOpenChallenges(player);
+            Match openChallenge = null;
+            if(openChallenges.size() > 0) {
+                openChallenge = openChallenges.get(0);
+            }
+            writeUserMatchData(writer, lastResults, openChallenge);
+        } catch (IOException e) {
+            LOG.error("Error...", e);
+        } finally {
+            closeWriter(writer);
         }
     }
 }

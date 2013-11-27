@@ -1,5 +1,9 @@
 package eu.speedbadminton.pyramid.controller.ajax;
 
+import eu.speedbadminton.pyramid.model.Match;
+import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.utils.MatchUtil;
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -7,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.List;
 
 /**
  * User: Yoann Moranville
@@ -38,33 +43,28 @@ public class AjaxAbstractController {
     protected static String aroundQuotes(String data) {
         return "\"" + data + "\"";
     }
-    protected static void writeUserData(Writer writer, String name, String email, String avatarPath, String gender, Long pyramidPosition) throws IOException {
+    protected static void writeUserMatchData(Writer writer, List<Match> matchResults, Match openChallenge) throws IOException {
         writer.write(START_ITEM);
-        writer.write(aroundQuotes("username"));
+        writer.write(aroundQuotes("lastResults"));
         writer.write(COLON);
-        writer.write(aroundQuotes(name));
-        writer.write(COMMA);
-        writer.write(aroundQuotes("email"));
-        writer.write(COLON);
-        writer.write(aroundQuotes(email));
-        writer.write(COMMA);
-        writer.write(aroundQuotes("pyramidPosition"));
-        writer.write(COLON);
-        writer.write(aroundQuotes(""+pyramidPosition));
-        if(StringUtils.isNotEmpty(avatarPath)) {
-            writer.write(COMMA);
-            writer.write(aroundQuotes("avatarPath"));
-            writer.write(COLON);
-            writer.write(aroundQuotes(avatarPath));
+        writer.write(START_ARRAY);
+        int i = 1;
+        for(Match match : matchResults) {
+            writer.write(aroundQuotes(MatchUtil.createMatchResultString(match)));
+            if(i < matchResults.size())
+                writer.write(COMMA);
+            i++;
         }
-        if(StringUtils.isNotEmpty(gender)) {
+        writer.write(END_ARRAY);
+        if(openChallenge != null) {
             writer.write(COMMA);
-            writer.write(aroundQuotes("gender"));
+            writer.write(aroundQuotes("openChallenge"));
             writer.write(COLON);
-            writer.write(aroundQuotes(gender));
+            writer.write(aroundQuotes(MatchUtil.createMatchChallengeString(openChallenge)));
         }
         writer.write(END_ITEM);
     }
+
     protected static void writeResultData(Writer writer, String askerName, String askerId, String askedName, String askedId) throws IOException {
         writer.write(START_ITEM);
         writer.write(aroundQuotes("askerName"));
