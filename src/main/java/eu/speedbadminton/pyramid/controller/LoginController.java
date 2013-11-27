@@ -37,8 +37,6 @@ public class LoginController {
     public View loginPerson(@ModelAttribute Player player, ModelMap model) throws Exception {
         SecurityService.LoginResult loginResult = SecurityService.login(player.getEmail(), player.getPassword());
         if (SecurityService.LoginResult.LoginResultType.LOGGED_IN.equals(loginResult.getType())){
-            if(SecurityContext.get().isAdmin())
-                return new RedirectView("admin.html");
             return new RedirectView("viewPyramid.html");
         } else if (SecurityService.LoginResult.LoginResultType.INVALID_USERNAME_PASSWORD.equals(loginResult.getType())) {
             return new RedirectView("login.html?error=wrong");
@@ -62,7 +60,7 @@ public class LoginController {
         if(request.getParameter("parent") != null) {
             SecurityService.logout(true);
             if(SecurityContext.get().isAdmin())
-                return new RedirectView("admin.html");
+                return new RedirectView("viewPyramid.html");
         }
         if(SecurityContext.get() != null)
             SecurityService.logout(false);

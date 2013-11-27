@@ -98,18 +98,22 @@
                 </div>
             </c:forEach>
         </c:if>
-        <div id="lastResults">
-            <h3>Last results:</h3>
-            <c:forEach items="${lastResults}" var="lastResult">
-                ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
-                <br/>
-            </c:forEach>
-        </div>
-        <div id="openChallenges">
-            <h3>Open challenges:</h3>
-            <c:forEach items="${openChallenges}" var="openChallenge">
-                ${openChallenge.challenger.name} vs ${openChallenge.challengee.name}: created on <fmt:formatDate value="${openChallenge.creation}" pattern="dd-MM-yyyy" />
-                <br/>
-            </c:forEach>
-        </div>
+        <c:if test="${not empty lastResults}">
+            <div id="lastResults">
+                <h3>Last results:</h3>
+                <c:forEach items="${lastResults}" var="lastResult">
+                    ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
+                    <br/>
+                </c:forEach>
+            </div>
+        </c:if>
+        <c:if test="${not empty openChallenges}">
+            <div id="openChallenges">
+                <h3>Open challenges:</h3>
+                <c:forEach items="${openChallenges}" var="openChallenge">
+                    ${openChallenge.challenger.name} vs ${openChallenge.challengee.name}: created on <fmt:formatDate value="${openChallenge.creation}" pattern="dd-MM-yyyy" />
+                    <br/>
+                </c:forEach>
+            </div>
+        </c:if>
     </div>

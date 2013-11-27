@@ -39,13 +39,6 @@ public class AdminController {
     @Autowired
     private MatchService matchService;
 
-    @RequestMapping(value={"/admin"}, method = RequestMethod.GET)
-    public ModelAndView handleRequest(HttpServletRequest request) {
-        if(SecurityContext.get().isAdmin())
-            return new ModelAndView("admin");
-        return null;
-    }
-
     @RequestMapping(value = "/disable_user", method = RequestMethod.POST)
     public View disableAccount(HttpServletRequest request) {
         String playerId = request.getParameter("id");

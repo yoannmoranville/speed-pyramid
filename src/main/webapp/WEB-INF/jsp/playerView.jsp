@@ -1,6 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
 <speedbadminton:securityContext var="securityContext" />
+<script type="text/javascript">
+    $(document).ready(function() {
+        preparePlayerList();
+    });
+</script>
 <div id="players">
     <table>
         <c:forEach items="${players}" var="playerView" varStatus="step">
@@ -23,13 +28,13 @@
                     <td>
                         <c:choose>
                             <c:when test="${playerView.player.enabled}">
-                                <form action="disable_user.html" method="post">
+                                <form action="disable_user.html" class="disablePlayer" method="post">
                                     <input type="hidden" name="id" value="${playerView.player.id}" />
                                     <input type="submit" value="Disable this player" />
                                 </form>
                             </c:when>
                             <c:otherwise>
-                                <form action="enable_user.html" method="post">
+                                <form action="enable_user.html" class="enablePlayer" method="post">
                                     <input type="hidden" name="id" value="${playerView.player.id}" />
                                     <input type="submit" value="Enable this player" />
                                 </form>

@@ -6,6 +6,11 @@
     <c:otherwise>
         The results have been saved, you will receive a mail with the final results.
         <br/>
-        You can now close this window.
+        You will be redirected in 3 seconds...
+        <script type="text/javascript">
+            setTimeout(function() {
+                window.location.href = 'viewPlayerData.html'
+            }, 3000);
+        </script>
     </c:otherwise>
 </c:choose>

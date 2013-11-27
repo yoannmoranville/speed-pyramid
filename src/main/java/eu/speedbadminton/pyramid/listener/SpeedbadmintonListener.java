@@ -16,6 +16,7 @@ public class SpeedbadmintonListener implements ServletContextListener {
     private static final String SAVE_PATH_FOR_AVATAR = "SAVE_PATH_FOR_AVATAR";
     private static final String IS_DEV = "IS_DEV";
     private static final String SEND_MAIL_PATH = "SEND_MAIL_PATH";
+    private static final String LINK_TO_APP = "LINK_TO_APP";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         boolean isDev = true;
@@ -30,11 +31,10 @@ public class SpeedbadmintonListener implements ServletContextListener {
             throw new RuntimeException(SAVE_PATH_FOR_AVATAR + " is not configured in TOMCAT");
         SpeedbadmintonConfig.setSendMailPath(sendMailPath);
 
-        if(isDev) {
-            SpeedbadmintonConfig.setLinkServer("https://localhost:8443/pyramid-system/confirmResults.html?id=");
-        } else {
-            SpeedbadmintonConfig.setLinkServer("https://54.214.239.189:8443/pyramid-system/confirmResults.html?id=");
-        }
+        String linkToApp = servletContextEvent.getServletContext().getInitParameter(LINK_TO_APP);
+        if (linkToApp == null)
+            throw new RuntimeException(LINK_TO_APP + " is not configured in TOMCAT");
+        SpeedbadmintonConfig.setLinkServer(linkToApp + "confirmResults.html?id=");
 
         String pathForAvatar = servletContextEvent.getServletContext().getInitParameter(PATH_FOR_AVATAR);
         if (pathForAvatar == null && !isDev)
