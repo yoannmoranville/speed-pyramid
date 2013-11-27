@@ -87,8 +87,11 @@ public abstract class ResultsUtil {
                 set = result.getSet2();
             } else {
                 set = result.getSet3();
-                if(set == null)
+                if(set == null) {
                     break;
+                } else if (winningSetForChallenger == 2 || winningSetForChallengee == 2) {
+                    return false;
+                }
             }
 
             if(set.getPointOfChallengee() == SET_POINT && set.getPointOfChallenger() <= (SET_POINT - MINIMUM_DIFF)) {

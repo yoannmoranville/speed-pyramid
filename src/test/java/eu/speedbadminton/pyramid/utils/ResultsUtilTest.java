@@ -19,5 +19,7 @@ public class ResultsUtilTest {
         Assert.assertTrue(ResultsUtil.isResultCorrect(result));
         result = new Result("2", "16", "21", "18", "7", "16");
         Assert.assertFalse(ResultsUtil.isResultCorrect(result));
+        result = new Result("16", "0", "16", "5", "3", "16");
+        Assert.assertFalse(ResultsUtil.isResultCorrect(result));
     }
 }
