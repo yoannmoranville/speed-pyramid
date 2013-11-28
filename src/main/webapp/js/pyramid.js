@@ -5,8 +5,8 @@ function preparePyramidLoggedout() {
         $(modal_id).modal({});
         $("#lastResultPlayer_"+$(this).data('playerid')).removeClass("hidden");
         $("#openChallengePlayer_"+$(this).data('playerid')).removeClass("hidden");
-        $("#lastResultPlayerData_"+$(this).data('playerid')).html("<img src='images/loader.gif' />");
-        $("#openChallengePlayerData_"+$(this).data('playerid')).html("<img src='images/loader.gif' />");
+        $("#lastResultPlayerData_"+$(this).data('playerid')).html("<img alt='loader' src='images/loader.gif' />");
+        $("#openChallengePlayerData_"+$(this).data('playerid')).html("<img alt='loader' src='images/loader.gif' />");
 
         $(modal_id).on('shown.bs.modal', function() {
             $.post("getUserMatchData.html", {playerid: playerId}, function(data) {

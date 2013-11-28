@@ -116,4 +116,5 @@
                 </c:forEach>
             </div>
         </c:if>
+        <img alt="loader" src="images/loader.gif" class="hidden" />
     </div>
