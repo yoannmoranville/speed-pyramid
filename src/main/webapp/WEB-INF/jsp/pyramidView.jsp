@@ -12,7 +12,7 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            <c:if test="${not empty securityContext}">bindPyramidFunctions('${loggedPlayerChallenge != null}', );</c:if>
+            <c:if test="${not empty securityContext}">bindPyramidFunctions('${loggedPlayerChallenge != null}', '${isInChallengeDate}');</c:if>
             <c:if test="${empty securityContext}">bindLoggedoutPyramidFunctions();</c:if>
         });
     </script>
