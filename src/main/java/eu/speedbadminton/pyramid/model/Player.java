@@ -129,4 +129,15 @@ public class Player {
     public String toString() {
         return "Player [id=" + id + ", name=" + name + ", pyramidPosition=" + pyramidPosition + ", email=" + email + ", role=" + role.toString() + ", gender=" + gender.toString() + "]";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==null) return false;
+        if (! (obj instanceof Player)) return false;
+
+        Player player = (Player) obj;
+        return this.getId().equals(player.getId());
+
+    }
+
 }

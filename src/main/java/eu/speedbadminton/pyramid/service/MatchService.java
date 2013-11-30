@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class MatchService {
     @Autowired
     private MongoTemplate mongoTemplate;
     private static final String COLLECTION_NAME = "match";
+    private static final int MAX_RESULTS_PAST_MATCHES = 5;
 
     public boolean createMatch(Player asker, Player asked) {
         try {
@@ -77,17 +79,33 @@ public class MatchService {
     }
 
     public List<Match> getLastMatchesWithResults() {
-        return getLastMatchesWithResults(null);
+        final int MAX_LIMIT = 5;
+        Criteria criteria = Criteria.where("confirmed").is(true);
+        Query query = new Query(criteria).limit(MAX_LIMIT);
+        query.with(new Sort(Sort.Direction.DESC, "matchDate"));
+        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
 
     public List<Match> getLastMatchesWithResults(Player player) {
-        final int MAX_LIMIT = 5;
-        Criteria criteria = Criteria.where("matchDate").exists(true);
-        if(player != null) {
-            Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
-            criteria.andOperator(criteriaOr);
+        if (player==null){
+            return Collections.emptyList();
         }
-        Query query = new Query(criteria).limit(MAX_LIMIT);
+        Criteria criteria = Criteria.where("confirmed").is(true);
+        Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+        criteria.andOperator(criteriaOr);
+        Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
+        query.with(new Sort(Sort.Direction.DESC, "matchDate"));
+        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+    }
+
+    public List<Match> getWaitingForConfirmationMatches(Player player) {
+        if (player==null){
+            return Collections.emptyList();
+        }
+        Criteria criteria = Criteria.where("confirmed").is(false).and("matchDate").exists(true);
+        Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+        criteria.andOperator(criteriaOr);
+        Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
@@ -97,13 +115,12 @@ public class MatchService {
     }
 
     public List<Match> getOpenChallenges(Player player) {
-        final int MAX_LIMIT = 5;
         Criteria criteria = Criteria.where("matchDate").exists(false);
         if(player != null) {
             Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
             criteria.andOperator(criteriaOr);
         }
-        Query query = new Query(criteria).limit(MAX_LIMIT);
+        Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
         query.with(new Sort(Sort.Direction.DESC, "creation"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }

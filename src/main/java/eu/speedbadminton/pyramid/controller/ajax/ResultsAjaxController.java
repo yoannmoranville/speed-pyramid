@@ -50,6 +50,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
             String challengerId = request.getParameter("challengerid");
             String challengeeId = request.getParameter("challengeeid");
+            String loggedplayerId = request.getParameter("loggedplayerid");
 
             String resultSet1Player1 = request.getParameter("results_set1_player1");
             String resultSet1Player2 = request.getParameter("results_set1_player2");
@@ -88,29 +89,26 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 match.setResult(resultString);
                 match.setMatchDate(date);
 
-                Player challenger = playerService.getPlayerById(challengerId);
-                Player challengee = playerService.getPlayerById(challengeeId);
-                boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
+                Player loggedPlayer = playerService.getPlayerById(loggedplayerId);
+                Player winner = ResultsUtil.getWinner(match,result);
+                Player looser = ResultsUtil.getLooser(match,result);
+                boolean isLoggedPlayerLooser = !loggedPlayer.equals(winner);
 
-                matchService.update(match);
 
-                if((SecurityContext.get().getPlayerId().equals(challenger.getId()) && !isChallengerWinner) || (SecurityContext.get().getPlayerId().equals(challengee.getId()) && isChallengerWinner)) {
-                    if(isChallengerWinner) {
-                        playerService.swap(challenger, challengee);
-                    }
-                    playerService.sendEmailResults(challenger, challengee, isChallengerWinner, result);
-                } else {
+                if(isLoggedPlayerLooser) {
+                        match.setConfirmed(true);
+                        matchService.update(match);
+                        playerService.swap(loggedPlayer, winner);
+                } else { // the winner puts in the results. send a confirmation mail with a link to confirm
                     String validationId = PasswordGenerator.getRandomString();
                     match.setValidationId(validationId);
                     matchService.update(match);
                     String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
+                    LOG.info("New Validation Link: "+validationLink);
 
-                    if(isChallengerWinner) {
-                        playerService.sendEmailResultsLooserValidation(challengee, challenger, result, validationLink);
-                        playerService.sendEmailResultsWaitingForLooserValidation(challenger, challengee, result);
-                    } else {
-                        playerService.sendEmailResultsLooserValidation(challenger, challengee, result, validationLink);
-                        playerService.sendEmailResultsWaitingForLooserValidation(challengee, challenger, result);
+                    if(loggedPlayer.equals(winner)) {
+                        playerService.sendEmailResultsLooserValidation(looser, winner, result, validationLink);
+                        playerService.sendEmailResultsWaitingForLooserValidation(winner, looser, result);
                     }
                 }
 
