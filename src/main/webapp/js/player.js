@@ -1,13 +1,13 @@
 function preparePlayerData() {
     $('#dateMatchPlayed').datepicker();
 
-    $(".enter_result_button").click(function() {
+    $(".enter_result_button").on('click', function() {
         var modal_id = '#modal_'+$(this).data('matchid');
         $(modal_id).modal({});
     });
 
 
-    $("#savematch").click(function() {
+    $("#savematch").on('click', function() {
         console.log("saving match id:"+$("#matchform").data('matchid'));
         $.post("saveResults.html",
             {   matchid: $("#matchform").data('matchid'),

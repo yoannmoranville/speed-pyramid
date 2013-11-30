@@ -41,7 +41,7 @@
 
                 <!-- player profile + challenge dialog -->
                 <!-- Modal -->
-                <div class="modal fade" id="modal_${player.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="modal_${player.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-ajax="none">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -60,20 +60,24 @@
                                 </div>
                                 <div class="well" id="lastResultPlayer_${player.id}">
                                     <h5>Last results of player:</h5>
+                                    <img alt='loader' src='images/loader.gif' class="hidden" id="lastResultPlayerLoader_${player.id}"/>
                                     <div id="lastResultPlayerData_${player.id}"></div>
                                 </div>
                                 <div class="well" id="openChallengePlayer_${player.id}">
                                     <h5>Open challenge:</h5>
+                                    <img alt='loader' src='images/loader.gif' class="hidden" id="openChallengePlayerLoader_${player.id}"/>
                                     <div id="openChallengePlayerData_${player.id}"></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <c:if test="${can_be_challenged}">
-                                    <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}">Challenge this player.</button>
-                                </c:if>
-                                <c:if test="${!can_be_challenged}">
-                                    <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
+                                <c:if test="${not empty securityContext}">
+                                    <c:if test="${can_be_challenged}">
+                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}">Challenge this player.</button>
+                                    </c:if>
+                                    <c:if test="${!can_be_challenged}">
+                                        <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
+                                    </c:if>
                                 </c:if>
                             </div>
                         </div><!-- /.modal-content -->

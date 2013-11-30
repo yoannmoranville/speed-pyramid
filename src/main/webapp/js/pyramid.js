@@ -1,35 +1,51 @@
 function preparePyramidLoggedout() {
-    $(".mybox").click(function() {
-        var playerId = $(this).data('playerid');
-        var modal_id = '#modal_' + playerId;
-        $(modal_id).modal({});
-        $("#lastResultPlayer_"+$(this).data('playerid')).removeClass("hidden");
-        $("#openChallengePlayer_"+$(this).data('playerid')).removeClass("hidden");
-        $("#lastResultPlayerData_"+$(this).data('playerid')).html("<img alt='loader' src='images/loader.gif' />");
-        $("#openChallengePlayerData_"+$(this).data('playerid')).html("<img alt='loader' src='images/loader.gif' />");
+    $(".mybox").each(function(index) {
+        $(this).on('click', function() {
+            var mybox = $(this);
+            var playerId = $(this).data('playerid');
+            var modal_id = '#modal_' + playerId;
+            $(modal_id).modal({});
+            $("#lastResultPlayer_" + playerId).removeClass("hidden");
+            $("#openChallengePlayer_" + playerId).removeClass("hidden");
+            $("#lastResultPlayerLoader_" + playerId).removeClass("hidden");
+            $("#openChallengePlayerLoader_" + playerId).removeClass("hidden");
+            $("#lastResultPlayerData_" + playerId).html("");
+            $("#openChallengePlayerData_" + playerId).html("");
 
-        $(modal_id).on('shown.bs.modal', function() {
-            $.post("getUserMatchData.html", {playerid: playerId}, function(data) {
-                $("#lastResultPlayerData_" + playerId).html("");
-                $("#openChallengePlayerData_" + playerId).html("");
-                if(data) {
-                    $.each(data.lastResults, function(i, item) {
-                        $("#lastResultPlayerData_" + playerId).append(item + "<br/>");
-                    });
-                    if(data.lastResults.length == 0) {
-                        $("#lastResultPlayer_" + playerId).addClass("hidden");
-                    }
-                    if(data.openChallenge) {
-                        $("#openChallengePlayerData_" + playerId).append(data.openChallenge);
+            $(modal_id).unbind('shown.bs.modal');
+            $(modal_id).on('shown.bs.modal', function() {
+                $.post("getUserMatchData.html", {playerid: playerId}, function(data) {
+                    if(data) {
+                        $("#lastResultPlayerLoader_" + playerId).addClass("hidden");
+                        $("#openChallengePlayerLoader_" + playerId).addClass("hidden");
+                        $.each(data.lastResults, function(i, item) {
+                            $("#lastResultPlayerData_" + playerId).append(item + "<br/>");
+                        });
+                        if(data.lastResults.length == 0) {
+                            $("#lastResultPlayer_" + playerId).addClass("hidden");
+                        }
+                        if(data.openChallenge) {
+                            $("#openChallengePlayerData_" + playerId).append(data.openChallenge);
+                        } else {
+                            $("#openChallengePlayer_" + playerId).addClass("hidden");
+                        }
+                        $(mybox).off('click');
+                        $(modal_id).unbind('shown.bs.modal');
+                        simplyShowPlayerData(mybox);
                     } else {
+                        $("#lastResultPlayer_" + playerId).addClass("hidden");
                         $("#openChallengePlayer_" + playerId).addClass("hidden");
                     }
-                } else {
-                    $("#lastResultPlayer_" + playerId).addClass("hidden");
-                    $("#openChallengePlayer_" + playerId).addClass("hidden");
-                }
+                });
             });
         });
+    });
+}
+
+function simplyShowPlayerData(mybox) {
+    $(mybox).on('click', function() {
+        var modal_id = '#modal_' + $(this).data('playerid');
+        $(modal_id).modal({});
     });
 }
 
@@ -40,7 +56,7 @@ function preparePyramid(yourself, isInChallenge, days) {
         $("#isInChallenge").text(" | You are in a challenge and have " + days + " days to play");
     }
 
-    $(".btn-challenge").click(function(){
+    $(".btn-challenge").on('click', function(){
         $(this).attr("disabled", "disabled");
         var challenge_player = $(this).data('challenge_player');
         console.log('player '+yourself+' is challenging '+challenge_player);
@@ -48,14 +64,16 @@ function preparePyramid(yourself, isInChallenge, days) {
             $.post("usersEncounterQuestion.html", {asker: yourself, asked: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
-                    location.reload();
+                    $(this).text("Player challenged.");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 } else {
                     $(this).removeAttr("disabled");
                     console.log(data);
                     alert("Sorry a problem occured, please contact admin...");
                 }
             });
-            $(this).text("Player challenged.");
         }
     });
 }

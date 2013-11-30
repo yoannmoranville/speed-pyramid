@@ -40,21 +40,6 @@ public class ResultsAjaxController extends AjaxAbstractController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(value={"/resultColorbox"}, method = RequestMethod.POST)
-    public void getMatchData(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String matchId = request.getParameter("id");
-            Writer writer = getResponseWriter(response);
-            Match match = matchService.getMatchById(matchId);
-            Player challenger = match.getChallenger();
-            Player challengee = match.getChallengee();
-            writeResultData(writer, challenger.getName(), challenger.getId(), challengee.getName(), challengee.getId());
-            closeWriter(writer);
-        } catch (IOException e) {
-            LOG.error("Error...", e);
-        }
-    }
-
     @RequestMapping(value={"/saveResults"}, method = RequestMethod.POST)
     public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws ParseException {
         try {
