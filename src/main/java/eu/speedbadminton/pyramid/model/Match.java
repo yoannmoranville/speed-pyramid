@@ -14,21 +14,6 @@ import java.util.Date;
  * @author Yoann Moranville
  */
 
-/**
-    db.match.findOne() {
-        "_id" : 1,
-        "challenger" : 1,
-        "challengee" : 2
-        ...
-    }
-
-    db.player.findOne() {
-        "_id" : 1,
-        "name" : yoann
-        ...
-    }
- */
-
 @Document(collection = "Match")
 public class Match {
     @Id
@@ -37,14 +22,6 @@ public class Match {
     private Player challenger;
     @DBRef
     private Player challengee;
-
-//    private String challengerId;
-//
-//    private String challengeeId;
-//
-//    private String challengerName;
-//
-//    private String challengeeName;
 
     private Date creation;
 
@@ -79,38 +56,6 @@ public class Match {
     public void setChallengee(Player challengee) {
         this.challengee = challengee;
     }
-
-//    public String getChallengerId() {
-//        return challengerId;
-//    }
-//
-//    public void setChallengerId(String challengerId) {
-//        this.challengerId = challengerId;
-//    }
-//
-//    public String getChallengeeId() {
-//        return challengeeId;
-//    }
-//
-//    public void setChallengeeId(String challengeeId) {
-//        this.challengeeId = challengeeId;
-//    }
-//
-//    public String getChallengerName() {
-//        return challengerName;
-//    }
-//
-//    public void setChallengerName(String challengerName) {
-//        this.challengerName = challengerName;
-//    }
-//
-//    public String getChallengeeName() {
-//        return challengeeName;
-//    }
-//
-//    public void setChallengeeName(String challengeeName) {
-//        this.challengeeName = challengeeName;
-//    }
 
     public Date getCreation() {
         return creation;

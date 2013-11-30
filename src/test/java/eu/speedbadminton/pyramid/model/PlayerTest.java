@@ -1,16 +1,14 @@
 package eu.speedbadminton.pyramid.model;
 
-import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 /**
  * User: Yoann Moranville
@@ -74,7 +72,7 @@ public class PlayerTest {
         Player p3 = new Player();
         p3.setId("eb10eb24-7e06-47e7-921f-a7ef82168e76");
 
-        HashSet<Player> list = new HashSet<Player>();
+        Set<Player> list = new HashSet<Player>();
         list.add(p2);
         Assert.assertTrue(list.contains(p2));
 

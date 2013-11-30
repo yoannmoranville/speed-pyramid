@@ -81,7 +81,7 @@ public class PyramidController {
 
         List<Player> players = playerService.getPlayers();
         List<Match> matches = matchService.getMatches();
-        HashMap<String, Player> challengablePlayers = playerService.getChallangablePlayers(loggedPlayer);
+        Map<String, Player> challengablePlayers = playerService.getChallengablePlayers(loggedPlayer);
 
         List<PlayerViewModel> playerViewModelList = new ArrayList<PlayerViewModel>();
         for(Player p : players){

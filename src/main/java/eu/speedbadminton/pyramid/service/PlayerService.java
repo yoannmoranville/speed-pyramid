@@ -249,12 +249,12 @@ public class PlayerService {
         return availablePlayerIds;
     }
 
-    public HashMap<String,Player> getChallangablePlayers(Player forPlayer) {
+    public Map<String,Player> getChallengablePlayers(Player forPlayer) {
         if (forPlayer==null){
             return new HashMap<String,Player>();
         }
 
-        HashMap<String,Player> players = new HashMap<String, Player>();
+        Map<String,Player> players = new HashMap<String, Player>();
         long yourPosition = getPlayerById(forPlayer.getId()).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
 
