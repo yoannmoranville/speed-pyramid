@@ -42,7 +42,7 @@ function bindPyramidFunctions(isInChallenge, days) {
         $(this).attr("disabled", "disabled");
 
         if(confirm("Are you sure?")) {
-            $.post("usersEncounterQuestion.html", {asker: $("#matchform").data('loggedplayerid'), asked: $("#matchform").data('challengeeid')}, function(data){
+            $.post("usersEncounterQuestion.html", {asker: $("#matchform").data('challengerid'), asked: $("#matchform").data('challengeeid')}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
                     $(this).text("Player challenged.");
