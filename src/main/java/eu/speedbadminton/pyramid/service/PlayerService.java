@@ -13,6 +13,7 @@ import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.model.PlayerViewModel;
+import eu.speedbadminton.pyramid.model.PyramidViewModel;
 import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
@@ -286,11 +287,11 @@ public class PlayerService {
     }
 
     //todo: Add this in a helper static class
-    public int getDaysUntilTimeout(Date creation) {
-        if(creation == null)
+    public int getDaysUntilTimeout(Match match) {
+        if(match == null || match.getCreation() == null)
             return -1;
         Calendar calendarCreation = Calendar.getInstance();
-        calendarCreation.setTime(creation);
+        calendarCreation.setTime(match.getCreation());
         calendarCreation.add(Calendar.DATE, 21);
         int daysTimeout = calendarCreation.get(Calendar.DAY_OF_YEAR);
 

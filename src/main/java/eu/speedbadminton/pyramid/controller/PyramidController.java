@@ -34,41 +34,6 @@ public class PyramidController {
     @Autowired
     private MatchService matchService;
 
-    @RequestMapping(value={"/viewPyramidOld"}, method= RequestMethod.GET)
-    public ModelAndView handleRequest(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("pyramidView");
-        String id = "";
-        if(SecurityContext.get() != null) {
-            id = SecurityContext.get().getPlayerId();
-            modelAndView.addObject("yourself", id);
-
-            boolean isInChallenge = false;
-            Date creationDate = null;
-            for(Match match : playerService.getMatchesOfPlayer(playerService.getPlayerById(id))) {
-                if(match.getMatchDate() == null || match.getValidationId() != null) {
-                    isInChallenge = true;
-                    creationDate = match.getCreation();
-                    break;
-                }
-            }
-            modelAndView.addObject("isInChallenge", isInChallenge);
-            modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(creationDate));
-            if(!isInChallenge) {
-                modelAndView.addObject("available_players", playerService.getAvailablePlayers(id));
-            }
-        }
-        List<Player> players = playerService.getEnabledPlayers();
-
-        modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
-        modelAndView.addObject("players", players);
-        modelAndView.addObject("current_player_id",id);
-
-        modelAndView.addObject("lastResults", matchService.getLastMatchesWithResults());
-        modelAndView.addObject("openChallenges", matchService.getOpenChallenges());
-
-        return modelAndView;
-    }
-
     @RequestMapping(value = {"/viewPyramid"}, method = RequestMethod.GET)
     public ModelAndView pyramidRequest(HttpServletRequest request){
 
@@ -117,8 +82,7 @@ public class PyramidController {
         modelAndView.addObject("pyramidViewModel",pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
 
-        if(pyramidViewModel.getLoggedPlayerChallenge() != null)
-            modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge().getCreation()));
+        modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge()));
 
         return modelAndView;
     }

@@ -35,13 +35,14 @@ function bindLoggedoutPyramidFunctions() {
 }
 
 function bindPyramidFunctions(isInChallenge, days) {
+    console.log(isInChallenge + " - " + days)
     bindLoggedoutPyramidFunctions();
 
     $(document).on('click','.btn-challenge',function(){
         $(this).attr("disabled", "disabled");
 
         if(confirm("Are you sure?")) {
-            $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+            $.post("usersEncounterQuestion.html", {asker: $("#matchform").data('loggedplayerid'), asked: $("#matchform").data('challengeeid')}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
                     $(this).text("Player challenged.");
@@ -94,7 +95,7 @@ function bindPyramidFunctions(isInChallenge, days) {
             });
     });
 
-    if(isInChallenge && days != -1) {
+    if(isInChallenge && days != null && days != -1) {
         $("#isInChallenge").text(" | You are in a challenge and have " + days + " days to play");
     }
 }
