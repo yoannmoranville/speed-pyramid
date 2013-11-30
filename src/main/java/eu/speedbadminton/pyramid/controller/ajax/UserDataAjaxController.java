@@ -42,15 +42,15 @@ public class UserDataAjaxController extends AjaxAbstractController {
         Player askedPlayer = playerService.getPlayerById(askedId);
         Writer writer = null;
 
-        if (askedPlayer==null || askedPlayer==null){
-            writeSimpleData(writer, "success", "false");
-            LOG.error("trying to challange with asker or asked player null!");
-            return;
-        }
+
         try {
             writer = getResponseWriter(response);
 
-            if (matchService.createMatch(askerPlayer, askedPlayer)){
+            if (askedPlayer==null || askedPlayer==null){
+                writeSimpleData(writer, "success", "false");
+                LOG.error("trying to challange with asker or asked player null!");
+            }
+            else if (matchService.createMatch(askerPlayer, askedPlayer)){
                 if(playerService.sendEmail(askerPlayer, askedPlayer)) {
                     writeSimpleData(writer, "success", "true");
                 } else {
