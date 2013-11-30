@@ -115,6 +115,10 @@ public class PyramidController {
         pyramidViewModel.setLastPlayerMatches(matchService.getLastMatchesWithResults(loggedPlayer));
         pyramidViewModel.setWaitingForConfirmationMatches(matchService.getWaitingForConfirmationMatches(loggedPlayer));
         modelAndView.addObject("pyramidViewModel",pyramidViewModel);
+        modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
+
+        if(pyramidViewModel.getLoggedPlayerChallenge() != null)
+            modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge().getCreation()));
 
         return modelAndView;
     }

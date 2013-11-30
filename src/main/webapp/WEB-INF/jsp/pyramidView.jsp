@@ -2,18 +2,20 @@
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <speedbadminton:securityContext var="securityContext" />
-    <script type="text/javascript">
-        $(document).ready(function(){
-            bindPyramidFunctions();
-        });
-    </script>
-
     <c:set var="loggedPlayer" value="${pyramidViewModel.loggedPlayer}" />
     <c:set var="loggedPlayerIsFree" value="${pyramidViewModel.isLoggedPlayerIsFree()}" />
     <c:set var="loggedPlayerChallenge" value="${pyramidViewModel.getLoggedPlayerChallenge()}" />
     <c:set var="lastOverallMatches" value="${pyramidViewModel.lastOverallMatches}" />
     <c:set var="lastPlayerMatches" value="${pyramidViewModel.lastPlayerMatches}" />
     <c:set var="waitingForConfirmationMatches" value="${pyramidViewModel.waitingForConfirmationMatches}" />
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            <c:if test="${not empty securityContext}">bindPyramidFunctions('${loggedPlayerChallenge != null}', );</c:if>
+            <c:if test="${empty securityContext}">bindLoggedoutPyramidFunctions();</c:if>
+        });
+    </script>
 
 <!-- DEBUG: loggedPlayer: ${loggedPlayer}
             loggedPlayerIsFree: ${loggedPlayerIsFree}
@@ -148,14 +150,16 @@
                                     <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
                                     <p>${player.gender}</p>
                                 </div>
-                                <div class="well" id="lastResultPlayer_${player.id}">
-                                    <h5>Last results of player:</h5>
-                                    <table class="table">
-                                        <c:forEach var="match" items="${pastMatches}">
-                                            <tr><td>${match.matchDate}</td><td>${match.challenger.name} vs. ${match.challengee.name}</td><td>${match.result}</td></tr>
-                                        </c:forEach>
-                                    </table>
-                                </div>
+                                <c:if test="${not empty pastMatches}">
+                                    <div class="well" id="lastResultPlayer_${player.id}">
+                                        <h5>Last results of player:</h5>
+                                        <table class="table">
+                                            <c:forEach var="match" items="${pastMatches}">
+                                                <tr><td>${match.matchDate}</td><td>${match.challenger.name} vs. ${match.challengee.name}</td><td>${match.result}</td></tr>
+                                            </c:forEach>
+                                        </table>
+                                    </div>
+                                </c:if>
                                 <c:if test="${currentMatch!=null}">
                                     <div class="well" id="openChallengePlayer_${player.id}">
                                         <h5>Open challenge:</h5>
@@ -165,11 +169,13 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <c:if test="${can_be_challenged}">
-                                    <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-logged_player="${loggedPlayer.id}">Challenge this player.</button>
-                                </c:if>
-                                <c:if test="${!can_be_challenged}">
-                                    <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
+                                <c:if test="${loggedPlayerChallenge == null}">
+                                    <c:if test="${can_be_challenged}">
+                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-logged_player="${loggedPlayer.id}">Challenge this player.</button>
+                                    </c:if>
+                                    <c:if test="${!can_be_challenged}">
+                                        <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
+                                    </c:if>
                                 </c:if>
                             </div>
                         </div><!-- /.modal-content -->
