@@ -41,6 +41,12 @@ public class UserDataAjaxController extends AjaxAbstractController {
         String askedId = request.getParameter("asked");
         Player askedPlayer = playerService.getPlayerById(askedId);
         Writer writer = null;
+
+        if (askedPlayer==null || askedPlayer==null){
+            writeSimpleData(writer, "success", "false");
+            LOG.error("trying to challange with asker or asked player null!");
+            return;
+        }
         try {
             writer = getResponseWriter(response);
 
