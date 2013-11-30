@@ -26,7 +26,7 @@
                         </c:if>
                     </c:when>
                     <c:otherwise>
-                        (<button class="btn btn-success enter_result_button" data-matchid="${match.id}">enter results</button>)
+                        <button class="btn btn-success enter_result_button" data-matchid="${match.id}">enter results</button>
 
                         <!-- player profile + challenge dialog -->
                         <!-- Modal -->

@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.model.PlayerViewModel;
 import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
@@ -33,6 +34,10 @@ public class PlayerService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private MatchService matchService;
+
     private static final String COLLECTION_NAME_PLAYER = "player";
     private static final String COLLECTION_NAME_MATCH = "match";
 
@@ -244,6 +249,42 @@ public class PlayerService {
         return availablePlayerIds;
     }
 
+    public HashMap<String,Player> getChallangablePlayers(Player forPlayer) {
+        if (forPlayer==null){
+            return new HashMap<String,Player>();
+        }
+
+        HashMap<String,Player> players = new HashMap<String, Player>();
+        long yourPosition = getPlayerById(forPlayer.getId()).getPyramidPosition();
+        long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
+
+        for(long position = yourPosition-1; position >= untilPosition; position--) {
+            Player player = getPlayerWithPosition(position);
+
+            assert player!=null;
+
+            boolean isBusy = false;
+            for(Match match : getMatchesOfPlayer(player)) {
+                if(match.getMatchDate() == null) {
+                    isBusy = true;
+                }
+            }
+            if(!isBusy){
+                Player p = getPlayerWithPosition(position);
+                players.put(p.getId(),p);
+            }
+        }
+        return players;
+    }
+
+
+    public List<String> getBusyPlayers() {
+        List<String> busyPlayerIds = new ArrayList<String>();
+
+
+        return busyPlayerIds;
+    }
+
     //todo: Add this in a helper static class
     public int getDaysUntilTimeout(Date creation) {
         if(creation == null)
@@ -258,4 +299,5 @@ public class PlayerService {
         int daysToday = calendarToday.get(Calendar.DAY_OF_YEAR);
         return daysTimeout - daysToday;
     }
+
 }

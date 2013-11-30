@@ -39,7 +39,7 @@ public class ConfirmResultsController {
         Match match;
         if((match = matchService.getMatchByValidationId(validationId)) != null) {
 
-            match.setValidationId(null);
+            match.setConfirmed(true);
             matchService.update(match);
 
             Player challenger = match.getChallenger();

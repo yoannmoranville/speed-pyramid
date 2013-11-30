@@ -54,6 +54,8 @@ public class Match {
 
     private String validationId;
 
+    private boolean confirmed;
+
     public String getId() {
         return id;
     }
@@ -140,6 +142,14 @@ public class Match {
 
     public void setValidationId(String validationId) {
         this.validationId = validationId;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     @Override

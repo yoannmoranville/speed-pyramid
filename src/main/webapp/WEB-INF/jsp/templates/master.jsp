@@ -74,7 +74,7 @@
         <div class="container">
             <hr>
             <footer>
-                <p><a target="_blank" href="https://github.com/yoannmoranville/speed-pyramid">&copy; Speed-Pyramid 2013</a></p>
+                <p><a target="_blank" href="https://github.com/yoannmoranville/speed-pyramid"> Speed-Pyramid 2013</a></p>
             </footer>
         </div>
     </body>

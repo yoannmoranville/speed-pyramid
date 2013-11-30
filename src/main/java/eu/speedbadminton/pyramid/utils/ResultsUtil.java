@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.utils;
 
+import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 
 /**
@@ -108,4 +109,56 @@ public abstract class ResultsUtil {
         }
         return winningSetForChallenger == 2 || winningSetForChallengee == 2;
     }
+
+    public static Player getWinner(Match match, Result result) {
+        int winningSet = 0;
+        if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {
+            winningSet ++;
+        }
+        if(result.getSet2().getPointOfChallenger() > result.getSet2().getPointOfChallengee()) {
+            winningSet ++;
+        }
+        if(result.getSet3() != null) {
+            if(result.getSet3().getPointOfChallenger() > result.getSet3().getPointOfChallengee()) {
+                winningSet ++;
+            }
+        }
+
+        if (winningSet == 2) { // challenger has 2 winning sets
+            return match.getChallenger();
+        } else {
+            return match.getChallengee();
+        }
+
+
+    }
+
+    // TODO: refactor!
+    public static Player getLooser(Match match, Result result) {
+        int winningSet = 0;
+        if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {
+            winningSet ++;
+        }
+        if(result.getSet2().getPointOfChallenger() > result.getSet2().getPointOfChallengee()) {
+            winningSet ++;
+        }
+        if(result.getSet3() != null) {
+            if(result.getSet3().getPointOfChallenger() > result.getSet3().getPointOfChallengee()) {
+                winningSet ++;
+            }
+        }
+
+        if (winningSet == 2) { // challenger has 2 winning sets
+            return match.getChallengee();
+        } else {
+            return match.getChallenger();
+        }
+
+
+    }
+
+
+
+
+
 }
