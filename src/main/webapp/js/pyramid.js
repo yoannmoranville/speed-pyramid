@@ -34,29 +34,32 @@ function bindLoggedoutPyramidFunctions() {
     });
 }
 
-function bindPyramidFunctions(isInChallenge, days) {
-    console.log(isInChallenge + " - " + days)
-    bindLoggedoutPyramidFunctions();
+function bindPyramidFunctions() {
+    $(document).on('click','.mybox', function(){
+        var modal_id = '#modal_'+$(this).data('playerid');
+        console.log('model_id:'+modal_id);
+
+        $(modal_id).modal({});
+
+    });
 
     $(document).on('click','.btn-challenge',function(){
         $(this).attr("disabled", "disabled");
+        var logged_player = $(this).data('logged_player');
+        var challenge_player = $(this).data('challenge_player');
+        console.log('player '+logged_player+' is challenging '+challenge_player);
 
-        if(confirm("Are you sure?")) {
-            console.log($("#matchform").data('challengerid') + ' vs ' + $("#matchform").data('challengeeid'))
-            $.post("usersEncounterQuestion.html", {asker: $("#matchform").data('challengerid'), asked: $("#matchform").data('challengeeid')}, function(data){
-                if(data.success == 'true'){
-                    console.log("sucessfully challenged. emails sent.");
-                    $(this).text("Player challenged.");
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
-                } else {
-                    $(this).removeAttr("disabled");
-                    console.log(data);
-                    alert("Sorry a problem occured, please contact admin...");
-                }
-            });
-        }
+        $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+            if(data.success == 'true'){
+                console.log("sucessfully challenged. emails sent.");
+                location.reload();
+            } else {
+                $(this).removeAttr("disabled");
+                console.log(data);
+                alert("Sorry a problem occured, please contact admin...");
+            }
+        });
+        $(this).text("Player challenged.");
     });
 
     /* Enter Results from Pyramid View */
