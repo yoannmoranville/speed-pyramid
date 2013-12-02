@@ -136,6 +136,9 @@ public class Player {
         if (! (obj instanceof Player)) return false;
 
         Player player = (Player) obj;
+
+        if (player.getId()==null || this.getId()==null) return false;
+
         return this.getId().equals(player.getId());
 
     }
