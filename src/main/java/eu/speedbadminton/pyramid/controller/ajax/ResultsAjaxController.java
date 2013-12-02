@@ -120,22 +120,22 @@ public class ResultsAjaxController extends AjaxAbstractController {
         }
     }
 
-    private static boolean isDateCorrect(Date creationDate, Date matchDate) {
+    protected static boolean isDateCorrect(Date creationDate, Date matchDate) {
         Calendar calCreation = Calendar.getInstance();
         Calendar calMatchDate = Calendar.getInstance();
         Calendar calTomorrow = Calendar.getInstance();
-        zeroOutTimeFromCalendar(calCreation);
-        zeroOutTimeFromCalendar(calMatchDate);
-        zeroOutTimeFromCalendar(calTomorrow);
 
         calTomorrow.setTime(new Date());
         calTomorrow.add(Calendar.DAY_OF_MONTH, 1);
         calCreation.setTime(creationDate);
-        calCreation.add(Calendar.DAY_OF_MONTH, -1); // subtract one day to make >= work
 
         calMatchDate.setTime(matchDate);
 
-        if(calMatchDate.after(calCreation) && calMatchDate.before(calTomorrow)){
+        zeroOutTimeFromCalendar(calCreation);
+        zeroOutTimeFromCalendar(calMatchDate);
+        zeroOutTimeFromCalendar(calTomorrow);
+
+        if(calMatchDate.compareTo(calCreation)>=0 && calMatchDate.before(calTomorrow)){
             return true;
         }
 
@@ -143,9 +143,12 @@ public class ResultsAjaxController extends AjaxAbstractController {
     }
 
     private static void zeroOutTimeFromCalendar(Calendar calendar){
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(calendar.get(Calendar.YEAR)
+                ,calendar.get(Calendar.MONTH)
+                ,calendar.get(Calendar.DAY_OF_MONTH)
+                ,0
+                ,0
+                ,0);
+
     }
 }
