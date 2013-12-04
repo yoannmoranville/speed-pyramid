@@ -49,17 +49,21 @@ function bindPyramidFunctions() {
         var challenge_player = $(this).data('challenge_player');
         console.log('player '+logged_player+' is challenging '+challenge_player);
 
-        $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
-            if(data.success == 'true'){
-                console.log("sucessfully challenged. emails sent.");
-                location.reload();
-            } else {
-                $(this).removeAttr("disabled");
-                console.log(data);
-                alert("Sorry a problem occured, please contact admin...");
-            }
-        });
-        $(this).text("Player challenged.");
+        if(confirm("Are you sure?")) {
+            $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+                if(data.success == 'true'){
+                    console.log("sucessfully challenged. emails sent.");
+                    $(this).text("Player challenged.");
+                    setTimeout(new function() {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    $(this).removeAttr("disabled");
+                    console.log(data);
+                    alert("Sorry a problem occured, please contact admin...");
+                }
+            });
+        }
     });
 
     /* Enter Results from Pyramid View */
