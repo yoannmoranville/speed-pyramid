@@ -6,6 +6,7 @@
     <c:set var="loggedPlayerIsFree" value="${pyramidViewModel.isLoggedPlayerIsFree()}" />
     <c:set var="loggedPlayerChallenge" value="${pyramidViewModel.getLoggedPlayerChallenge()}" />
     <c:set var="lastOverallMatches" value="${pyramidViewModel.lastOverallMatches}" />
+    <c:set var="openChallenges" value="${pyramidViewModel.openChallenges}" />
     <c:set var="lastPlayerMatches" value="${pyramidViewModel.lastPlayerMatches}" />
     <c:set var="waitingForConfirmationMatches" value="${pyramidViewModel.waitingForConfirmationMatches}" />
 
@@ -155,7 +156,7 @@
                                         <h5>Last results of player:</h5>
                                         <table class="table">
                                             <c:forEach var="match" items="${pastMatches}">
-                                                <tr><td>${match.matchDate}</td><td>${match.challenger.name} vs. ${match.challengee.name}</td><td>${match.result}</td></tr>
+                                                <tr><td><fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" /></td><td>${match.challenger.name} vs. ${match.challengee.name}</td><td>${match.result}</td></tr>
                                             </c:forEach>
                                         </table>
                                     </div>
@@ -163,7 +164,7 @@
                                 <c:if test="${currentMatch!=null}">
                                     <div class="well" id="openChallengePlayer_${player.id}">
                                         <h5>Open challenge:</h5>
-                                        <tr><td>${currentMatch.matchDate}</td><td>${currentMatch.challenger.name} vs. ${currentMatch.challengee.name}</td><td>${currentMatch.result}</td></tr>
+                                        <tr><td><fmt:formatDate value="${currentMatch.matchDate}" pattern="dd-MM-yyyy" /></td><td>${currentMatch.challenger.name} vs. ${currentMatch.challengee.name}</td><td>${currentMatch.result}</td></tr>
                                     </div>
                                 </c:if>
                             </div>
@@ -224,6 +225,15 @@
                 <h3>Last Pyramid Matches:</h3>
                 <c:forEach items="${lastOverallMatches}" var="lastResult">
                     ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
+                    <br/>
+                </c:forEach>
+            </div>
+        </c:if>
+        <c:if test="${not empty openChallenges}">
+            <div id="lastResults">
+                <h3>Currently Opened Challenges:</h3>
+                <c:forEach items="${openChallenges}" var="lastResult">
+                    ${lastResult.challenger.name} vs ${lastResult.challengee.name}: created on <fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" />
                     <br/>
                 </c:forEach>
             </div>

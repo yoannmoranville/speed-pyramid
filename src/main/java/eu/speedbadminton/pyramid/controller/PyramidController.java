@@ -46,7 +46,7 @@ public class PyramidController {
 
         List<Player> players = playerService.getEnabledPlayers();
         List<Match> matches = matchService.getMatches();
-        Map<String, Player> challengablePlayers = playerService.getChallengablePlayers(loggedPlayer);
+        Map<String, Player> challengeablePlayers = playerService.getChallengablePlayers(loggedPlayer);
 
         List<PlayerViewModel> playerViewModelList = new ArrayList<PlayerViewModel>();
         for(Player p : players){
@@ -65,7 +65,7 @@ public class PyramidController {
             boolean free = false;
             if (playerViewModel.getCurrentMatch()==null){
                 // check if player is challengable
-                free = challengablePlayers.containsKey(p.getId());
+                free = challengeablePlayers.containsKey(p.getId());
 
             }
             playerViewModel.setFree(free);
@@ -79,7 +79,8 @@ public class PyramidController {
         pyramidViewModel.setLastOverallMatches(matchService.getLastMatchesWithResults());
         pyramidViewModel.setLastPlayerMatches(matchService.getLastMatchesWithResults(loggedPlayer));
         pyramidViewModel.setWaitingForConfirmationMatches(matchService.getWaitingForConfirmationMatches(loggedPlayer));
-        modelAndView.addObject("pyramidViewModel",pyramidViewModel);
+        pyramidViewModel.setOpenChallenges(matchService.getOpenChallenges());
+        modelAndView.addObject("pyramidViewModel", pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
 
         modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge()));

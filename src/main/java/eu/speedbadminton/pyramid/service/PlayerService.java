@@ -259,17 +259,23 @@ public class PlayerService {
         long yourPosition = getPlayerById(forPlayer.getId()).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
 
+        if(!matchService.getWaitingForConfirmationMatches(forPlayer).isEmpty()) {
+            return players;
+        }
         for(long position = yourPosition-1; position >= untilPosition; position--) {
             Player player = getPlayerWithPosition(position);
 
             assert player!=null;
 
             boolean isBusy = false;
-            for(Match match : getMatchesOfPlayer(player)) {
-                if(match.getMatchDate() == null) {
-                    isBusy = true;
+            if(matchService.getWaitingForConfirmationMatches(player).isEmpty()) {
+                for(Match match : getMatchesOfPlayer(player)) {
+                    if(match.getMatchDate() == null) {
+                        isBusy = true;
+                    }
                 }
             }
+
             if(!isBusy){
                 Player p = getPlayerWithPosition(position);
                 players.put(p.getId(),p);

@@ -12,6 +12,7 @@ public class PyramidViewModel {
 
     List<PlayerViewModel> playerViewModelList;
     List<Match> lastOverallMatches = new ArrayList<Match>();
+    List<Match> openChallenges = new ArrayList<Match>();
     List<Match> lastPlayerMatches = new ArrayList<Match>();
     List<Match> waitingForConfirmationMatches = new ArrayList<Match>();
 
@@ -72,6 +73,14 @@ public class PyramidViewModel {
 
     public void setWaitingForConfirmationMatches(List<Match> waitingForConfirmationMatches) {
         this.waitingForConfirmationMatches = waitingForConfirmationMatches;
+    }
+
+    public List<Match> getOpenChallenges() {
+        return openChallenges;
+    }
+
+    public void setOpenChallenges(List<Match> openChallenges) {
+        this.openChallenges = openChallenges;
     }
 
     private PlayerViewModel findLoggedPlayerViewModel(){
