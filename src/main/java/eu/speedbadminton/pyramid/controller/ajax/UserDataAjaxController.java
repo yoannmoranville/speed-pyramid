@@ -2,6 +2,7 @@ package eu.speedbadminton.pyramid.controller.ajax;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
@@ -36,22 +37,27 @@ public class UserDataAjaxController extends AjaxAbstractController {
 
     @RequestMapping(value = {"/usersEncounterQuestion"}, method = RequestMethod.POST)
     public void sendEncounter(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String askerId = request.getParameter("asker");
-        Player askerPlayer = playerService.getPlayerById(askerId);
-        String askedId = request.getParameter("asked");
-        Player askedPlayer = playerService.getPlayerById(askedId);
-        Writer writer = null;
 
+        Writer writer = null;
 
         try {
             writer = getResponseWriter(response);
 
-            if (askedPlayer==null || askedPlayer==null){
+            if(SecurityContext.get() == null) {
                 writeSimpleData(writer, "success", "false");
-                LOG.error("trying to challange with asker or asked player null!");
+                LOG.error("Authentication error.");
             }
-            else if (matchService.createMatch(askerPlayer, askedPlayer)){
-                if(playerService.sendEmail(askerPlayer, askedPlayer)) {
+
+            String challengeId = request.getParameter("challenge_player");
+            Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
+            Player challengePlayer = playerService.getPlayerById(challengeId);
+
+            if (challengePlayer==null){
+                writeSimpleData(writer, "success", "false");
+                LOG.error("Player "+challengeId+" not found. request aborted.");
+            }
+            else if (matchService.createMatch(loggedPlayer, challengePlayer)){
+                if(playerService.sendEmail(loggedPlayer, challengePlayer)) {
                     writeSimpleData(writer, "success", "true");
                 } else {
                     writeSimpleData(writer, "success", "false");
