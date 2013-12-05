@@ -231,7 +231,7 @@
         </c:if>
         <c:if test="${not empty openChallenges}">
             <div id="lastResults">
-                <h3>Currently Opened Challenges:</h3>
+                <h3>Next Matches:</h3>
                 <c:forEach items="${openChallenges}" var="lastResult">
                     ${lastResult.challenger.name} vs ${lastResult.challengee.name}: created on <fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" />
                     <br/>
