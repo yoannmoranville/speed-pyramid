@@ -45,11 +45,11 @@ function bindPyramidFunctions() {
 
     $(document).on('click','.btn-challenge',function(){
         $(this).attr("disabled", "disabled");
-        var logged_player = $(this).data('logged_player');
+        //var logged_player = $(this).data('logged_player');
         var challenge_player = $(this).data('challenge_player');
-        console.log('player '+logged_player+' is challenging '+challenge_player);
+        console.log('Challenging '+challenge_player);
 
-        $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+        $.post("usersEncounterQuestion.html", {challenge_player: challenge_player}, function(data){
             if(data.success == 'true'){
                 console.log("sucessfully challenged. emails sent.");
                 location.reload();
@@ -60,6 +60,7 @@ function bindPyramidFunctions() {
             }
         });
         $(this).text("Player challenged.");
+        location.reload();
     });
 
     /* Enter Results from Pyramid View */
