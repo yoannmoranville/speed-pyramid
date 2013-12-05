@@ -94,12 +94,11 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 Player looser = ResultsUtil.getLooser(match,result);
                 boolean isLoggedPlayerLooser = !loggedPlayer.equals(winner);
 
-
                 if(isLoggedPlayerLooser) {
-                        match.setConfirmed(true);
-                        matchService.update(match);
-                        playerService.swap(loggedPlayer, winner);
-                } else { // the winner puts in the results. send a confirmation mail with a link to confirm
+                    match.setConfirmed(true);
+                    matchService.update(match);
+                    playerService.swap(loggedPlayer, winner);
+                } else {
                     String validationId = PasswordGenerator.getRandomString();
                     match.setValidationId(validationId);
                     matchService.update(match);
