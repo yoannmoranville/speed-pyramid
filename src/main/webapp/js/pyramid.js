@@ -44,12 +44,11 @@ function bindPyramidFunctions() {
     });
 
     $(document).on('click','.btn-challenge',function(){
-        $(this).attr("disabled", "disabled");
-        //var logged_player = $(this).data('logged_player');
         var challenge_player = $(this).data('challenge_player');
         console.log('Challenging '+challenge_player);
 
         if(confirm("Are you sure?")) {
+            $(this).attr("disabled", "disabled");
             $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
