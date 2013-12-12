@@ -120,6 +120,20 @@ public class ResultsAjaxController extends AjaxAbstractController {
     }
 
     protected static boolean isDateCorrect(Date creationDate, Date matchDate) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(creationDate);
+        cal2.setTime(matchDate);
+        if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) {
+            return true;
+        } else if(!creationDate.after(matchDate) && matchDate.before(new Date())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+    protected static boolean isDateCorrect_not_working(Date creationDate, Date matchDate) {
         Calendar calCreation = Calendar.getInstance();
         Calendar calMatchDate = Calendar.getInstance();
         Calendar calTomorrow = Calendar.getInstance();
@@ -150,4 +164,5 @@ public class ResultsAjaxController extends AjaxAbstractController {
                 ,0);
 
     }
+     **/
 }
