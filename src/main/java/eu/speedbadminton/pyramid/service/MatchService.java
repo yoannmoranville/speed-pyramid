@@ -23,7 +23,6 @@ import java.util.UUID;
  * @author Yoann Moranville
  */
 @Service
-@Repository
 public class MatchService {
 
     @Autowired

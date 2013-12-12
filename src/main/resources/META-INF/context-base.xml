@@ -25,4 +25,28 @@
     </bean>
 
     <bean id="contextApplicationContextProvider" class="eu.speedbadminton.pyramid.context.ApplicationContextProvider"/>
+
+    <!-- SET default mail properties -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="25"/>
+        <property name="username" value="speedpyramid@gmail.com"/>
+        <property name="password" value="Pyramid.1711"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- test Message to send on application start -->
+    <bean id="testMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="to" value="l.gotter@gmail.com"></property>
+        <property name="from" value="speedpyramid@gmail.com"></property>
+        <property name="subject" value="TEST - Spring is sending a test message!"/>
+    </bean>
+
 </beans>
