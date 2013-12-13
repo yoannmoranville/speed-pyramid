@@ -186,7 +186,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
         } else {
             writeSimpleData(writer, "success", "false");
         }
-
+        closeWriter(writer);
     }
      
 }
