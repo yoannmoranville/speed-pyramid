@@ -9,23 +9,19 @@ package eu.speedbadminton.pyramid.service;
 import java.util.*;
 
 import com.google.gson.Gson;
-import eu.speedbadminton.pyramid.mail.ApplicationMailer;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.model.PlayerViewModel;
-import eu.speedbadminton.pyramid.model.PyramidViewModel;
 import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
@@ -301,15 +297,15 @@ public class PlayerService {
     public int getDaysUntilTimeout(Match match) {
         if(match == null || match.getCreation() == null)
             return -1;
-        Calendar calendarCreation = Calendar.getInstance();
-        calendarCreation.setTime(match.getCreation());
-        calendarCreation.add(Calendar.DATE, 21);
-        int daysTimeout = calendarCreation.get(Calendar.DAY_OF_YEAR);
+
+        Calendar calendarTimeout = Calendar.getInstance();
+        calendarTimeout.setTime(match.getCreation());
+        calendarTimeout.add(Calendar.DATE, 21);
 
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.setTime(new Date());
-        int daysToday = calendarToday.get(Calendar.DAY_OF_YEAR);
-        return daysTimeout - daysToday;
+
+        return Days.daysBetween(new DateTime(calendarToday).toLocalDate(), new DateTime(calendarTimeout).toLocalDate()).getDays();
     }
 
 }
