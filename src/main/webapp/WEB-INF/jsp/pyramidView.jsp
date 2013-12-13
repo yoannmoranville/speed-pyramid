@@ -22,69 +22,67 @@
             loggedPlayerIsFree: ${loggedPlayerIsFree}
             loggedPlayerChallenge: ${loggedPlayerChallenge}
 -->
+    <!-- Showing Player's open challenge. -->
+    <c:if test="${loggedPlayerChallenge!=null}">
+        <div class="jumbotron" id="openChallenges">
+                ${loggedPlayerChallenge.challenger.name} vs ${loggedPlayerChallenge.challengee.name}
+            <button id="enter_result_button" class="btn btn-success" data-matchid="${loggedPlayerChallenge.id}">Enter results</button>
+        </div>
+
+        <!-- Modal for Enter Results -->
+        <div class="modal fade" id="modal_results" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">${loggedPlayerChallenge.challenger.name} vs. ${loggedPlayerChallenge.challengee.name}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="matchform" data-matchid="${loggedPlayerChallenge.id}" data-challengerid="${loggedPlayerChallenge.challenger.id}" data-loggedplayerid="${loggedPlayer.id}" data-challengeeid="${loggedPlayerChallenge.challengee.id}">
+                            <table class="table">
+                                <tr>
+                                    <th></th>
+                                    <th>${loggedPlayerChallenge.challenger.name}</th>
+                                    <th>${loggedPlayerChallenge.challengee.name}</th>
+
+                                </tr>
+
+                                <tr>
+                                    <td>Set 1</td>
+
+                                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
+                                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Set 2</td>
+
+                                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
+                                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Set 3</td>
+
+                                    <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
+                                    <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
+                                </tr>
+                            </table>
+                            <label>Date of game </label>
+                            <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="savematch">Save Result</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </c:if>
 
     <div class="centermain">
         <c:set var="row_pos" value="1"/>
         <c:set var="max_per_row" value="1"/>
-
-        <!-- Showing Player's open challenge. -->
-        <c:if test="${loggedPlayerChallenge!=null}">
-            <div id="openChallenges">
-                <h3>Open challenge:</h3>
-                    ${loggedPlayerChallenge.challenger.name} vs ${loggedPlayerChallenge.challengee.name}: created on <fmt:formatDate value="${loggedPlayerChallenge.creation}" pattern="dd-MM-yyyy" />
-                <button id="enter_result_button" class="btn btn-success" data-matchid="${loggedPlayerChallenge.id}">enter results</button>
-            </div>
-
-            <!-- Modal for Enter Results -->
-            <div class="modal fade" id="modal_results" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">${loggedPlayerChallenge.challenger.name} vs. ${loggedPlayerChallenge.challengee.name}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="matchform" data-matchid="${loggedPlayerChallenge.id}" data-challengerid="${loggedPlayerChallenge.challenger.id}" data-loggedplayerid="${loggedPlayer.id}" data-challengeeid="${loggedPlayerChallenge.challengee.id}">
-                                <table class="table">
-                                    <tr>
-                                        <th></th>
-                                        <th>${loggedPlayerChallenge.challenger.name}</th>
-                                        <th>${loggedPlayerChallenge.challengee.name}</th>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td>Set 1</td>
-
-                                        <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
-                                        <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Set 2</td>
-
-                                        <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
-                                        <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Set 3</td>
-
-                                        <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
-                                        <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
-                                    </tr>
-                                </table>
-                                <label>Date of game </label>
-                                <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" id="savematch">Save Result</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-        </c:if>
 
         <c:forEach items="${pyramidViewModel.playerViewModelList}" var="playerViewModel">
             <c:set var="player" value="${playerViewModel.player}" />
@@ -100,7 +98,7 @@
             </c:choose>
 
                 <div class="mybox" data-playerid="${player.id}">
-                    ${player.pyramidPosition}. ${player.name}
+                    <span class="label label-primary">${player.pyramidPosition}</span> ${player.name}
                     <div class="player_actions">
                         <c:choose>
                             <c:when test="${player.id == loggedPlayer.id}">

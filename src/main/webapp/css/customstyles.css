@@ -79,7 +79,7 @@ body {
 }
 
 .main {
-    margin-top: 50px;
+
 }
 .centermain {
     margin: 0 auto;
@@ -95,4 +95,9 @@ body {
 .avatar {
     width: 150px;
     height: 150px;
+}
+
+.jumbotron {
+    text-align: center;
+    margin-bottom: 0;
 }
