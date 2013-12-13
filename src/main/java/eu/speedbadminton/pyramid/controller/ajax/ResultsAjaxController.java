@@ -48,8 +48,8 @@ public class ResultsAjaxController extends AjaxAbstractController {
         String matchId = request.getParameter("matchid");
         Match match = matchService.getMatchById(matchId);
 
-        String challengerId = request.getParameter("challengerid");
         String challengeeId = request.getParameter("challengeeid");
+        String challengerId = request.getParameter("challengerid");
         String loggedplayerId = request.getParameter("loggedplayerid");
 
         String resultSet1Player1 = request.getParameter("results_set1_player1");
@@ -95,14 +95,20 @@ public class ResultsAjaxController extends AjaxAbstractController {
             match.setMatchDate(date);
 
             Player loggedPlayer = playerService.getPlayerById(loggedplayerId);
+            Player challengeePlayer = playerService.getPlayerById(challengeeId);
+            Player challengerPlayer = playerService.getPlayerById(challengerId);
             Player winner = ResultsUtil.getWinner(match,result);
             Player looser = ResultsUtil.getLooser(match,result);
-            boolean isLoggedPlayerLooser = !loggedPlayer.equals(winner);
+            boolean isLoggedPlayerLooser = loggedPlayer.equals(looser);
 
-            if(isLoggedPlayerLooser) { //todo: totally wrong, it does not matter if you are logged player looser, it matters if you are challenger or not.
+            if(isLoggedPlayerLooser) {
                 match.setConfirmed(true);
                 matchService.update(match);
-                playerService.swap(loggedPlayer, winner);
+                if(challengeePlayer.equals(loggedPlayer)) {
+                    playerService.swap(loggedPlayer, winner);
+                } else {
+                    playerService.sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
+                }
             } else {
                 String validationId = PasswordGenerator.getRandomString();
                 match.setValidationId(validationId);
@@ -114,12 +120,12 @@ public class ResultsAjaxController extends AjaxAbstractController {
                     playerService.sendEmailResultsLooserValidation(looser, winner, result, validationLink);
                     playerService.sendEmailResultsWaitingForLooserValidation(winner, looser, result);
                 }
-
-                writeSimpleData(writer, "success", "true");
             }
-
             writeSimpleData(writer, "success", "true");
+        } else {
+            writeSimpleData(writer, "success", "false");
         }
+
         closeWriter(writer);
 
     }
@@ -148,7 +154,6 @@ public class ResultsAjaxController extends AjaxAbstractController {
     private static Integer getPointsInteger(String points) {
         try {
             return Integer.parseInt(points);
-
         } catch (NumberFormatException e){
             LOG.debug("A Point Score could not be parsed (value:"+points+")");
             return null;
@@ -174,7 +179,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
             // we have to get the result and determin winner for the email...
             Result result = ResultsUtil.parseResultString(match.getResult());
-            boolean isChallengerWinner = (ResultsUtil.getWinner(match, result) == match.getChallenger());
+            boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
             playerService.sendEmailResults(match.getChallenger(),match.getChallengee(), isChallengerWinner, result);
 
             writeSimpleData(writer,"success","true");

@@ -73,7 +73,7 @@ function bindPyramidFunctions(isInChallengeDate) {
             $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
-                    $(this).text("Player challenged.");
+                    $(this).text("Player challenged."); //TODO: Lukas, I have now a bug on this line!
                     setTimeout(new function() {
                         location.reload();
                     }, 1500);
