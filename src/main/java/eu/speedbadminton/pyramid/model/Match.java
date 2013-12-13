@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.model;
 
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -22,6 +23,8 @@ public class Match {
     private Player challenger;
     @DBRef
     private Player challengee;
+
+    private WINNER winner;
 
     private Date creation;
 
@@ -89,16 +92,31 @@ public class Match {
         this.validationId = validationId;
     }
 
+    public WINNER getWinner() {
+        return winner;
+    }
+
+    public void setWinner(WINNER winner) {
+        this.winner = winner;
+    }
+
     public boolean isConfirmed() {
         return confirmed;
     }
 
     public void setConfirmed(boolean confirmed) {
+        if(confirmed)
+            winner = ResultsUtil.isChallengerWinner(getResult())?WINNER.CHALLENGER:WINNER.CHALLENGEE;
         this.confirmed = confirmed;
     }
 
     @Override
     public String toString() {
         return "Match [id=" + id + ", challenger=" + challenger + ", challengee=" + challengee + ", matchDate=" + matchDate + ", result=" + result + "]";
+    }
+
+    public enum WINNER {
+        CHALLENGER,
+        CHALLENGEE
     }
 }
