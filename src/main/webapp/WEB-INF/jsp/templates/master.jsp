@@ -62,7 +62,7 @@
         <c:choose>
             <c:when test="${not empty securityContext}">
                 <div class="well">
-                    <h4>Hi <span class="strong"><c:out value="${securityContext.name}"/></span></h4><c:if test="${securityContext.child}"> | <a href="logout.html?parent=true">Switch back to <c:out value="${securityContext.parentName}"/></a></c:if><span id="isInChallenge"></span>
+                    <h4>Hi <span class="strong"><c:out value="${securityContext.name}"/></span></h4><c:if test="${securityContext.child}"><a href="logout.html?parent=true">Switch back to <c:out value="${securityContext.parentName}"/></a></c:if><span id="isInChallenge"></span>
                 </div>
             </c:when>
         </c:choose>
