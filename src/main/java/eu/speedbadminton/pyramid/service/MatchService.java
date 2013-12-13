@@ -77,9 +77,8 @@ public class MatchService {
     }
 
     public List<Match> getLastMatchesWithResults() {
-        final int MAX_LIMIT = 5;
         Criteria criteria = Criteria.where("confirmed").is(true);
-        Query query = new Query(criteria).limit(MAX_LIMIT);
+        Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
