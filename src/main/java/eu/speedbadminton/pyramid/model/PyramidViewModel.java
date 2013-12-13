@@ -15,6 +15,8 @@ public class PyramidViewModel {
     List<Match> openChallenges = new ArrayList<Match>();
     List<Match> lastPlayerMatches = new ArrayList<Match>();
     List<Match> waitingForConfirmationMatches = new ArrayList<Match>();
+    Match unconfirmedLostMatch;
+    Match unconfirmedWaitingMatch;
 
     Player loggedPlayer;
 
@@ -94,5 +96,21 @@ public class PyramidViewModel {
             }
         }
         return null;
+    }
+
+    public Match getUnconfirmedLostMatch() {
+        return unconfirmedLostMatch;
+    }
+
+    public void setUnconfirmedLostMatch(Match unconfirmedLostMatch) {
+        this.unconfirmedLostMatch = unconfirmedLostMatch;
+    }
+
+    public Match getUnconfirmedWaitingMatch() {
+        return unconfirmedWaitingMatch;
+    }
+
+    public void setUnconfirmedWaitingMatch(Match unconfirmedWaitingMatch) {
+        this.unconfirmedWaitingMatch = unconfirmedWaitingMatch;
     }
 }

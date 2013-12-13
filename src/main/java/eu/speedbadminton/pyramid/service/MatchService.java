@@ -2,6 +2,8 @@ package eu.speedbadminton.pyramid.service;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.utils.Result;
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -11,10 +13,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User: Yoann Moranville
@@ -97,16 +96,55 @@ public class MatchService {
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
 
-    public List<Match> getWaitingForConfirmationMatches(Player player) {
+    private Match getUnconfirmedMatch(Player player) {
         if (player==null){
-            return Collections.emptyList();
+            return null;
         }
         Criteria criteria = Criteria.where("confirmed").is(false).and("matchDate").exists(true);
         Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
         criteria.andOperator(criteriaOr);
         Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
-        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+        List<Match> matches = mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+
+        if (matches.size()>0){
+            return matches.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Winner waiting for confirmation.
+     * @param loggedPlayer
+     * @return
+     */
+    public Match getWaitingForConfirmationMatch(Player loggedPlayer){
+        Match match = getUnconfirmedMatch(loggedPlayer);
+
+        if (match!=null){
+            Result result = ResultsUtil.parseResultString(match.getResult());
+            if (ResultsUtil.getWinner(match,result).equals(loggedPlayer)){
+                return match;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Looser has to confirm match
+     * @return
+     */
+    public Match getUnconfirmedLostMatch(Player loggedPlayer){
+        Match match = getUnconfirmedMatch(loggedPlayer);
+
+        if (match!=null){
+            Result result = ResultsUtil.parseResultString(match.getResult());
+            if (ResultsUtil.getLooser(match, result).equals(loggedPlayer)){
+                return match;
+            }
+        }
+        return null;
     }
 
     public List<Match> getOpenChallenges() {

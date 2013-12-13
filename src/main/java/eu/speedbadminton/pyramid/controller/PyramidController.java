@@ -76,9 +76,11 @@ public class PyramidController {
         ModelAndView modelAndView = new ModelAndView("pyramidView");
 
         PyramidViewModel pyramidViewModel = new PyramidViewModel(playerViewModelList,loggedPlayer);
+        pyramidViewModel.setUnconfirmedLostMatch(matchService.getUnconfirmedLostMatch(loggedPlayer));
+        pyramidViewModel.setUnconfirmedWaitingMatch(matchService.getWaitingForConfirmationMatch(loggedPlayer));
         pyramidViewModel.setLastOverallMatches(matchService.getLastMatchesWithResults());
         pyramidViewModel.setLastPlayerMatches(matchService.getLastMatchesWithResults(loggedPlayer));
-        pyramidViewModel.setWaitingForConfirmationMatches(matchService.getWaitingForConfirmationMatches(loggedPlayer));
+        //pyramidViewModel.setWaitingForConfirmationMatches(matchService.getWaitingForConfirmationMatch(loggedPlayer));
         pyramidViewModel.setOpenChallenges(matchService.getOpenChallenges());
         modelAndView.addObject("pyramidViewModel", pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());

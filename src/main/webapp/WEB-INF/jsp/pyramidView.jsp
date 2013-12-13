@@ -9,7 +9,8 @@
     <c:set var="openChallenges" value="${pyramidViewModel.openChallenges}" />
     <c:set var="lastPlayerMatches" value="${pyramidViewModel.lastPlayerMatches}" />
     <c:set var="waitingForConfirmationMatches" value="${pyramidViewModel.waitingForConfirmationMatches}" />
-
+    <c:set var="unconfirmedLostMatch" value="${pyramidViewModel.unconfirmedLostMatch}"/>
+    <c:set var="unconfirmedWaitingMatch" value="${pyramidViewModel.unconfirmedWaitingMatch}"/>
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -22,6 +23,19 @@
             loggedPlayerIsFree: ${loggedPlayerIsFree}
             loggedPlayerChallenge: ${loggedPlayerChallenge}
 -->
+    <!-- Player has to confirm a match result where he lost -->
+    <c:if test="${unconfirmedLostMatch!=null}">
+        <div class="jumbotron">
+            ${unconfirmedLostMatch.challenger.name} vs ${unconfirmedLostMatch.challengee.name} <span class="label label-danger">You lost. (${unconfirmedLostMatch.result})</span>
+            <button id="confirmLostMatch" class="btn btn-success" data-matchid="${unconfirmedLostMatch.id}">Confirm Result</button>
+        </div>
+    </c:if>
+    <!-- Player is waiting for confirmation of Looser -->
+    <c:if test="${unconfirmedWaitingMatch!=null}">
+        <div class="jumbotron">
+                ${unconfirmedWaitingMatch.challenger.name} vs ${unconfirmedWaitingMatch.challengee.name} <span class="label label-success">You won. (${unconfirmedWaitingMatch.result})</span> <span class="label label-warning">Waiting for confirmation. </span>
+        </div>
+    </c:if>
     <!-- Showing Player's open challenge. -->
     <c:if test="${loggedPlayerChallenge!=null}">
         <div class="jumbotron" id="openChallenges">
@@ -104,10 +118,10 @@
                             <c:when test="${player.id == loggedPlayer.id}">
                                 <c:choose>
                                     <c:when test="${currentMatch!=null}">
-                                        <span class="label label-info">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>
+                                        <span class="label label-primary">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="label label-info">
+                                        <span class="label label-primary">
                                         That's you.
                                         </span>
                                     </c:otherwise>
@@ -121,7 +135,7 @@
                                     <span class="label label-success">challenge me!</span>
                                 </c:if>
                                 <c:if test="${currentMatch!=null}">
-                                    <span class="label label-warning">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>
+                                    <span class="label label-info">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
@@ -170,7 +184,7 @@
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <c:if test="${loggedPlayerChallenge == null}">
                                     <c:if test="${can_be_challenged}">
-                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-logged_player="${loggedPlayer.id}">Challenge this player.</button>
+                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}">Challenge this player.</button>
                                     </c:if>
                                     <c:if test="${!can_be_challenged}">
                                         <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>

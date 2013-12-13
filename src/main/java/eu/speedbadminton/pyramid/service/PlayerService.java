@@ -259,10 +259,12 @@ public class PlayerService {
         }
 
         Map<String,Player> players = new HashMap<String, Player>();
+
         long yourPosition = getPlayerById(forPlayer.getId()).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
 
-        if(!matchService.getWaitingForConfirmationMatches(forPlayer).isEmpty()) {
+        // player has to confirm a result where he lost
+        if(matchService.getWaitingForConfirmationMatch(forPlayer)!=null) {
             return players;
         }
         for(long position = yourPosition-1; position >= untilPosition; position--) {
@@ -271,7 +273,7 @@ public class PlayerService {
             assert player!=null;
 
             boolean isBusy = false;
-            if(matchService.getWaitingForConfirmationMatches(player).isEmpty()) {
+            if(matchService.getWaitingForConfirmationMatch(player)!=null) {
                 for(Match match : getMatchesOfPlayer(player)) {
                     if(match.getMatchDate() == null) {
                         isBusy = true;

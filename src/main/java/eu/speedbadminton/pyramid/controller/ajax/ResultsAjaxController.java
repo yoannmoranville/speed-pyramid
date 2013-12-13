@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -151,6 +152,34 @@ public class ResultsAjaxController extends AjaxAbstractController {
         } catch (NumberFormatException e){
             LOG.debug("A Point Score could not be parsed (value:"+points+")");
             return -1;
+        }
+
+    }
+
+
+    @RequestMapping(value={"/confirmMatchResults"}, method = RequestMethod.POST)
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Writer writer = getResponseWriter(response);
+
+        if(SecurityContext.get() != null) {
+            String id = SecurityContext.get().getPlayerId();
+            Player loggedPlayer = playerService.getPlayerById(id);
+
+            // you can only confirm a match where you are the looser
+            Match match = matchService.getUnconfirmedLostMatch(loggedPlayer);
+            // TODO check if match id is same but should be as there is always max 1 match unconfirmed
+            match.setConfirmed(true);
+            matchService.update(match);
+            playerService.swap(match.getChallenger(),match.getChallengee());
+
+            // we have to get the result and determin winner for the email...
+            Result result = ResultsUtil.parseResultString(match.getResult());
+            boolean isChallengerWinner = (ResultsUtil.getWinner(match, result) == match.getChallenger());
+            playerService.sendEmailResults(match.getChallenger(),match.getChallengee(), isChallengerWinner, result);
+
+            writeSimpleData(writer,"success","true");
+        } else {
+            writeSimpleData(writer, "success", "false");
         }
 
     }

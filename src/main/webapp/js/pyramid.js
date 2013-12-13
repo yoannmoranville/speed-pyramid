@@ -43,6 +43,26 @@ function bindPyramidFunctions() {
 
     });
 
+    $('#confirmLostMatch').click(function(){
+        $.post("confirmMatchResults.html", function(data){
+            if(data.success == 'true'){
+                console.log("sucessfully confirmed lost match.");
+                $(this).attr("disabled", "disabled");
+                $(this).text("confirming result...");
+
+            } else {
+                console.log(data);
+                alert("Sorry could not confirm this result...");
+            }
+        }, function(data){
+            setTimeout(new function() {
+                location.reload();
+            }, 1500);
+        });
+    });
+
+
+
     $(document).on('click','.btn-challenge',function(){
         var challenge_player = $(this).data('challenge_player');
         console.log('Challenging '+challenge_player);
@@ -50,7 +70,7 @@ function bindPyramidFunctions() {
         if(confirm("Are you sure?")) {
 
             $(this).attr("disabled", "disabled");
-            $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+            $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
                     $(this).text("Player challenged.");
@@ -103,7 +123,4 @@ function bindPyramidFunctions() {
             });
     });
 
-    if(isInChallenge && days != null && days != -1) {
-        $("#isInChallenge").text(" | You are in a challenge and have " + days + " days to play");
-    }
 }
