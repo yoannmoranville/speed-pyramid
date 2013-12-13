@@ -45,20 +45,19 @@ public class PyramidController {
         }
 
         List<Player> players = playerService.getEnabledPlayers();
-        List<Match> matches = matchService.getMatches();
         Map<String, Player> challengeablePlayers = playerService.getChallengablePlayers(loggedPlayer);
 
         List<PlayerViewModel> playerViewModelList = new ArrayList<PlayerViewModel>();
         for(Player p : players){
             PlayerViewModel playerViewModel = new PlayerViewModel(p);
 
-            // add all matches for each player where he is eighter challenger or challangee
-            for (Match m : matches) {
+            List<Match> matchesOfPlayer = matchService.getMatchesOfPlayer(p);
+            for (Match m : matchesOfPlayer) {
                 if (m.getChallengee().equals(p) || m.getChallenger().equals(p)) {
-                    if (m.getMatchDate()==null){
+                    if (m.getMatchDate() == null) {
                         playerViewModel.setCurrentMatch(m);
                     } else {
-                        playerViewModel.addPastMatch(m);
+                        playerViewModel.addPastMatch(m); //todo: We had a limit of 5 last games before, why not anymore?
                     }
                 }
             }

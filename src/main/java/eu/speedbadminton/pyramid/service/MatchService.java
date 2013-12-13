@@ -83,6 +83,14 @@ public class MatchService {
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
 
+    public List<Match> getMatchesOfPlayer(Player player) {
+        if(player == null)
+            return Collections.emptyList();
+        Criteria criteria = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+        Query query = new Query(criteria).with(new Sort(Sort.Direction.DESC, "matchDate"));
+        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+    }
+
     public List<Match> getLastMatchesWithResults(Player player) {
         if (player==null){
             return Collections.emptyList();
