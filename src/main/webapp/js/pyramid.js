@@ -46,6 +46,7 @@ function bindPyramidFunctions(isInChallengeDate) {
     $(document).on('click','.btn-challenge',function(){
         var challenge_player = $(this).data('challenge_player');
         var challengee_name = $(this).data('challengee_player_name');
+        var logged_player = $(this).data('logged_player');
         console.log('Challenging '+challenge_player + ", name: " + challengee_name);
 
         if(confirm("Are you sure you want to challenge '" + challengee_name + "'?")) {
@@ -104,6 +105,6 @@ function bindPyramidFunctions(isInChallengeDate) {
     });
 
     if(undefined != isInChallengeDate && isInChallengeDate != -1) {
-        $("#isInChallenge").text(" | You are in a challenge and have " + days + " days to play");
+        $("#isInChallenge").text(" | You are in a challenge and have " + isInChallengeDate + " days to play");
     }
 }
