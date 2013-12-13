@@ -7,7 +7,7 @@
     });
 </script>
 <div id="players">
-    <table>
+    <table class="table table-striped">
         <c:forEach items="${players}" var="playerView" varStatus="step">
             <tr>
                 <td>${playerView.player.pyramidPosition}. ${playerView.player.name}</td>
@@ -17,11 +17,11 @@
                         <c:when test="${!playerView.inUse}">
                             <form action="switch_to_player.html" method="post">
                                 <input type="hidden" name="id" value="${playerView.player.id}" />
-                                <input type="submit" value="Log in as this player" />
+                                <input class="btn" type="submit" value="Log in as this player" />
                             </form>
                         </c:when>
                         <c:otherwise>
-                            Player already logged in
+                            <input class="btn" type="button" disabled="disabled" value="Player already logged in"/>
                         </c:otherwise>
                     </c:choose>
                     </td>
@@ -30,13 +30,13 @@
                             <c:when test="${playerView.player.enabled}">
                                 <form action="disable_user.html" class="disablePlayer" method="post">
                                     <input type="hidden" name="id" value="${playerView.player.id}" />
-                                    <input type="submit" value="Disable this player" />
+                                    <input class="btn-danger" type="submit" value="Disable this player" />
                                 </form>
                             </c:when>
                             <c:otherwise>
                                 <form action="enable_user.html" class="enablePlayer" method="post">
                                     <input type="hidden" name="id" value="${playerView.player.id}" />
-                                    <input type="submit" value="Enable this player" />
+                                    <input class="btn" type="submit" value="Enable this player" />
                                 </form>
                             </c:otherwise>
                         </c:choose>

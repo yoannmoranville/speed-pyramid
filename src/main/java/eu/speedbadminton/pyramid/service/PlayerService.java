@@ -9,6 +9,7 @@ package eu.speedbadminton.pyramid.service;
 import java.util.*;
 
 import com.google.gson.Gson;
+import eu.speedbadminton.pyramid.mail.ApplicationMailer;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
@@ -29,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@Repository
 public class PlayerService {
     private static final Logger LOG = Logger.getLogger(PlayerService.class);
 
@@ -38,6 +38,9 @@ public class PlayerService {
 
     @Autowired
     private MatchService matchService;
+
+    @Autowired
+    private MailService mailService;
 
     private static final String COLLECTION_NAME_PLAYER = "player";
     private static final String COLLECTION_NAME_MATCH = "match";
@@ -155,7 +158,7 @@ public class PlayerService {
                 "\n" +
                 "Once you have played together, one of you will need to enter the results online.\n" +
                 "BE CAREFUL! You only have 21 days to play, after this, you will be automatically removed from your place!";
-        MailService.sendEmailEncounter(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
+        mailService.sendEmailEncounter(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;
     }
 
@@ -175,7 +178,7 @@ public class PlayerService {
                 "\n" +
                 asker.getName() + " vs " + asked.getName() + ": " + ResultsUtil.createResultString(result);
 
-        MailService.sendEmailResults(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
+        mailService.sendEmailResults(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;
     }
 
@@ -184,7 +187,7 @@ public class PlayerService {
                 "Username: " + email + "\n" +
                 "Password: " + password;
 
-        MailService.sendEmailPassword(body, email, name);
+        mailService.sendEmailPassword(body, email, name);
     }
 
     public void sendEmailResultsLooserValidation(Player looser, Player winner, Result result, String link) {
@@ -197,7 +200,7 @@ public class PlayerService {
                 "Please confirm that you lost by clicking this link: " + link + "\n" +
                 "\n";
 
-        MailService.sendEmailResultsLooserValidation(body, looser.getEmail(), looser.getName());
+        mailService.sendEmailResultsLooserValidation(body, looser.getEmail(), looser.getName());
     }
 
     public void sendEmailResultsWaitingForLooserValidation(Player winner, Player looser, Result result) {
@@ -211,22 +214,22 @@ public class PlayerService {
                 "If it takes too long, please write the admins about it\n" +
                 "\n";
 
-        MailService.sendEmailResultsWaitingForLooserValidation(body, winner.getEmail(), winner.getName());
+        mailService.sendEmailResultsWaitingForLooserValidation(body, winner.getEmail(), winner.getName());
     }
 
     public void sendEmailDisablePlayer(String name, String email) {
         String body = "You player account has been disabled by the administrator.\n";
-        MailService.sendEmailDisablePlayer(body, email, name);
+        mailService.sendEmailDisablePlayer(body, email, name);
     }
 
     public void sendEmailEnablePlayer(String name, String email) {
         String body = "You player account has been enabled by the administrator.\n";
-        MailService.sendEmailEnablePlayer(body, email, name);
+        mailService.sendEmailEnablePlayer(body, email, name);
     }
 
     public void sendEmailChangePassword(String name, String email) {
         String body = "Your password has been changed!\n";
-        MailService.sendEmailChangePassword(body, email, name);
+        mailService.sendEmailChangePassword(body, email, name);
     }
 
     public List<String> getAvailablePlayers(String id) {
@@ -256,10 +259,12 @@ public class PlayerService {
         }
 
         Map<String,Player> players = new HashMap<String, Player>();
+
         long yourPosition = getPlayerById(forPlayer.getId()).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
 
-        if(!matchService.getWaitingForConfirmationMatches(forPlayer).isEmpty()) {
+        // player has to confirm a result where he lost
+        if(matchService.getWaitingForConfirmationMatch(forPlayer)!=null) {
             return players;
         }
         for(long position = yourPosition-1; position >= untilPosition; position--) {
@@ -268,7 +273,7 @@ public class PlayerService {
             assert player!=null;
 
             boolean isBusy = false;
-            if(matchService.getWaitingForConfirmationMatches(player).isEmpty()) {
+            if(matchService.getWaitingForConfirmationMatch(player)!=null) {
                 for(Match match : getMatchesOfPlayer(player)) {
                     if(match.getMatchDate() == null) {
                         isBusy = true;

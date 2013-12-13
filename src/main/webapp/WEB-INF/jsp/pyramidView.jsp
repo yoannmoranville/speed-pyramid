@@ -9,7 +9,8 @@
     <c:set var="openChallenges" value="${pyramidViewModel.openChallenges}" />
     <c:set var="lastPlayerMatches" value="${pyramidViewModel.lastPlayerMatches}" />
     <c:set var="waitingForConfirmationMatches" value="${pyramidViewModel.waitingForConfirmationMatches}" />
-
+    <c:set var="unconfirmedLostMatch" value="${pyramidViewModel.unconfirmedLostMatch}"/>
+    <c:set var="unconfirmedWaitingMatch" value="${pyramidViewModel.unconfirmedWaitingMatch}"/>
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -22,69 +23,80 @@
             loggedPlayerIsFree: ${loggedPlayerIsFree}
             loggedPlayerChallenge: ${loggedPlayerChallenge}
 -->
+    <!-- Player has to confirm a match result where he lost -->
+    <c:if test="${unconfirmedLostMatch!=null}">
+        <div class="jumbotron">
+            ${unconfirmedLostMatch.challenger.name} vs ${unconfirmedLostMatch.challengee.name} <span class="label label-danger">You lost. (${unconfirmedLostMatch.result})</span>
+            <button id="confirmLostMatch" class="btn btn-success" data-matchid="${unconfirmedLostMatch.id}">Confirm Result</button>
+        </div>
+    </c:if>
+    <!-- Player is waiting for confirmation of Looser -->
+    <c:if test="${unconfirmedWaitingMatch!=null}">
+        <div class="jumbotron">
+                ${unconfirmedWaitingMatch.challenger.name} vs ${unconfirmedWaitingMatch.challengee.name} <span class="label label-success">You won. (${unconfirmedWaitingMatch.result})</span> <span class="label label-warning">Waiting for confirmation. </span>
+        </div>
+    </c:if>
+    <!-- Showing Player's open challenge. -->
+    <c:if test="${loggedPlayerChallenge!=null}">
+        <div class="jumbotron" id="openChallenges">
+                ${loggedPlayerChallenge.challenger.name} vs ${loggedPlayerChallenge.challengee.name}
+            <button id="enter_result_button" class="btn btn-success" data-matchid="${loggedPlayerChallenge.id}">Enter results</button>
+        </div>
+
+        <!-- Modal for Enter Results -->
+        <div class="modal fade" id="modal_results" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">${loggedPlayerChallenge.challenger.name} vs. ${loggedPlayerChallenge.challengee.name}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="matchform" data-matchid="${loggedPlayerChallenge.id}" data-challengerid="${loggedPlayerChallenge.challenger.id}" data-loggedplayerid="${loggedPlayer.id}" data-challengeeid="${loggedPlayerChallenge.challengee.id}">
+                            <table class="table">
+                                <tr>
+                                    <th></th>
+                                    <th>${loggedPlayerChallenge.challenger.name}</th>
+                                    <th>${loggedPlayerChallenge.challengee.name}</th>
+
+                                </tr>
+
+                                <tr>
+                                    <td>Set 1</td>
+
+                                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
+                                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Set 2</td>
+
+                                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
+                                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Set 3</td>
+
+                                    <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
+                                    <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
+                                </tr>
+                            </table>
+                            <label>Date of game </label>
+                            <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="savematch">Save Result</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </c:if>
 
     <div class="centermain">
         <c:set var="row_pos" value="1"/>
         <c:set var="max_per_row" value="1"/>
-
-        <!-- Showing Player's open challenge. -->
-        <c:if test="${loggedPlayerChallenge!=null}">
-            <div id="openChallenges">
-                <h3>Open challenge:</h3>
-                    ${loggedPlayerChallenge.challenger.name} vs ${loggedPlayerChallenge.challengee.name}: created on <fmt:formatDate value="${loggedPlayerChallenge.creation}" pattern="dd-MM-yyyy" />
-                <button id="enter_result_button" class="btn btn-success" data-matchid="${loggedPlayerChallenge.id}">enter results</button>
-            </div>
-
-            <!-- Modal for Enter Results -->
-            <div class="modal fade" id="modal_results" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">${loggedPlayerChallenge.challenger.name} vs. ${loggedPlayerChallenge.challengee.name}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="matchform" data-matchid="${loggedPlayerChallenge.id}" data-challengerid="${loggedPlayerChallenge.challenger.id}" data-loggedplayerid="${loggedPlayer.id}" data-challengeeid="${loggedPlayerChallenge.challengee.id}">
-                                <table class="table">
-                                    <tr>
-                                        <th></th>
-                                        <th>${loggedPlayerChallenge.challenger.name}</th>
-                                        <th>${loggedPlayerChallenge.challengee.name}</th>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td>Set 1</td>
-
-                                        <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
-                                        <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Set 2</td>
-
-                                        <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
-                                        <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Set 3</td>
-
-                                        <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
-                                        <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
-                                    </tr>
-                                </table>
-                                <label>Date of game </label>
-                                <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" id="savematch">Save Result</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-        </c:if>
 
         <c:forEach items="${pyramidViewModel.playerViewModelList}" var="playerViewModel">
             <c:set var="player" value="${playerViewModel.player}" />
@@ -99,17 +111,17 @@
                 </c:when>
             </c:choose>
 
-                <div class="mybox" data-playerid="${player.id}" data-playername="${player.name}">
-                    ${player.pyramidPosition}. ${player.name}
+                <div class="mybox" data-playerid="${player.id}">
+                    <span class="label label-primary">${player.pyramidPosition}</span> ${player.name}
                     <div class="player_actions">
                         <c:choose>
                             <c:when test="${player.id == loggedPlayer.id}">
                                 <c:choose>
                                     <c:when test="${currentMatch!=null}">
-                                        <span class="label label-info">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>
+                                        <span class="label label-primary">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="label label-info">
+                                        <span class="label label-primary">
                                         That's you.
                                         </span>
                                     </c:otherwise>
@@ -123,7 +135,7 @@
                                     <span class="label label-success">challenge me!</span>
                                 </c:if>
                                 <c:if test="${currentMatch!=null}">
-                                    <span class="label label-warning">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>
+                                    <span class="label label-info">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
@@ -231,7 +243,7 @@
         </c:if>
         <c:if test="${not empty openChallenges}">
             <div id="lastResults">
-                <h3>Currently Opened Challenges:</h3>
+                <h3>Next Matches:</h3>
                 <c:forEach items="${openChallenges}" var="lastResult">
                     ${lastResult.challenger.name} vs ${lastResult.challengee.name}: created on <fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" />
                     <br/>

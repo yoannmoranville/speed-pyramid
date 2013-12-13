@@ -43,6 +43,26 @@ function bindPyramidFunctions(isInChallengeDate) {
 
     });
 
+    $('#confirmLostMatch').click(function(){
+        $.post("confirmMatchResults.html", function(data){
+            if(data.success == 'true'){
+                console.log("sucessfully confirmed lost match.");
+                $(this).attr("disabled", "disabled");
+                $(this).text("confirming result...");
+
+            } else {
+                console.log(data);
+                alert("Sorry could not confirm this result...");
+            }
+        }, function(data){
+            setTimeout(new function() {
+                location.reload();
+            }, 1500);
+        });
+    });
+
+
+
     $(document).on('click','.btn-challenge',function(){
         var challenge_player = $(this).data('challenge_player');
         var challengee_name = $(this).data('challengee_player_name');
@@ -51,7 +71,7 @@ function bindPyramidFunctions(isInChallengeDate) {
 
         if(confirm("Are you sure you want to challenge '" + challengee_name + "'?")) {
             $(this).attr("disabled", "disabled");
-            $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
+            $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
                     $(this).text("Player challenged.");
