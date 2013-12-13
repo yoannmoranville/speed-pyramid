@@ -48,7 +48,7 @@ function bindPyramidFunctions(isInChallengeDate) {
             if(data.success == 'true'){
                 console.log("sucessfully confirmed lost match.");
                 $(this).attr("disabled", "disabled");
-                $(this).text("confirming result..."); //TODO: Lukas, I have now a bug on this line!
+                $(this).text("confirming result..."); //TODO: Lukas, I have now a bug on this line! - problem: both jquery and bootstrap have this method
                 setTimeout(new function() {
                     location.reload();
                 }, 1500);
@@ -71,7 +71,7 @@ function bindPyramidFunctions(isInChallengeDate) {
             $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
-                    $(this).text("Player challenged."); //TODO: Lukas, I have now a bug on this line!
+                    $(this).text("Player challenged."); //TODO: Lukas, I have now a bug on this line! - problem: both jquery and bootstrap have this method
                     setTimeout(new function() {
                         location.reload();
                     }, 1500);
