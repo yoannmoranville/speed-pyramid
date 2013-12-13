@@ -74,46 +74,6 @@ public abstract class ResultsUtil {
         return winningSet == 2;
     }
 
-    public static boolean isResultCorrect(Result result) {
-        final int SET_POINT = 16;
-        final int MINIMUM_DIFF = 2;
-        int winningSetForChallenger = 0;
-        int winningSetForChallengee = 0;
-        Set set;
-
-        for(int i = 1; i <= 3; i++) {
-            if(i == 1) {
-                set = result.getSet1();
-            } else if(i == 2) {
-                set = result.getSet2();
-            } else {
-                set = result.getSet3();
-                if(set == null) {
-                    break;
-                } else if (winningSetForChallenger == 2 || winningSetForChallengee == 2) {
-                    return false;
-                }
-            }
-
-            if(set.getPointOfChallengee() < 0 || set.getPointOfChallenger() < 0) {
-                return false;
-            }
-
-            if(set.getPointOfChallengee() == SET_POINT && set.getPointOfChallenger() <= (SET_POINT - MINIMUM_DIFF)) {
-                winningSetForChallengee++;
-            } else if(set.getPointOfChallenger() == SET_POINT && set.getPointOfChallengee() <= (SET_POINT - MINIMUM_DIFF)) {
-                winningSetForChallenger++;
-            } else if(set.getPointOfChallengee() > SET_POINT && (set.getPointOfChallengee() - set.getPointOfChallenger() == MINIMUM_DIFF)) {
-                winningSetForChallengee++;
-            } else if(set.getPointOfChallenger() > SET_POINT && (set.getPointOfChallenger() - set.getPointOfChallengee() == MINIMUM_DIFF)) {
-                winningSetForChallenger++;
-            } else {
-                return false;
-            }
-        }
-        return winningSetForChallenger == 2 || winningSetForChallengee == 2;
-    }
-
     public static Player getWinner(Match match, Result result) {
         int winningSet = 0;
         if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {

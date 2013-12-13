@@ -45,7 +45,7 @@ public class ResultsAjaxControllerTest {
         Assert.assertTrue("matchdate today",ResultsAjaxController.isDateCorrect(creationDate.getTime(), matchDate.getTime()));
 
         // matchDate tomorrow (should fail)
-        matchDate.add(Calendar.DAY_OF_WEEK,1);
+        matchDate.add(Calendar.DAY_OF_MONTH,1);
         printDates(creationDate,matchDate);
         Assert.assertFalse("matchdate tomorrow",ResultsAjaxController.isDateCorrect(creationDate.getTime(), matchDate.getTime()));
 
