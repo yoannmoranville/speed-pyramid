@@ -34,7 +34,7 @@ function bindLoggedoutPyramidFunctions() {
     });
 }
 
-function bindPyramidFunctions() {
+function bindPyramidFunctions(isInChallengeDate) {
     $(document).on('click','.mybox', function(){
         var modal_id = '#modal_'+$(this).data('playerid');
         console.log('model_id:'+modal_id);
@@ -45,9 +45,10 @@ function bindPyramidFunctions() {
 
     $(document).on('click','.btn-challenge',function(){
         var challenge_player = $(this).data('challenge_player');
-        console.log('Challenging '+challenge_player);
+        var challengee_name = $(this).data('challengee_player_name');
+        console.log('Challenging '+challenge_player + ", name: " + challengee_name);
 
-        if(confirm("Are you sure?")) {
+        if(confirm("Are you sure you want to challenge '" + challengee_name + "'?")) {
             $(this).attr("disabled", "disabled");
             $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
                 if(data.success == 'true'){
@@ -102,7 +103,7 @@ function bindPyramidFunctions() {
             });
     });
 
-    if(isInChallenge && days != null && days != -1) {
+    if(undefined != isInChallengeDate && isInChallengeDate != -1) {
         $("#isInChallenge").text(" | You are in a challenge and have " + days + " days to play");
     }
 }
