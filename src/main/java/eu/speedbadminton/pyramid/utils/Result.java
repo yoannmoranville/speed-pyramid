@@ -78,6 +78,10 @@ public class Result {
                 }
             }
 
+            if(set.getPointOfChallengee() < 0 || set.getPointOfChallenger() < 0) {
+                return false;
+            }
+
             if(set.getPointOfChallengee() == SET_POINT && set.getPointOfChallenger() <= (SET_POINT - MINIMUM_DIFF)) {
                 winningSetForChallengee++;
             } else if(set.getPointOfChallenger() == SET_POINT && set.getPointOfChallengee() <= (SET_POINT - MINIMUM_DIFF)) {

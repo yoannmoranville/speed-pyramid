@@ -23,6 +23,8 @@ public class ResultsUtilTest {
         Assert.assertFalse(result.isResultCorrect());
         result = new Result(16, 0, 16, 5, 3, 16);
         Assert.assertFalse(result.isResultCorrect());
+        result = new Result(16, 0, 16, -2, null, null);
+        Assert.assertFalse(result.isResultCorrect());
     }
 
     @Test
