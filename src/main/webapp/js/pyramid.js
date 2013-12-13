@@ -48,16 +48,14 @@ function bindPyramidFunctions(isInChallengeDate) {
             if(data.success == 'true'){
                 console.log("sucessfully confirmed lost match.");
                 $(this).attr("disabled", "disabled");
-                $(this).text("confirming result...");
-
+                $(this).text("confirming result..."); //TODO: Lukas, I have now a bug on this line!
+                setTimeout(new function() {
+                    location.reload();
+                }, 1500);
             } else {
                 console.log(data);
-                alert("Sorry could not confirm this result...");
+                alert("Sorry we could not confirm this result... Please contact an admin.");
             }
-        }, function(data){
-            setTimeout(new function() {
-                location.reload();
-            }, 1500);
         });
     });
 
@@ -124,6 +122,6 @@ function bindPyramidFunctions(isInChallengeDate) {
     });
 
     if(undefined != isInChallengeDate && isInChallengeDate != -1) {
-        $("#isInChallenge").text(" | You are in a challenge and have " + isInChallengeDate + " days to play");
+        $("#isInChallenge").text("You are in a challenge and have " + isInChallengeDate + " days to play");
     }
 }
