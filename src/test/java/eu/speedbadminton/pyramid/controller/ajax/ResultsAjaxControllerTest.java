@@ -42,6 +42,7 @@ public class ResultsAjaxControllerTest {
 
         // matchDate today
         matchDate.setTime(new Date());
+        printDates(creationDate,matchDate); //todo: If I comment this line, the test fails, WTH?!
         Assert.assertTrue("matchdate today",ResultsAjaxController.isDateCorrect(creationDate.getTime(), matchDate.getTime()));
 
         // matchDate tomorrow (should fail)
