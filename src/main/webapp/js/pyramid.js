@@ -48,12 +48,9 @@ function bindPyramidFunctions() {
         console.log('Challenging '+challenge_player);
 
         if(confirm("Are you sure?")) {
-<<<<<<< HEAD
-            $.post("usersEncounterQuestion.html", {challenge_player: challenge_player}, function(data){
-=======
+
             $(this).attr("disabled", "disabled");
             $.post("usersEncounterQuestion.html", {asker: logged_player, asked: challenge_player}, function(data){
->>>>>>> 8b8eab2d5b34d4ca8e47ff460fbad65873fa4e00
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
                     $(this).text("Player challenged.");
