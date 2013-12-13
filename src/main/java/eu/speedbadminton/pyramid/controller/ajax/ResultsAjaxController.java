@@ -99,7 +99,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
             Player looser = ResultsUtil.getLooser(match,result);
             boolean isLoggedPlayerLooser = !loggedPlayer.equals(winner);
 
-            if(isLoggedPlayerLooser) {
+            if(isLoggedPlayerLooser) { //todo: totally wrong, it does not matter if you are logged player looser, it matters if you are challenger or not.
                 match.setConfirmed(true);
                 matchService.update(match);
                 playerService.swap(loggedPlayer, winner);
@@ -151,7 +151,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
         } catch (NumberFormatException e){
             LOG.debug("A Point Score could not be parsed (value:"+points+")");
-            return -1;
+            return null;
         }
 
     }
