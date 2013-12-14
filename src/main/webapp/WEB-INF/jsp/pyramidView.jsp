@@ -237,37 +237,80 @@
         <c:if test="${not empty waitingForConfirmationMatches}">
             <div id="lastResults">
                 <h3>Waiting for Confirmation by Looser:</h3>
-                <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
-                    <span${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
-                    <br/>
-                </c:forEach>
+                <table class="table table-condensed">
+                    <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
+                        <c:set var="isChallengerWinner" value="span"/>
+                        <c:set var="isChallengerLooser" value="strong"/>
+                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                            <c:set var="isChallengerWinner" value="strong"/>
+                            <c:set var="isChallengerLooser" value="span"/>
+                        </c:if>
+                        <tr>
+                            <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                        <td>${lastResult.result}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
         </c:if>
         <c:if test="${not empty lastPlayerMatches}">
             <div id="lastResults">
                 <h3>Your last matches:</h3>
-                <c:forEach items="${lastPlayerMatches}" var="lastResult">
-                    <span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
-                    <br/>
-                </c:forEach>
+                <table class="table table-condensed">
+                    <c:forEach items="${lastPlayerMatches}" var="lastResult">
+                        <c:set var="isChallengerWinner" value="span"/>
+                        <c:set var="isChallengerLooser" value="strong"/>
+                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                            <c:set var="isChallengerWinner" value="strong"/>
+                            <c:set var="isChallengerLooser" value="span"/>
+                        </c:if>
+                        <tr>
+                            <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                            <td>${lastResult.result}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
         </c:if>
         <c:if test="${not empty lastOverallMatches}">
             <div id="lastResults">
                 <h3>Last Pyramid Matches:</h3>
-                <c:forEach items="${lastOverallMatches}" var="lastResult">
-                    <span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
-                    <br/>
-                </c:forEach>
+                <table class="table table-condensed">
+                    <c:forEach items="${lastOverallMatches}" var="lastResult">
+                        <c:set var="isChallengerWinner" value="span"/>
+                        <c:set var="isChallengerLooser" value="strong"/>
+                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                            <c:set var="isChallengerWinner" value="strong"/>
+                            <c:set var="isChallengerLooser" value="span"/>
+                        </c:if>
+                        <tr>
+                            <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                            <td>${lastResult.result}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
         </c:if>
         <c:if test="${not empty openChallenges}">
             <div id="lastResults">
                 <h3>Next Matches:</h3>
-                <c:forEach items="${openChallenges}" var="lastResult">
-                    <span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: created on <fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" />
-                    <br/>
-                </c:forEach>
+                <table class="table table-condensed">
+                    <c:forEach items="${openChallenges}" var="lastResult">
+                        <c:set var="isChallengerWinner" value="span"/>
+                        <c:set var="isChallengerLooser" value="strong"/>
+                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                            <c:set var="isChallengerWinner" value="strong"/>
+                            <c:set var="isChallengerLooser" value="span"/>
+                        </c:if>
+                        <tr>
+                            <td><fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" /></td>
+                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
         </c:if>
 
