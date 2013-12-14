@@ -3,9 +3,8 @@ package eu.speedbadminton.pyramid.listener;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
-import eu.speedbadminton.pyramid.utils.Result;
-import eu.speedbadminton.pyramid.utils.ResultsUtil;
-import eu.speedbadminton.pyramid.utils.Set;
+import eu.speedbadminton.pyramid.model.Result;
+import eu.speedbadminton.pyramid.model.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +72,7 @@ public class InactivityTask {
                         match.setMatchDate(new Date());
                         Result result = new Result(match.getChallenger(),match.getChallengee());
                         result.addSet(new Set(match.getChallenger(),match.getChallengee(),16, 0))
-                              .addSet(new Set(match.getChallenger(),match.getChallengee(),16, 0));
+                              .addSet(new Set(match.getChallenger(), match.getChallengee(), 16, 0));
                         playerService.sendEmailResults(match.getChallenger(), match.getChallengee(), true, result);
                     }
                     matchService.update(match);

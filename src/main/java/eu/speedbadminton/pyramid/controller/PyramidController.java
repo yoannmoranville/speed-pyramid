@@ -9,6 +9,7 @@ import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class PyramidController {
         }
 
         List<Player> players = playerService.getEnabledPlayers();
-        Map<String, Player> challengeablePlayers = playerService.getChallengablePlayers(loggedPlayer);
+        Map<ObjectId, Player> challengeablePlayers = playerService.getChallengablePlayers(loggedPlayer);
 
         List<PlayerViewModel> playerViewModelList = new ArrayList<PlayerViewModel>();
         for(Player p : players){

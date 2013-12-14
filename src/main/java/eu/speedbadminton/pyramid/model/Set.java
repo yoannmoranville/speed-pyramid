@@ -1,6 +1,8 @@
-package eu.speedbadminton.pyramid.utils;
+package eu.speedbadminton.pyramid.model;
 
 import eu.speedbadminton.pyramid.model.Player;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
@@ -10,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
  * @author Yoann Moranville
  */
 public class Set {
+
+    @Id
+    private ObjectId id;
 
     @DBRef
     private Player player1;
@@ -24,6 +29,14 @@ public class Set {
         this.player1 = player1;
         this.pointsPlayer1 = pointsPlayer1;
         this.pointsPlayer2 = pointsPlayer2;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public int getPointsPlayer1() {

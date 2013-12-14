@@ -1,6 +1,7 @@
 package eu.speedbadminton.pyramid.model;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,9 +45,9 @@ public class PlayerTest {
     @Test
     public void testPlayerEquals(){
         Player p1 = new Player();
-        p1.setId("eb10eb24-7e06-47e7-921f-a7ef82168e76");
+        p1.setId(new ObjectId("52ac689869f71008b3971ff3"));
         Player p2 = new Player();
-        p2.setId("eb10eb24-7e06-47e7-921f-a7ef82168e76");
+        p2.setId(new ObjectId("52ac689869f71008b3971ff3"));
 
         Assert.assertEquals(p1,p2);
 
@@ -55,9 +56,9 @@ public class PlayerTest {
     @Test
     public void testPlayerNotEquals(){
         Player p1 = new Player();
-        p1.setId("eb10eb24-7e06-47e7-921f-a7ef82168e76");
+        p1.setId(new ObjectId("52ac689869f71008b3971ff3"));
         Player p2 = new Player();
-        p2.setId("asdfasd-7e06-47e7-921f-a7ef82168e76");
+        p2.setId(new ObjectId("52ac689869f71008b3971ff3"));
 
         Assert.assertNotSame(p1, p2);
 
@@ -66,11 +67,11 @@ public class PlayerTest {
     @Test
     public void testInChallangeablePlayers(){
         Player p1 = new Player();
-        p1.setId("Ab10eb24-7e06-47e7-921f-a7ef82168e76");
+        p1.setId(new ObjectId("52ac689869f71008b3971ff3"));
         Player p2 = new Player();
-        p2.setId("eb10eb24-7e06-47e7-921f-a7ef82168e76");
+        p2.setId(new ObjectId("52ac689b69f71008b3971ff4"));
         Player p3 = new Player();
-        p3.setId("eb10eb24-7e06-47e7-921f-a7ef82168e76");
+        p3.setId(new ObjectId("52ac6e5169f71008b3971ff5"));
 
         Set<Player> list = new HashSet<Player>();
         list.add(p2);

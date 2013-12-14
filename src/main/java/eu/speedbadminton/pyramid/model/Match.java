@@ -1,9 +1,7 @@
 package eu.speedbadminton.pyramid.model;
 
-import eu.speedbadminton.pyramid.utils.Result;
-import eu.speedbadminton.pyramid.utils.ResultsUtil;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,7 +17,7 @@ import java.util.Date;
 @Document(collection = "Match")
 public class Match {
     @Id
-    private String id;
+    private ObjectId id;
     @DBRef
     private Player challenger;
     @DBRef
@@ -35,11 +33,12 @@ public class Match {
 
     private Result result;
 
-    public String getId() {
+
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

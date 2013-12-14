@@ -2,6 +2,7 @@ package eu.speedbadminton.pyramid.utils;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.model.Result;
 
 /**
  * User: Yoann Moranville

@@ -2,15 +2,12 @@ package eu.speedbadminton.pyramid.service;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.utils.Result;
-import eu.speedbadminton.pyramid.utils.ResultsUtil;
+import eu.speedbadminton.pyramid.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,7 +43,6 @@ public class MatchService {
         if (!mongoTemplate.collectionExists(Match.class)) {
             mongoTemplate.createCollection(Match.class);
         }
-        match.setId(UUID.randomUUID().toString());
         mongoTemplate.insert(match, COLLECTION_NAME);
     }
 
