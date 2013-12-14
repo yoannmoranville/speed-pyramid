@@ -1,7 +1,9 @@
 package eu.speedbadminton.pyramid.testdata;
 
 import eu.speedbadminton.pyramid.context.ApplicationContextSpeedminton;
+import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
@@ -10,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * User: lukasgotter
@@ -25,7 +29,10 @@ public class InsertTestData {
     @Autowired
     private PlayerService playerService;
 
-    //@Ignore
+    @Autowired
+    private MatchService matchService;
+
+    @Ignore
     @Test
     public void create36Players() {
 
@@ -35,6 +42,26 @@ public class InsertTestData {
             playerService.create(p);
         }
         LOG.warn("Created 36 Test Players!");
+
+    }
+
+    @Ignore
+    @Test
+    public void delete36Players() {
+
+        List<Player> players = playerService.getPlayers();
+
+        for(Player player :players){
+            if(player.getName().startsWith("Player")){
+                List<Match> matches = matchService.getMatchesOfPlayer(player);
+                for(Match match : matches) {
+                    matchService.delete(match);
+                }
+                playerService.delete(player);
+            }
+        }
+
+        LOG.warn("Deleted 36 Test Players!");
 
     }
 
