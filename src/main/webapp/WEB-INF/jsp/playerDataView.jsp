@@ -1,91 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<script type="text/javascript">
-    $(document).ready(function(){
-        preparePlayerData();
-    });
-</script>
 <div id="player">
 
     <div class="well">
         <h3>${player.name} <small>Your Rank: ${player.pyramidPosition}</small></h3>
-
-
-        <c:if test="${not empty matches}">
-            <c:forEach items="${matches}" var="match">
-                <br/>
-                ${match.player1.name} vs ${match.player2.name}
-                <c:choose>
-                    <c:when test="${not empty match.matchDate}">
-                        &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
-                        <c:if test="${match.confirmed == false and empty matchNeedingConfirmation}">
-                            &nbsp;- waiting for confirmation of the looser
-                        </c:if>
-                        <c:if test="${match.confirmed == false and matchNeedingConfirmation == match.id}">
-                            &nbsp;- <a href="${matchNeedingConfirmationLink}">please confirm game results</a>
-                        </c:if>
-                    </c:when>
-                    <c:otherwise>
-                        <button class="btn btn-success enter_result_button" data-matchid="${match.id}">enter results</button>
-
-                        <!-- player profile + challenge dialog -->
-                        <!-- Modal -->
-                        <div class="modal fade" id="modal_${match.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">${match.player1.name} vs. ${match.player2.name}</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="matchform" data-matchid="${match.id}" data-challengerid="${match.player1.id}" data-challengeeid="${match.player2.id}">
-                                            <table class="table">
-                                                <tr>
-                                                    <th></th>
-                                                    <th>${match.player1.name}</th>
-                                                    <th>${match.player2.name}</th>
-
-                                                </tr>
-
-                                                <tr>
-                                                    <td>Set 1</td>
-
-                                                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
-                                                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Set 2</td>
-
-                                                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
-                                                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Set 3</td>
-
-                                                    <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
-                                                    <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
-                                                </tr>
-                                            </table>
-                                            <label>Date of game </label>
-                                            <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
-
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success" id="savematch">Save Result</button>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
-
-                    </c:otherwise>
-                </c:choose>
-
-
-
-            </c:forEach>
-        </c:if>
     </div>
 
     <div class="well">

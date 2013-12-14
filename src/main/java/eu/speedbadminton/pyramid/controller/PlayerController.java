@@ -47,41 +47,14 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    private ModelAndView createPlayerDataView() {
-        ModelAndView modelAndView = new ModelAndView("playerDataView");
-
-        if(SecurityContext.get() != null) {
-            String id = SecurityContext.get().getPlayerId();
-
-            Player player = playerService.getPlayerById(id);
-            modelAndView.addObject("player", player);
-
-            List<String> matchIds = new ArrayList<String>();
-            List<Match> matches = playerService.getMatchesOfPlayer(player);
-            for(Match match : matches) {
-                if(match.getMatchDate() == null) {
-                    matchIds.add(match.getId());
-                } else if(match.getResult() != null && match.getValidationId() != null) {
-                    if((player.getId().equals(match.getChallengee().getId()) && ResultsUtil.isChallengerWinner(match.getResult())) || (player.getId().equals(match.getChallenger().getId()) && !ResultsUtil.isChallengerWinner(match.getResult()))) {
-                        modelAndView.addObject("matchNeedingConfirmation", match.getId());
-                        modelAndView.addObject("matchNeedingConfirmationLink", SpeedbadmintonConfig.getLinkServer() + URLEncoder.encode(match.getValidationId()));
-                    }
-                }
-            }
-            modelAndView.addObject("matchesWithoutResults", new Gson().toJson(matchIds));
-            modelAndView.addObject("matches", matches);
-        }
-        return modelAndView;
-    }
-
     @RequestMapping(value={"/viewPlayerData"}, method= RequestMethod.GET)
     public ModelAndView viewPlayerData() {
-        return createPlayerDataView();
+        return new ModelAndView("playerDataView");
     }
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
     public ModelAndView changePassword(HttpServletRequest request) {
-        ModelAndView modelAndView = createPlayerDataView();
+        ModelAndView modelAndView = new ModelAndView("playerDataView");
         String oldpwd = request.getParameter("oldpassword");
         String newpwd = request.getParameter("newpassword");
         String newpwdrepeat = request.getParameter("newpasswordrepeat");
@@ -105,7 +78,7 @@ public class PlayerController {
 
     @RequestMapping(value = "uploadpicture", method = RequestMethod.POST)
     public ModelAndView uploadPicture(@RequestParam("avatar") MultipartFile file) {
-        ModelAndView modelAndView = createPlayerDataView();
+        ModelAndView modelAndView = new ModelAndView("playerDataView");
 
         if(!file.isEmpty()) {
             if(!file.getContentType().equals("image/jpeg")) {
