@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,54 +42,44 @@ public class ResultsAjaxController extends AjaxAbstractController {
     private PlayerService playerService;
 
     @RequestMapping(value={"/saveResults"}, method = RequestMethod.POST)
-    public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
         if(SecurityContext.get() == null) {
             throw new IllegalAccessError("Please authenticate");
         }
 
-        Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
 
         Writer writer = getResponseWriter(response);
 
         String matchId = request.getParameter("matchid");
-        Match match = matchService.getMatchById(matchId);
-
         String challengeeId = request.getParameter("challengeeid");
         String challengerId = request.getParameter("challengerid");
 
+        Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
+        Match match = matchService.getMatchById(matchId);
         Player challengeePlayer = playerService.getPlayerById(challengeeId);
         Player challengerPlayer = playerService.getPlayerById(challengerId);
 
-        Result result = new Result(challengerPlayer,challengeePlayer);
-
         String resultSet1Player1 = request.getParameter("results_set1_player1");
         String resultSet1Player2 = request.getParameter("results_set1_player2");
-        if (!resultSet1Player1.isEmpty()&& !resultSet1Player2.isEmpty()){
-            result.addSet(new Set(challengerPlayer,challengeePlayer,getPointsInteger(resultSet1Player1),getPointsInteger(resultSet1Player2)));
-        }
         String resultSet2Player1 = request.getParameter("results_set2_player1");
         String resultSet2Player2 = request.getParameter("results_set2_player2");
-        if (!resultSet2Player1.isEmpty() && ! resultSet2Player2.isEmpty()){
-            result.addSet(new Set(challengerPlayer,challengeePlayer,getPointsInteger(resultSet2Player1),getPointsInteger(resultSet2Player2)));
-        }
         String resultSet3Player1 = request.getParameter("results_set3_player1");
         String resultSet3Player2 = request.getParameter("results_set3_player2");
-        if (!resultSet3Player1.isEmpty() && !resultSet3Player2.isEmpty()){
-            result.addSet(new Set(challengerPlayer, challengeePlayer,getPointsInteger(resultSet3Player1),getPointsInteger(resultSet3Player2)));
-        }
+
+        Result result = getResultFromStrings(challengerPlayer, challengeePlayer, resultSet1Player1, resultSet1Player2, resultSet2Player1, resultSet2Player2, resultSet3Player1, resultSet3Player2);
+
+        String datePlayed = request.getParameter("datePlayed");
+
+        Date matchDate;
 
         boolean continueTask = true;
-        Date date = null;
+
         try {
-            String datePlayed = request.getParameter("datePlayed");
-            date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(datePlayed);
-            match.setMatchDate(date);
-        } catch(Exception e) {
-            writeSimpleData(writer, "errors", "The date is not in the correct dd-MM-yyyy format (example: 15-10-2013 for 15th October 2013)");
-            continueTask = false;
-        }
-        if(continueTask && date == null) {
-            writeSimpleData(writer, "errors", "The date is empty");
+            matchDate = parseMatchDate(datePlayed);
+            match.setMatchDate(matchDate);
+
+        } catch (Exception ex){
+            writeSimpleData(writer, "errors", "The date is missing or not in the correct dd-MM-yyyy format (example: 15-10-2013 for 15th October 2013)");
             continueTask = false;
         }
 
@@ -112,6 +103,27 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
         closeWriter(writer);
 
+    }
+
+    private Date parseMatchDate(String datePlayed) throws ParseException {
+        Date date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(datePlayed);
+        return date;
+    }
+
+    private Result getResultFromStrings(Player challengerPlayer, Player challengeePlayer, String resultSet1Player1, String resultSet1Player2, String resultSet2Player1, String resultSet2Player2, String resultSet3Player1, String resultSet3Player2) {
+        Result result = new Result(challengerPlayer,challengeePlayer);
+
+        if (!resultSet1Player1.isEmpty()&& !resultSet1Player2.isEmpty()){
+            result.addSet(new Set(challengerPlayer,challengeePlayer,getPointsInteger(resultSet1Player1),getPointsInteger(resultSet1Player2)));
+        }
+        if (!resultSet2Player1.isEmpty() && ! resultSet2Player2.isEmpty()){
+            result.addSet(new Set(challengerPlayer,challengeePlayer,getPointsInteger(resultSet2Player1),getPointsInteger(resultSet2Player2)));
+        }
+        if (!resultSet3Player1.isEmpty() && !resultSet3Player2.isEmpty()){
+            result.addSet(new Set(challengerPlayer, challengeePlayer,getPointsInteger(resultSet3Player1),getPointsInteger(resultSet3Player2)));
+        }
+
+        return result;
     }
 
     /**

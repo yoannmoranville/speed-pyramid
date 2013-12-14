@@ -79,14 +79,17 @@
                                     <td><input class="set" type="text" maxlength="2" name="set12" id="set32"/></td>
                                 </tr>
                             </table>
-                            <label>Date of game </label>
-                            <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
-
+                            <div>
+                                <label>Date of game </label>
+                                <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
+                            </div>
                         </form>
-                        <div id="resultsValidationBox" class="alert alert-danger">
+                        <div id="resultsValidationBox" class="alert alert-danger" hidden="hidden">
 
                         </div>
-
+                        <div id="resultsConfirmBox" class="alert alert-warning" hidden="hidden">
+                            Are you sure the result is correct?
+                        </div>
 
                     </div>
                     <div class="modal-footer">
