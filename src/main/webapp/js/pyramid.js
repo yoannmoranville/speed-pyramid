@@ -94,6 +94,7 @@ function bindPyramidFunctions(isInChallengeDate) {
 
     $("#savematch").click(function() {
         console.log("saving match id:"+$("#matchform").data('matchid'));
+        $(this).attr("disabled", "disabled");
         $(this).text("Saving......");
         $.post("saveResults.html",
             {   matchid: $("#matchform").data('matchid'),
@@ -111,6 +112,7 @@ function bindPyramidFunctions(isInChallengeDate) {
             function(){
                 location.reload();
             }).fail(function(data) {
+                $(this).removeAttr("disabled");
                 console.log(data);
                 $("#resultsValidationBox").show();
                 $("#resultsValidationBox").html(data.responseJSON.errors);
