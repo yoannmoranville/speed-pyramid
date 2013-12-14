@@ -114,7 +114,7 @@ function bindPyramidFunctions(isInChallengeDate) {
             }).fail(function(data) {
                 console.log(data);
                 $("#resultsValidationBox").show();
-                $("#resultsValidationBox").html(data.responseText);
+                $("#resultsValidationBox").html(data.responseJSON.errors);
             })
 
         ;
