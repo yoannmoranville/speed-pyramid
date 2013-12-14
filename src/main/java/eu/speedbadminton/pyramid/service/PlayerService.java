@@ -12,9 +12,10 @@ import com.google.gson.Gson;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.utils.Result;
+import eu.speedbadminton.pyramid.model.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,11 @@ public class PlayerService {
         if (!mongoTemplate.collectionExists(Player.class)) {
             mongoTemplate.createCollection(Player.class);
         }
-        player.setId(UUID.randomUUID().toString());
         mongoTemplate.insert(player, COLLECTION_NAME_PLAYER);
     }
 
     public void delete(String playerId) {
-        Player player = getPlayerById(playerId);
+        Player player = getPlayerById(new ObjectId(playerId));
         delete(player);
     }
 
@@ -73,8 +73,8 @@ public class PlayerService {
     }
 
     public void swap(String challengerId, String challengeeId) {
-        Player challengee = getPlayerById(challengeeId);
-        Player challenger = getPlayerById(challengerId);
+        Player challengee = getPlayerById(new ObjectId(challengeeId));
+        Player challenger = getPlayerById(new ObjectId(challengerId));
 
         swap(challenger, challengee);
     }
@@ -91,6 +91,11 @@ public class PlayerService {
     }
 
     public Player getPlayerById(String playerId) {
+        getPlayerById(new ObjectId(playerId));
+        return mongoTemplate.findOne(new Query(Criteria.where("_id").is(playerId)), Player.class, COLLECTION_NAME_PLAYER);
+    }
+
+    public Player getPlayerById(ObjectId playerId) {
         return mongoTemplate.findOne(new Query(Criteria.where("_id").is(playerId)), Player.class, COLLECTION_NAME_PLAYER);
     }
 
@@ -228,10 +233,10 @@ public class PlayerService {
         mailService.sendEmailChangePassword(body, email, name);
     }
 
-    public List<String> getAvailablePlayers(String id) {
-        long yourPosition = getPlayerById(id).getPyramidPosition();
+    public List<Player> getAvailablePlayers(String id) {
+        long yourPosition = getPlayerById(new ObjectId(id)).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);
-        List<String> availablePlayerIds = new ArrayList<String>();
+        List<Player> availablePlayerIds = new ArrayList<Player>();
         for(long position = yourPosition-1; position >= untilPosition; position--) {
             Player player = getPlayerWithPosition(position);
 
@@ -244,17 +249,17 @@ public class PlayerService {
                 }
             }
             if(!isBusy)
-                availablePlayerIds.add(getPlayerWithPosition(position).getId());
+                availablePlayerIds.add(getPlayerWithPosition(position));
         }
         return availablePlayerIds;
     }
 
-    public Map<String,Player> getChallengablePlayers(Player forPlayer) {
+    public Map<ObjectId, Player> getChallengablePlayers(Player forPlayer) {
         if (forPlayer==null){
-            return new HashMap<String,Player>();
+            return new HashMap<ObjectId, Player>();
         }
 
-        Map<String,Player> players = new HashMap<String, Player>();
+        Map<ObjectId,Player> players = new HashMap<ObjectId, Player>();
 
         long yourPosition = getPlayerById(forPlayer.getId()).getPyramidPosition();
         long untilPosition = untilWhichPositionCanPlayerChallenge(yourPosition);

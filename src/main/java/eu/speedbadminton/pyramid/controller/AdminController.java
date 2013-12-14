@@ -99,12 +99,10 @@ public class AdminController {
         player.setEnabled(true);
         player.setRole(Player.Role.NONE);
         player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
-        if(StringUtils.hasText(player.getId())) {
-            playerService.update(player);
-        } else {
-            playerService.create(player);
-            playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
-        }
+
+        playerService.create(player);
+        playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
+
         return new ModelAndView("redirect:viewPlayers.html");
     }
 
@@ -152,9 +150,9 @@ public class AdminController {
         List<PlayerView> playersDisabled = new ArrayList<PlayerView>();
         for(Player player: playerService.getPlayers()) {
             if(player.isEnabled())
-                players.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
+                players.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId().toString())));
             else
-                playersDisabled.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId())));
+                playersDisabled.add(new PlayerView(player, !SecurityContextContainer.checkAvailability(player.getId().toString())));
         }
         players.addAll(playersDisabled);
         modelAndView.addObject("players", players);

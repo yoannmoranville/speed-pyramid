@@ -36,7 +36,7 @@ public final class SecurityContext implements HttpSessionBindingListener {
     protected SecurityContext(Player player) {
         role = player.getRole();
         admin = Player.Role.ADMIN.equals(role);
-        playerId = player.getId();
+        playerId = player.getId().toString();
         emailAddress = player.getEmail();
         name = player.getName();
     }

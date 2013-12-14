@@ -1,7 +1,8 @@
-package eu.speedbadminton.pyramid.utils;
+package eu.speedbadminton.pyramid.model;
 
-import eu.speedbadminton.pyramid.model.Player;
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class Result {
 
     private static final Logger LOG = Logger.getLogger(Result.class);
 
+    @Id
+    private ObjectId id;
+
     @DBRef
     private Player player1;
     @DBRef
@@ -28,6 +32,14 @@ public class Result {
     public Result(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     /**

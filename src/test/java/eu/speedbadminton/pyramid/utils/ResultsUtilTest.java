@@ -2,11 +2,13 @@ package eu.speedbadminton.pyramid.utils;
 
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.model.Result;
+import eu.speedbadminton.pyramid.model.Set;
+import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * User: Yoann Moranville
@@ -19,9 +21,9 @@ public class ResultsUtilTest {
     @Test
     public void isResultCorrectTest() {
         Player player1 = new Player();
-        player1.setId("A");
+        player1.setId(new ObjectId());
         Player player2 = new Player();
-        player2.setId("B");
+        player2.setId(new ObjectId());
 
         Result result = new Result(player1,player2);
         result.addSet(new Set(player1,player2,16,7)).addSet(new Set(player1,player2,16,8));
@@ -72,8 +74,8 @@ public class ResultsUtilTest {
     public void isWinnerCorrect(){
         Player one = new Player();
         Player two = new Player();
-        one.setId("one");
-        two.setId("two");
+        one.setId(new ObjectId());
+        two.setId(new ObjectId());
         Match m = new Match();
         m.setChallenger(one);
         m.setChallengee(two);
@@ -94,8 +96,8 @@ public class ResultsUtilTest {
     public void isLooserCorrect(){
         Player one = new Player();
         Player two = new Player();
-        one.setId("one");
-        two.setId("two");
+        one.setId(new ObjectId());
+        two.setId(new ObjectId());
         Match m = new Match();
         m.setChallenger(one);
         m.setChallengee(two);

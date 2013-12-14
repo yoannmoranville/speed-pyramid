@@ -4,7 +4,7 @@ import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
-import eu.speedbadminton.pyramid.utils.Result;
+import eu.speedbadminton.pyramid.model.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
