@@ -116,36 +116,52 @@
             </c:choose>
 
                 <div class="mybox" data-playerid="${player.id}">
-                    <span class="label label-primary">${player.pyramidPosition}</span> ${player.name}
-                    <div class="player_actions">
-                        <c:choose>
-                            <c:when test="${player.id == loggedPlayer.id}">
-                                <c:choose>
-                                    <c:when test="${currentMatch!=null}">
-                                        <span class="label label-primary">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="label label-primary">
-                                        That's you.
-                                        </span>
-                                    </c:otherwise>
-                                </c:choose>
-                                <c:if test="${player.id == loggedPlayer.id}">
+                    <c:set var="colorOfPositionLabel" value="label-primary" />
+                    <c:choose>
+                        <c:when test="${player.id == loggedPlayer.id}">
+                            <c:set var="colorOfPositionLabel" value="label-info" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${can_be_challenged && loggedPlayerIsFree}">
+                                <c:set var="colorOfPositionLabel" value="label-success" />
+                            </c:if>
+                            <c:if test="${currentMatch!=null}">
+                                <c:set var="colorOfPositionLabel" value="label-warning" />
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
 
-                                </c:if>
-                            </c:when>
-                            <c:otherwise>
-                                <c:if test="${can_be_challenged && loggedPlayerIsFree}">
-                                    <span class="label label-success">challenge me!</span>
-                                </c:if>
-                                <c:if test="${currentMatch!=null}">
-                                    <span class="label label-info">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
+                    <span class="label ${colorOfPositionLabel}">${player.pyramidPosition}</span>
+                    <div>${player.name}</div>
+                    <%--<div class="player_actions">--%>
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${player.id == loggedPlayer.id}">--%>
+                                <%--<c:choose>--%>
+                                    <%--<c:when test="${currentMatch!=null}">--%>
+                                        <%--<span class="label label-primary">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>--%>
+                                    <%--</c:when>--%>
+                                    <%--<c:otherwise>--%>
+                                        <%--<span class="label label-primary">--%>
+                                        <%--That's you.--%>
+                                        <%--</span>--%>
+                                    <%--</c:otherwise>--%>
+                                <%--</c:choose>--%>
+                                <%--<c:if test="${player.id == loggedPlayer.id}">--%>
+
+                                <%--</c:if>--%>
+                            <%--</c:when>--%>
+                            <%--<c:otherwise>--%>
+                                <%--<c:if test="${can_be_challenged && loggedPlayerIsFree}">--%>
+                                    <%--<span class="label label-success">challenge me!</span>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${currentMatch!=null}">--%>
+                                    <%--<span class="label label-info">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>--%>
+                                <%--</c:if>--%>
+                            <%--</c:otherwise>--%>
+                        <%--</c:choose>--%>
 
 
-                    </div>
+                    <%--</div>--%>
                 </div>
 
                 <!-- player profile + challenge dialog -->

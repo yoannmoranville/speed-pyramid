@@ -1,7 +1,9 @@
 package eu.speedbadminton.pyramid.service;
 
+import eu.speedbadminton.pyramid.model.Player;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,10 @@ public class PlayerServiceTest {
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(5), 2);
         Assert.assertEquals(playerService.untilWhichPositionCanPlayerChallenge(1), 1);
     }
+
+
+
+
 }
 
 /**

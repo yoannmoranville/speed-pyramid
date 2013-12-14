@@ -126,10 +126,10 @@ public class Player {
         this.enabled = enabled;
     }
 
-    @Override
-    public String toString() {
-        return "Player [id=" + id + ", name=" + name + ", pyramidPosition=" + pyramidPosition + ", email=" + email + ", role=" + role.toString() + ", gender=" + gender.toString() + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "Player [id=" + id + ", name=" + name + ", pyramidPosition=" + pyramidPosition + ", email=" + email + "]";
+//    }
 
     @Override
     public boolean equals(Object obj) {
