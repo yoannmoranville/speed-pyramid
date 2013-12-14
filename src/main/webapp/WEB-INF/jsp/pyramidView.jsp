@@ -238,7 +238,7 @@
             <div id="lastResults">
                 <h3>Waiting for Confirmation by Looser:</h3>
                 <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
-                    ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
+                    <span${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
                     <br/>
                 </c:forEach>
             </div>
@@ -247,7 +247,7 @@
             <div id="lastResults">
                 <h3>Your last matches:</h3>
                 <c:forEach items="${lastPlayerMatches}" var="lastResult">
-                    ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
+                    <span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
                     <br/>
                 </c:forEach>
             </div>
@@ -256,7 +256,7 @@
             <div id="lastResults">
                 <h3>Last Pyramid Matches:</h3>
                 <c:forEach items="${lastOverallMatches}" var="lastResult">
-                    ${lastResult.challenger.name} vs ${lastResult.challengee.name}: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
+                    <span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: ${lastResult.result} played on <fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" />
                     <br/>
                 </c:forEach>
             </div>
@@ -265,7 +265,7 @@
             <div id="lastResults">
                 <h3>Next Matches:</h3>
                 <c:forEach items="${openChallenges}" var="lastResult">
-                    ${lastResult.challenger.name} vs ${lastResult.challengee.name}: created on <fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" />
+                    <span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span>: created on <fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" />
                     <br/>
                 </c:forEach>
             </div>

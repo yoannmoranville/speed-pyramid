@@ -131,7 +131,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
         if(loggedPlayer.equals(looser)) {
             match.setConfirmed(true);
             matchService.update(match);
-            if(loggedPlayer.getPyramidPosition() > winner.getPyramidPosition()) {
+            if(loggedPlayer.getPyramidPosition() < winner.getPyramidPosition()) {
                 playerService.swap(loggedPlayer, winner);
             } else {
                 playerService.sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
