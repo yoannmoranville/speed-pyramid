@@ -133,19 +133,19 @@ public class Result {
         this.player2 = player2;
     }
 
-    @Override
-    public String toString() {
-        if (sets.size()==0){
-            return "no sets played";
-        }
-        String result = "";
-        Iterator<Set> it = sets.iterator();
-        while (it.hasNext()){
-            result += it.toString();
-            if (it.hasNext()){
-                result += ",";
-            }
-        }
-        return result;
-    }
+//    @Override
+//    public String toString() {
+//        if (sets.size()==0){
+//            return "no sets played";
+//        }
+//        String result = "";
+//        Iterator<Set> it = sets.iterator();
+//        while (it.hasNext()){
+//            result += it.toString();
+//            if (it.hasNext()){
+//                result += ",";
+//            }
+//        }
+//        return result;
+//    }
 }

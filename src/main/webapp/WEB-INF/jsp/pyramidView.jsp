@@ -14,8 +14,7 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            <c:if test="${not empty securityContext}">bindPyramidFunctions(${isInChallengeDate});</c:if>
-            <c:if test="${empty securityContext}">bindLoggedoutPyramidFunctions();</c:if>
+            bindPyramidFunctions(${isInChallengeDate});
         });
     </script>
 
@@ -189,7 +188,7 @@
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <c:if test="${loggedPlayerChallenge == null}">
                                     <c:if test="${can_be_challenged}">
-                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-challengee_player_name="${player.name}"">Challenge this player.</button>
+                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-challengee_player_name="${player.name}">Challenge this player.</button>
                                     </c:if>
                                     <c:if test="${!can_be_challenged}">
                                         <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
