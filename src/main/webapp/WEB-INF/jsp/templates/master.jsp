@@ -39,7 +39,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="viewPyramid.html">Speed Pyramid</a></li>
                         <c:if test="${not empty securityContext}">
-                            <li><a href="viewPlayerData.html">View your user data</a></li>
+                            <li><a href="viewPlayerData.html">Profile</a></li>
                             <c:if test="${securityContext.admin}">
                                 <li><a href="createPlayer.html">Create new player</a></li>
                                 <li><a href="viewPlayers.html">List of players</a></li>
