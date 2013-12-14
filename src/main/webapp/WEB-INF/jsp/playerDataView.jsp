@@ -117,7 +117,7 @@
 
     </div>
     <div class="well">
-        Upload picture:<br/>
+        <h3>Upload picture:</h3>
         <c:if test="${not empty erroravatar}">
             ${erroravatar}
             <br/>
