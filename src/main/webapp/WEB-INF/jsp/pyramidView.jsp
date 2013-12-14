@@ -235,10 +235,11 @@
             </c:forEach>
         </c:if>
 
+        <table id="borderless" class="table table-condensed borderless">
+
         <c:if test="${not empty waitingForConfirmationMatches}">
             <div id="lastResults">
-                <h3>Waiting for Confirmation by Looser:</h3>
-                <table class="table table-condensed">
+                <tr><td colspan="3"><h3>Waiting for Confirmation by Looser:</h3></td></tr>
                     <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
                         <c:set var="isChallengerWinner" value="span"/>
                         <c:set var="isChallengerLooser" value="strong"/>
@@ -252,13 +253,11 @@
                             <td>${lastResult.result}</td>
                         </tr>
                     </c:forEach>
-                </table>
             </div>
         </c:if>
         <c:if test="${not empty lastPlayerMatches}">
             <div id="lastResults">
-                <h3>Your last matches:</h3>
-                <table class="table table-condensed">
+                <tr><td colspan="3"><h3>Your last matches:</h3></td></tr>
                     <c:forEach items="${lastPlayerMatches}" var="lastResult">
                         <c:set var="isChallengerWinner" value="span"/>
                         <c:set var="isChallengerLooser" value="strong"/>
@@ -272,13 +271,12 @@
                             <td>${lastResult.result}</td>
                         </tr>
                     </c:forEach>
-                </table>
             </div>
         </c:if>
         <c:if test="${not empty lastOverallMatches}">
             <div id="lastResults">
-                <h3>Last Pyramid Matches:</h3>
-                <table class="table table-condensed">
+                <tr><td colspan="3"><h3>Last Pyramid Matches:</h3></td></tr>
+
                     <c:forEach items="${lastOverallMatches}" var="lastResult">
                         <c:set var="isChallengerWinner" value="span"/>
                         <c:set var="isChallengerLooser" value="strong"/>
@@ -292,32 +290,21 @@
                             <td>${lastResult.result}</td>
                         </tr>
                     </c:forEach>
-                </table>
             </div>
         </c:if>
         <c:if test="${not empty openChallenges}">
             <div id="lastResults">
-                <h3>Next Matches:</h3>
-                <table class="table table-condensed">
+                <tr><td colspan="3"><h3>Current Matches:</h3></td></tr>
                     <c:forEach items="${openChallenges}" var="lastResult">
-                        <c:set var="isChallengerWinner" value="span"/>
-                        <c:set var="isChallengerLooser" value="strong"/>
-                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
-                            <c:set var="isChallengerWinner" value="strong"/>
-                            <c:set var="isChallengerLooser" value="span"/>
-                        </c:if>
                         <tr>
                             <td><fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" /></td>
-                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
-                            <td></td>
+                            <td><span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span></td>
+                            <td><span class="label label-warning">Pending</span></td>
                         </tr>
                     </c:forEach>
-                </table>
             </div>
         </c:if>
-
-
-        <img alt="loader" src="images/loader.gif" class="hidden" />
+        </table>
     </div>
 
     <!-- Legend -->

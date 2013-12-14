@@ -106,3 +106,7 @@ body {
 .set {
     width: 74px;
 }
+
+#borderless td {
+    border: none;
+}
