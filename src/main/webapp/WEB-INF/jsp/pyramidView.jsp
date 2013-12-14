@@ -98,6 +98,7 @@
         </div><!-- /.modal -->
     </c:if>
 
+
     <div class="centermain">
         <c:set var="row_pos" value="1"/>
         <c:set var="max_per_row" value="1"/>
@@ -273,4 +274,15 @@
 
 
         <img alt="loader" src="images/loader.gif" class="hidden" />
+    </div>
+
+    <!-- Legend -->
+    <div class="jumbotron">
+        <h4>Legend
+            <span class="label label-info">That's you.</span>
+            <span class="label label-success">Free for a challenge</span>
+            <span class="label label-warning">Playing</span>
+            <span class="label label-primary">Lazy Player</span>
+
+        </h4>
     </div>
