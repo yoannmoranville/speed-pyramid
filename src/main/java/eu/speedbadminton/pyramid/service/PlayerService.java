@@ -186,7 +186,8 @@ public class PlayerService {
     public void sendEmailPassword(String name, String email, String password) {
         String body = "In order to connect to the pyramid system of Gekkos Berlin, you will need to use those credentials:\n" +
                 "Username: " + email + "\n" +
-                "Password: " + password;
+                "Password: " + password + "\n\n" +
+                "Link to connect: " + "http://www.gekkos-berlin.de/?page_id=2609";
 
         mailService.sendEmailPassword(body, email, name);
     }
