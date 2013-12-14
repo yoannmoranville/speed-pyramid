@@ -94,6 +94,7 @@ function bindPyramidFunctions(isInChallengeDate) {
 
     $("#savematch").click(function() {
         console.log("saving match id:"+$("#matchform").data('matchid'));
+        $(this).text("Saving......");
         $.post("saveResults.html",
             {   matchid: $("#matchform").data('matchid'),
                 challengerid: $("#matchform").data('challengerid'),
