@@ -248,7 +248,7 @@
                         <tr>
                             <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
                             <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
-                        <td>${lastResult.result}</td>
+                            <td>${lastResult.result}</td>
                         </tr>
                     </c:forEach>
                 </table>
