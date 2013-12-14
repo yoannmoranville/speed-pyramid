@@ -9,6 +9,7 @@ import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.model.Result;
 import eu.speedbadminton.pyramid.model.Set;
+import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
     @RequestMapping(value={"/saveResults"}, method = RequestMethod.POST)
     public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if(SecurityContext.get() == null) {
-            throw new IllegalAccessError("Please authenthicate");
+            throw new IllegalAccessError("Please authenticate");
         }
 
         Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
@@ -130,8 +131,11 @@ public class ResultsAjaxController extends AjaxAbstractController {
         if(loggedPlayer.equals(looser)) {
             match.setConfirmed(true);
             matchService.update(match);
-            playerService.swap(loggedPlayer, winner);
-
+            if(loggedPlayer.getPyramidPosition() < winner.getPyramidPosition()) {
+                playerService.swap(loggedPlayer, winner);
+            } else {
+                playerService.sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
+            }
         } else {
             match.setConfirmed(false);
             String validationId = PasswordGenerator.getRandomString();
