@@ -145,19 +145,30 @@ public class Result {
         this.player2 = player2;
     }
 
-//    @Override
-//    public String toString() {
-//        if (sets.size()==0){
-//            return "no sets played";
-//        }
-//        String result = "";
-//        Iterator<Set> it = sets.iterator();
-//        while (it.hasNext()){
-//            result += it.toString();
-//            if (it.hasNext()){
-//                result += ",";
-//            }
-//        }
-//        return result;
-//    }
+
+    private static final String SEPARATION_OF_POINT = ":";
+    private static final String SEPARATION_OF_SET = " - ";
+    @Override
+    public String toString() {
+        StringBuilder resultString = new StringBuilder();
+        resultString.append(this.getSet(1).getPointsPlayer1());
+        resultString.append(SEPARATION_OF_POINT);
+        resultString.append(this.getSet(1).getPointsPlayer2());
+
+        resultString.append(SEPARATION_OF_SET);
+
+        resultString.append(this.getSet(2).getPointsPlayer1());
+        resultString.append(SEPARATION_OF_POINT);
+        resultString.append(this.getSet(2).getPointsPlayer2());
+
+        if(this.getSet(3) != null) {
+            resultString.append(SEPARATION_OF_SET);
+
+            resultString.append(this.getSet(3).getPointsPlayer1());
+            resultString.append(SEPARATION_OF_POINT);
+            resultString.append(this.getSet(3).getPointsPlayer2());
+        }
+
+        return resultString.toString();
+    }
 }
