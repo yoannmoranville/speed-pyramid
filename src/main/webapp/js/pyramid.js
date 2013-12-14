@@ -112,7 +112,8 @@ function bindPyramidFunctions(isInChallengeDate) {
             function(){
                 location.reload();
             }).fail(function(data) {
-                $(this).removeAttr("disabled");
+                $("#savematch").removeAttr("disabled");
+                $("#savematch").text("Save Result");
                 console.log(data);
                 $("#resultsValidationBox").show();
                 $("#resultsValidationBox").html(data.responseJSON.errors);
