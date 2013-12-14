@@ -63,20 +63,20 @@
                                 <tr>
                                     <td>Set 1</td>
 
-                                    <td><input type="text" maxlength="2" name="set11" id="set11"/></td>
-                                    <td><input type="text" maxlength="2" name="set12" id="set12"/></td>
+                                    <td><input class="set" type="text" maxlength="2" name="set11" id="set11"/></td>
+                                    <td><input class="set" type="text" maxlength="2" name="set12" id="set12"/></td>
                                 </tr>
                                 <tr>
                                     <td>Set 2</td>
 
-                                    <td><input type="text" maxlength="2" name="set21" id="set21"/></td>
-                                    <td><input type="text" maxlength="2" name="set22" id="set22"/></td>
+                                    <td><input class="set" type="text" maxlength="2" name="set21" id="set21"/></td>
+                                    <td><input class="set" type="text" maxlength="2" name="set22" id="set22"/></td>
                                 </tr>
                                 <tr>
                                     <td>Set 3</td>
 
-                                    <td><input type="text" maxlength="2" name="set11" id="set31"/></td>
-                                    <td><input type="text" maxlength="2" name="set12" id="set32"/></td>
+                                    <td><input class="set" type="text" maxlength="2" name="set11" id="set31"/></td>
+                                    <td><input class="set" type="text" maxlength="2" name="set12" id="set32"/></td>
                                 </tr>
                             </table>
                             <label>Date of game </label>
