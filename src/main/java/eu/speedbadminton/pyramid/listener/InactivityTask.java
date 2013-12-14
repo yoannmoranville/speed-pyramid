@@ -5,6 +5,7 @@ import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
+import eu.speedbadminton.pyramid.utils.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +71,9 @@ public class InactivityTask {
                     } else */if(match.getMatchDate() == null) {
                         playerService.swap(match.getChallenger(), match.getChallengee());
                         match.setMatchDate(new Date());
-                        Result result = new Result(16, 0, 16, 0, null, null);
-                        match.setResult(ResultsUtil.createResultString(result));
+                        Result result = new Result(match.getChallenger(),match.getChallengee());
+                        result.addSet(new Set(match.getChallenger(),match.getChallengee(),16, 0))
+                              .addSet(new Set(match.getChallenger(),match.getChallengee(),16, 0));
                         playerService.sendEmailResults(match.getChallenger(), match.getChallengee(), true, result);
                     }
                     matchService.update(match);

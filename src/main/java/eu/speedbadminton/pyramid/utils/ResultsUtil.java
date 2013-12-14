@@ -15,59 +15,37 @@ public abstract class ResultsUtil {
 
     public static String createResultString(Result result) {
         StringBuilder resultString = new StringBuilder();
-        resultString.append(result.getSet1().getPointOfChallenger());
+        resultString.append(result.getSet(1).getPointsPlayer1());
         resultString.append(SEPARATION_OF_POINT);
-        resultString.append(result.getSet1().getPointOfChallengee());
+        resultString.append(result.getSet(1).getPointsPlayer2());
 
         resultString.append(SEPARATION_OF_SET);
 
-        resultString.append(result.getSet2().getPointOfChallenger());
+        resultString.append(result.getSet(2).getPointsPlayer1());
         resultString.append(SEPARATION_OF_POINT);
-        resultString.append(result.getSet2().getPointOfChallengee());
+        resultString.append(result.getSet(2).getPointsPlayer2());
 
-        if(result.getSet3() != null) {
+        if(result.getSet(3) != null) {
             resultString.append(SEPARATION_OF_SET);
 
-            resultString.append(result.getSet3().getPointOfChallenger());
+            resultString.append(result.getSet(3).getPointsPlayer1());
             resultString.append(SEPARATION_OF_POINT);
-            resultString.append(result.getSet3().getPointOfChallengee());
+            resultString.append(result.getSet(3).getPointsPlayer2());
         }
 
         return resultString.toString();
     }
 
-    public static Result parseResultString(String resultString) {
-        String[] sets = resultString.split(SEPARATION_OF_SET);
-
-        String[] pointsSet = sets[0].split(SEPARATION_OF_POINT);
-        Set set1 = new Set(Integer.parseInt(pointsSet[0]), Integer.parseInt(pointsSet[1]));
-
-        pointsSet = sets[1].split(SEPARATION_OF_POINT);
-        Set set2 = new Set(Integer.parseInt(pointsSet[0]), Integer.parseInt(pointsSet[1]));
-
-        Set set3 = null;
-        if(sets.length == 3 && sets[2] != null) {
-            pointsSet = sets[2].split(SEPARATION_OF_POINT);
-            set3 = new Set(Integer.parseInt(pointsSet[0]), Integer.parseInt(pointsSet[1]));
-        }
-
-        return new Result(set1, set2, set3);
-    }
-
-    public static boolean isChallengerWinner(String resultStr) {
-        return isChallengerWinner(parseResultString(resultStr));
-    }
-
     public static boolean isChallengerWinner(Result result) {
         int winningSet = 0;
-        if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {
+        if(result.getSet(1).getPointsPlayer1() > result.getSet(1).getPointsPlayer2()) {
             winningSet ++;
         }
-        if(result.getSet2().getPointOfChallenger() > result.getSet2().getPointOfChallengee()) {
+        if(result.getSet(2).getPointsPlayer1() > result.getSet(2).getPointsPlayer2()) {
             winningSet ++;
         }
-        if(result.getSet3() != null) {
-            if(result.getSet3().getPointOfChallenger() > result.getSet3().getPointOfChallengee()) {
+        if(result.getSet(3) != null) {
+            if(result.getSet(3).getPointsPlayer1() > result.getSet(3).getPointsPlayer2()) {
                 winningSet ++;
             }
         }
@@ -76,14 +54,14 @@ public abstract class ResultsUtil {
 
     public static Player getWinner(Match match, Result result) {
         int winningSet = 0;
-        if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {
+        if(result.getSet(1).getPointsPlayer1() > result.getSet(1).getPointsPlayer2()) {
             winningSet ++;
         }
-        if(result.getSet2().getPointOfChallenger() > result.getSet2().getPointOfChallengee()) {
+        if(result.getSet(2).getPointsPlayer1() > result.getSet(2).getPointsPlayer2()) {
             winningSet ++;
         }
-        if(result.getSet3() != null) {
-            if(result.getSet3().getPointOfChallenger() > result.getSet3().getPointOfChallengee()) {
+        if(result.getSet(3) != null) {
+            if(result.getSet(3).getPointsPlayer1() > result.getSet(3).getPointsPlayer2()) {
                 winningSet ++;
             }
         }
@@ -100,14 +78,14 @@ public abstract class ResultsUtil {
     // TODO: refactor!
     public static Player getLooser(Match match, Result result) {
         int winningSet = 0;
-        if(result.getSet1().getPointOfChallenger() > result.getSet1().getPointOfChallengee()) {
+        if(result.getSet(1).getPointsPlayer1() > result.getSet(1).getPointsPlayer2()) {
             winningSet ++;
         }
-        if(result.getSet2().getPointOfChallenger() > result.getSet2().getPointOfChallengee()) {
+        if(result.getSet(2).getPointsPlayer1() > result.getSet(2).getPointsPlayer2()) {
             winningSet ++;
         }
-        if(result.getSet3() != null) {
-            if(result.getSet3().getPointOfChallenger() > result.getSet3().getPointOfChallengee()) {
+        if(result.getSet(3) != null) {
+            if(result.getSet(3).getPointsPlayer1() > result.getSet(3).getPointsPlayer2()) {
                 winningSet ++;
             }
         }

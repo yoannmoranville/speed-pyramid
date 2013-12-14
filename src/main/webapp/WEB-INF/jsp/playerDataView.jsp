@@ -14,7 +14,7 @@
         <c:if test="${not empty matches}">
             <c:forEach items="${matches}" var="match">
                 <br/>
-                ${match.challenger.name} vs ${match.challengee.name}
+                ${match.player1.name} vs ${match.player2.name}
                 <c:choose>
                     <c:when test="${not empty match.matchDate}">
                         &nbsp;(${match.result} played on "<fmt:formatDate value="${match.matchDate}" pattern="dd-MM-yyyy" />")
@@ -35,15 +35,15 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">${match.challenger.name} vs. ${match.challengee.name}</h4>
+                                        <h4 class="modal-title" id="myModalLabel">${match.player1.name} vs. ${match.player2.name}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="matchform" data-matchid="${match.id}" data-challengerid="${match.challenger.id}" data-challengeeid="${match.challengee.id}">
+                                        <form id="matchform" data-matchid="${match.id}" data-challengerid="${match.player1.id}" data-challengeeid="${match.player2.id}">
                                             <table class="table">
                                                 <tr>
                                                     <th></th>
-                                                    <th>${match.challenger.name}</th>
-                                                    <th>${match.challengee.name}</th>
+                                                    <th>${match.player1.name}</th>
+                                                    <th>${match.player2.name}</th>
 
                                                 </tr>
 

@@ -47,11 +47,11 @@ function bindPyramidFunctions(isInChallengeDate) {
         $.post("confirmMatchResults.html", function(data){
             if(data.success == 'true'){
                 console.log("sucessfully confirmed lost match.");
-                $(this).attr("disabled", "disabled");
-                $(this).text("confirming result..."); //TODO: Lukas, I have now a bug on this line! - problem: both jquery and bootstrap have this method
+                $('#confirmLostMatch').attr("disabled", "disabled");
+                $('#confirmLostMatch').text("confirming result...");
                 setTimeout(new function() {
                     location.reload();
-                }, 1500);
+                }, 500);
             } else {
                 console.log(data);
                 alert("Sorry we could not confirm this result... Please contact an admin.");
@@ -68,15 +68,16 @@ function bindPyramidFunctions(isInChallengeDate) {
 
         if(confirm("Are you sure you want to challenge '" + challengee_name + "'?")) {
             $(this).attr("disabled", "disabled");
+            $(this).text("Challenging......")
             $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
                     console.log("sucessfully challenged. emails sent.");
-                    $(this).text("Player challenged."); //TODO: Lukas, I have now a bug on this line! - problem: both jquery and bootstrap have this method
                     setTimeout(new function() {
                         location.reload();
-                    }, 1500);
+                    }, 500);
                 } else {
                     $(this).removeAttr("disabled");
+                    $(this).text("Challenge Player.")
                     console.log(data);
                     alert("Sorry a problem occured, please contact admin...");
                 }
@@ -108,17 +109,15 @@ function bindPyramidFunctions(isInChallengeDate) {
                 results_set3_player2: $("#set32").val(),
                 datePlayed: $("#dateMatchPlayed").val()
             },
-            function(data){
+            function(){
+                location.reload();
+            }).fail(function(data) {
                 console.log(data);
-                if(data.errors) {
-                    alert("Error "+data.errors)
-                } else if(data.success == 'true'){
-                    alert("Results received, you will receive an email shortly.");
-                    location.reload();
-                } else {
-                    alert("Problem, please contact admin...");
-                }
-            });
+                $("#resultsValidationBox").show();
+                $("#resultsValidationBox").html(data.responseText);
+            })
+
+        ;
     });
 
     if(undefined != isInChallengeDate && isInChallengeDate != -1) {

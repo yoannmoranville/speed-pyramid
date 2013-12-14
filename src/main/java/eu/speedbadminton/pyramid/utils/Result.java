@@ -1,7 +1,12 @@
 package eu.speedbadminton.pyramid.utils;
 
-import org.apache.commons.lang.StringUtils;
+import eu.speedbadminton.pyramid.model.Player;
 import org.apache.log4j.Logger;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * User: Yoann Moranville
@@ -13,89 +18,134 @@ public class Result {
 
     private static final Logger LOG = Logger.getLogger(Result.class);
 
-    private Set set1;
-    private Set set2;
-    private Set set3;
+    @DBRef
+    private Player player1;
+    @DBRef
+    private Player player2;
 
-    public Result(Set set1, Set set2, Set set3) {
-        this.set1 = set1;
-        this.set2 = set2;
-        this.set3 = set3;
+    private List<Set> sets = new ArrayList<Set>();
+
+    public Result(Player player1, Player player2) {
+        this.player1 = player1;
+        this.player2 = player2;
     }
 
-    public Result(Integer set11, Integer set12, Integer set21, Integer set22, Integer set31, Integer set32) {
-        this.set1 = new Set(set11,set12);
-        this.set2 = new Set(set21,set22);
-        if(set31!=null && set32!=null) {
-            this.set3 = new Set(set31,set32);
-        } else {
-            this.set3 = null;
+    /**
+     *
+     * @param nr Set Number first Set is 1
+     * @return
+     */
+    public Set getSet(int nr){
+        int index = nr - 1;
+
+        if (sets.size()>index){
+            return sets.get(nr-1);
         }
+        return null;
     }
 
-    public Set getSet1() {
-        return set1;
+    public List<Set> getSets() {
+        return sets;
     }
 
-    public void setSet1(Set set1) {
-        this.set1 = set1;
+    public void setSets(List<Set> sets) {
+        if (sets.size()>3){
+            throw new IllegalArgumentException("Maximum of three Sets.");
+        }
+        this.sets = sets;
     }
 
-    public Set getSet2() {
-        return set2;
+    public Result addSet(Set set){
+        if (set==null){
+            throw new IllegalArgumentException("Set cannot be null.");
+        }
+        if ( ! (set.getPlayer1().equals(this.getPlayer1()) && set.getPlayer2().equals(this.getPlayer2()))){
+            throw new IllegalArgumentException("The result and match players must be the same in same order.");
+        }
+
+        if (this.sets.size()>=3){
+            throw new IllegalArgumentException("Maximum of three Sets.");
+        }
+
+        this.sets.add(set);
+        return this;
     }
 
-    public void setSet2(Set set2) {
-        this.set2 = set2;
-    }
-
-    public Set getSet3() {
-        return set3;
-    }
-
-    public void setSet3(Set set3) {
-        this.set3 = set3;
-    }
-
+    /**
+     * rule #1 Result is correct if set1 and set2 are valid/completed AND set3 is null AND both sets are won by same player
+     * rule #2 Result is correct if set1, set2, set3 are valid AND set1 and set2 have not the same winner
+     * @return
+     */
     public boolean isResultCorrect() {
-        final int SET_POINT = 16;
-        final int MINIMUM_DIFF = 2;
-        int winningSetForChallenger = 0;
-        int winningSetForChallengee = 0;
-        Set set;
-
-        for(int i = 1; i <= 3; i++) {
-            if(i == 1) {
-                set = this.getSet1();
-            } else if(i == 2) {
-                set = this.getSet2();
-            } else {
-                set = this.getSet3();
-                if(set == null) {
-                    break;
-                } else if (winningSetForChallenger == 2 || winningSetForChallengee == 2) {
-                    return false;
-                }
-            }
-
-            if(set.getPointOfChallengee() < 0 || set.getPointOfChallenger() < 0) {
-                return false;
-            }
-
-            if(set.getPointOfChallengee() == SET_POINT && set.getPointOfChallenger() <= (SET_POINT - MINIMUM_DIFF)) {
-                winningSetForChallengee++;
-            } else if(set.getPointOfChallenger() == SET_POINT && set.getPointOfChallengee() <= (SET_POINT - MINIMUM_DIFF)) {
-                winningSetForChallenger++;
-            } else if(set.getPointOfChallengee() > SET_POINT && (set.getPointOfChallengee() - set.getPointOfChallenger() == MINIMUM_DIFF)) {
-                winningSetForChallengee++;
-            } else if(set.getPointOfChallenger() > SET_POINT && (set.getPointOfChallenger() - set.getPointOfChallengee() == MINIMUM_DIFF)) {
-                winningSetForChallenger++;
-            } else {
-                return false;
+        if (getSet(1)==null||getSet(2)==null){
+            return false;
+        }
+        // rule #1
+        if (getSet(1).setCompleted() && getSet(2).setCompleted() && getSet(3) == null){
+            return getSet(1).getWinner().equals(getSet(2).getWinner());
+        }
+        // rule #2
+        else if (getSet(1).setCompleted() && getSet(2).setCompleted() && getSet(3)!=null && getSet(3).setCompleted()){ // all sets completed
+            if (! getSet(1).getWinner().equals(getSet(2).getWinner())) { // if set1 and set2 won by different players
+                return true;
             }
         }
-        return winningSetForChallenger == 2 || winningSetForChallengee == 2;
+
+        return false;
     }
 
+    public Player getMatchWinner(){
+        if (!isResultCorrect()) {
+            return null;
+        }
 
+        if (getSet(1).getWinner().equals(getSet(2).getWinner())){
+            return getSet(1).getWinner();
+        } else {
+            return getSet(3).getWinner();
+        }
+
+    }
+
+    public Player getMatchLooser(){
+        Player winner = getMatchWinner();
+        if (player1.equals(winner)){
+            return player2;
+        } else if (player2.equals(winner)){
+            return player1;
+        }
+        return null;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    @Override
+    public String toString() {
+        if (sets.size()==0){
+            return "no sets played";
+        }
+        String result = "";
+        Iterator<Set> it = sets.iterator();
+        while (it.hasNext()){
+            result += it.toString();
+            if (it.hasNext()){
+                result += ",";
+            }
+        }
+        return result;
+    }
 }

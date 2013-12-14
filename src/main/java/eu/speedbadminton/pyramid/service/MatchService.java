@@ -130,8 +130,9 @@ public class MatchService {
         Match match = getUnconfirmedMatch(loggedPlayer);
 
         if (match!=null){
-            Result result = ResultsUtil.parseResultString(match.getResult());
-            if (ResultsUtil.getWinner(match,result).equals(loggedPlayer)){
+
+            Result result = match.getResult();
+            if (result.getMatchWinner().equals(loggedPlayer)){
                 return match;
             }
         }
@@ -146,8 +147,8 @@ public class MatchService {
         Match match = getUnconfirmedMatch(loggedPlayer);
 
         if (match!=null){
-            Result result = ResultsUtil.parseResultString(match.getResult());
-            if (ResultsUtil.getLooser(match, result).equals(loggedPlayer)){
+            Result result = match.getResult();
+            if (result.getMatchLooser().equals(loggedPlayer)){
                 return match;
             }
         }

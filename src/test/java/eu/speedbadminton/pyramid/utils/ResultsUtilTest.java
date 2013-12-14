@@ -5,6 +5,9 @@ import eu.speedbadminton.pyramid.model.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * User: Yoann Moranville
  * Date: 06/11/2013
@@ -15,15 +18,53 @@ public class ResultsUtilTest {
 
     @Test
     public void isResultCorrectTest() {
-        Result result = new Result(2, 16, 20, 18, 7, 16);
+        Player player1 = new Player();
+        player1.setId("A");
+        Player player2 = new Player();
+        player2.setId("B");
+
+        Result result = new Result(player1,player2);
+        result.addSet(new Set(player1,player2,16,7)).addSet(new Set(player1,player2,16,8));
+        Assert.assertTrue("Player A wins in 2 sets",result.isResultCorrect());
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,0,16)).addSet(new Set(player1,player2,0,16));
         Assert.assertTrue(result.isResultCorrect());
-        result = new Result(2, 16, 18, 20, null, null);
+
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,16,10)).addSet(new Set(player1, player2, 11, 16)).addSet(new Set(player1,player2,16,5));
         Assert.assertTrue(result.isResultCorrect());
-        result = new Result(2, 16, 21, 18, 7, 16);
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,10,16)).addSet(new Set(player1,player2,20,18)).addSet(new Set(player1,player2,16,5));
+        Assert.assertTrue(result.isResultCorrect());
+
+        // unfinished matches
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,10,10));
         Assert.assertFalse(result.isResultCorrect());
-        result = new Result(16, 0, 16, 5, 3, 16);
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1, player2, 16, 10));
         Assert.assertFalse(result.isResultCorrect());
-        result = new Result(16, 0, 16, -2, null, null);
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,10,10)).addSet(new Set(player1,player2,5,4));
+        Assert.assertFalse(result.isResultCorrect());
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,16,10)).addSet(new Set(player1,player2,5,16));
+        Assert.assertFalse(result.isResultCorrect());
+
+        // illegal 3rd set
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,1,16)).addSet(new Set(player1,player2,5,16)).addSet(new Set(player1,player2,16,0));
+        Assert.assertFalse(result.isResultCorrect());
+
+        // negative stuff
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,-16,10)).addSet(new Set(player1,player2,-5,16));
         Assert.assertFalse(result.isResultCorrect());
     }
 
@@ -38,14 +79,14 @@ public class ResultsUtilTest {
         m.setChallengee(two);
 
         // challenger is winner
-        Result result = new Result(16, 1, 16, 5,null,null);
-        Player winner = ResultsUtil.getWinner(m,result);
-        Assert.assertTrue(one.equals(winner));
+        Result result = new Result(one,two);
+        result.addSet(new Set(one,two,16,1)).addSet(new Set(one,two,16,5));
+        Assert.assertTrue(one.equals(result.getMatchWinner()));
 
         // challengee is winner;
-        result = new Result(1, 16, 1, 16,null,null);
-        winner = ResultsUtil.getWinner(m,result);
-        Assert.assertTrue(two.equals(winner));
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(one,two,1,16)).addSet(new Set(one,two,6,16));
+        Assert.assertTrue(two.equals(result.getMatchWinner()));
 
     }
 
@@ -60,13 +101,9 @@ public class ResultsUtilTest {
         m.setChallengee(two);
 
         // challenger is winner
-        Result result = new Result(16, 1, 16, 5,null,null);
-        Player looser = ResultsUtil.getLooser(m,result);
-        Assert.assertTrue(two.equals(looser));
+        Result result = new Result(one,two);
+        result.addSet(new Set(one,two,16,1)).addSet(new Set(one,two,16,5));
+        Assert.assertTrue(two.equals(result.getMatchLooser()));
 
-        // challengee is winner;
-        result = new Result(1, 16, 1, 16,null,null);
-        looser = ResultsUtil.getLooser(m,result);
-        Assert.assertTrue(one.equals(looser));
     }
 }
