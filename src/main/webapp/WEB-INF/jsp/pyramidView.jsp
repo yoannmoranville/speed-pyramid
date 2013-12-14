@@ -26,8 +26,8 @@
     <!-- Player has to confirm a match result where he lost -->
     <c:if test="${unconfirmedLostMatch!=null}">
         <div class="jumbotron">
-            ${unconfirmedLostMatch.challenger.name} vs ${unconfirmedLostMatch.challengee.name} <span class="label label-danger">You lost. (${unconfirmedLostMatch.result})</span>
-            <button id="confirmLostMatch" class="btn btn-success" data-matchid="${unconfirmedLostMatch.id}">Confirm Result</button>
+            ${unconfirmedLostMatch.challenger.name} vs ${unconfirmedLostMatch.challengee.name} <span class="label label-danger">You lost. ${unconfirmedLostMatch.result}</span>
+            <span>&nbsp;</span><button id="confirmLostMatch" class="btn btn-success" data-matchid="${unconfirmedLostMatch.id}">Confirm Result</button>
         </div>
     </c:if>
     <!-- Player is waiting for confirmation of Looser -->
@@ -84,6 +84,11 @@
                             <input type="text" id="dateMatchPlayed" class="dateMatchPlayed" name="dateMatchPlayed" data-date-format="dd-mm-yyyy" />
 
                         </form>
+                        <div id="resultsValidationBox" class="alert alert-danger">
+
+                        </div>
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

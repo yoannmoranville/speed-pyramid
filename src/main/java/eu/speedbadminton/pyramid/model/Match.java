@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.model;
 
+import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
@@ -24,17 +25,15 @@ public class Match {
     @DBRef
     private Player challengee;
 
-    private WINNER winner;
-
     private Date creation;
 
     private Date matchDate;
 
-    private String result;
-
     private String validationId;
 
     private boolean confirmed;
+
+    private Result result;
 
     public String getId() {
         return id;
@@ -76,14 +75,6 @@ public class Match {
         this.matchDate = matchDate;
     }
 
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
     public String getValidationId() {
         return validationId;
     }
@@ -92,22 +83,20 @@ public class Match {
         this.validationId = validationId;
     }
 
-    public WINNER getWinner() {
-        return winner;
-    }
-
-    public void setWinner(WINNER winner) {
-        this.winner = winner;
-    }
-
     public boolean isConfirmed() {
         return confirmed;
     }
 
     public void setConfirmed(boolean confirmed) {
-        if(confirmed)
-            winner = ResultsUtil.isChallengerWinner(getResult())?WINNER.CHALLENGER:WINNER.CHALLENGEE;
         this.confirmed = confirmed;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
     }
 
     @Override
@@ -115,8 +104,14 @@ public class Match {
         return "Match [id=" + id + ", challenger=" + challenger + ", challengee=" + challengee + ", matchDate=" + matchDate + ", result=" + result + "]";
     }
 
-    public enum WINNER {
-        CHALLENGER,
-        CHALLENGEE
+    public boolean isChallengerWinner(){
+        if (this.getResult()==null || !this.getResult().isResultCorrect()){
+            return false;
+        }
+
+        return this.getResult().getMatchWinner().equals(this.getChallenger());
+
     }
+
+
 }

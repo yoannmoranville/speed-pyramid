@@ -44,7 +44,7 @@ public class ConfirmResultsController {
 
             Player challenger = match.getChallenger();
             Player challengee = match.getChallengee();
-            Result result = ResultsUtil.parseResultString(match.getResult());
+            Result result = match.getResult();
             boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
             if(isChallengerWinner) {
                 playerService.swap(challenger, challengee);

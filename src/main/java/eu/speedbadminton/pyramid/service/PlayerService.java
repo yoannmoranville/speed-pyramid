@@ -172,7 +172,7 @@ public class PlayerService {
                 "\n" +
                 winnerName + " won!\n" +
                 "\n" +
-                asker.getName() + " vs " + asked.getName() + ": " + ResultsUtil.createResultString(result);
+                asker.getName() + " vs " + asked.getName() + ": " + result;
 
         mailService.sendEmailResults(asker.getEmail(), body, asked.getEmail(), asked.getName(), asker.getName());
         return true;

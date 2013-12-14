@@ -9,18 +9,17 @@ import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
 import eu.speedbadminton.pyramid.utils.Result;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
+import eu.speedbadminton.pyramid.utils.Set;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +42,12 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
     @RequestMapping(value={"/saveResults"}, method = RequestMethod.POST)
     public void saveMatchResult(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(SecurityContext.get() == null) {
+            throw new IllegalAccessError("Please authenthicate");
+        }
+
+        Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
+
         Writer writer = getResponseWriter(response);
 
         String matchId = request.getParameter("matchid");
@@ -50,26 +55,34 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
         String challengeeId = request.getParameter("challengeeid");
         String challengerId = request.getParameter("challengerid");
-        String loggedplayerId = request.getParameter("loggedplayerid");
+
+        Player challengeePlayer = playerService.getPlayerById(challengeeId);
+        Player challengerPlayer = playerService.getPlayerById(challengerId);
+
+        Result result = new Result(challengerPlayer,challengeePlayer);
 
         String resultSet1Player1 = request.getParameter("results_set1_player1");
         String resultSet1Player2 = request.getParameter("results_set1_player2");
+        if (!resultSet1Player1.isEmpty()&& !resultSet1Player2.isEmpty()){
+            result.addSet(new Set(challengerPlayer,challengeePlayer,getPointsInteger(resultSet1Player1),getPointsInteger(resultSet1Player2)));
+        }
         String resultSet2Player1 = request.getParameter("results_set2_player1");
         String resultSet2Player2 = request.getParameter("results_set2_player2");
+        if (!resultSet2Player1.isEmpty() && ! resultSet2Player2.isEmpty()){
+            result.addSet(new Set(challengerPlayer,challengeePlayer,getPointsInteger(resultSet2Player1),getPointsInteger(resultSet2Player2)));
+        }
         String resultSet3Player1 = request.getParameter("results_set3_player1");
         String resultSet3Player2 = request.getParameter("results_set3_player2");
-        Result result = new Result(getPointsInteger(resultSet1Player1),
-                        getPointsInteger(resultSet1Player2),
-                        getPointsInteger(resultSet2Player1),
-                        getPointsInteger(resultSet2Player2),
-                        getPointsInteger(resultSet3Player1),
-                        getPointsInteger(resultSet3Player2));
+        if (!resultSet3Player1.isEmpty() && !resultSet3Player2.isEmpty()){
+            result.addSet(new Set(challengerPlayer, challengeePlayer,getPointsInteger(resultSet3Player1),getPointsInteger(resultSet3Player2)));
+        }
 
         boolean continueTask = true;
         Date date = null;
         try {
             String datePlayed = request.getParameter("datePlayed");
             date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(datePlayed);
+            match.setMatchDate(date);
         } catch(Exception e) {
             writeSimpleData(writer, "errors", "The date is not in the correct dd-MM-yyyy format (example: 15-10-2013 for 15th October 2013)");
             continueTask = false;
@@ -79,7 +92,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
             continueTask = false;
         }
 
-        if(continueTask && !isDateCorrect(match.getCreation(), date)) {
+        if(continueTask && !isDateCorrect(match.getCreation(), match.getMatchDate())) {
             writeSimpleData(writer, "errors", "The date is prior to the creation date, it should be later than the creation date, but not after current date... Creation date was: " + match.getCreation());
             continueTask = false;
         }
@@ -88,46 +101,51 @@ public class ResultsAjaxController extends AjaxAbstractController {
             continueTask = false;
         }
 
+        // validation completed
         if(continueTask) {
-            String resultString = ResultsUtil.createResultString(result);
 
-            match.setResult(resultString);
-            match.setMatchDate(date);
-
-            Player loggedPlayer = playerService.getPlayerById(loggedplayerId);
-            Player challengeePlayer = playerService.getPlayerById(challengeeId);
-            Player challengerPlayer = playerService.getPlayerById(challengerId);
-            Player winner = ResultsUtil.getWinner(match,result);
-            Player looser = ResultsUtil.getLooser(match,result);
-            boolean isLoggedPlayerLooser = loggedPlayer.equals(looser);
-
-            if(isLoggedPlayerLooser) {
-                match.setConfirmed(true);
-                matchService.update(match);
-                if(challengeePlayer.equals(loggedPlayer)) {
-                    playerService.swap(loggedPlayer, winner);
-                } else {
-                    playerService.sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
-                }
-            } else {
-                String validationId = PasswordGenerator.getRandomString();
-                match.setValidationId(validationId);
-                matchService.update(match);
-                String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
-                LOG.info("New Validation Link: "+validationLink);
-
-                if(loggedPlayer.equals(winner)) {
-                    playerService.sendEmailResultsLooserValidation(looser, winner, result, validationLink);
-                    playerService.sendEmailResultsWaitingForLooserValidation(winner, looser, result);
-                }
-            }
+            processResult(match, result,loggedPlayer,challengerPlayer,challengeePlayer);
+            response.setStatus(200);
             writeSimpleData(writer, "success", "true");
         } else {
+            response.setStatus(400);
             writeSimpleData(writer, "success", "false");
         }
 
         closeWriter(writer);
 
+    }
+
+    /**
+     * Save this result to DB - if logged Player lost, just switch positions. if logged Player won, the looser has to confirm.
+     * @param match
+     * @param result
+     * @param loggedPlayer
+     * @param challengerPlayer
+     * @param challengeePlayer
+     */
+    private void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) {
+        match.setResult(result);
+
+        Player winner = result.getMatchWinner();
+        Player looser = result.getMatchLooser();
+
+        if(loggedPlayer.equals(looser)) {
+            match.setConfirmed(true);
+            matchService.update(match);
+            playerService.swap(loggedPlayer, winner);
+
+        } else {
+            match.setConfirmed(false);
+            String validationId = PasswordGenerator.getRandomString();
+            match.setValidationId(validationId);
+            matchService.update(match);
+
+            String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
+            LOG.info("New Validation Link: "+validationLink);
+
+            playerService.sendEmailResultsLooserValidation(looser, winner, result, validationLink);
+        }
     }
 
 
@@ -177,11 +195,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
             matchService.update(match);
             playerService.swap(match.getChallenger(),match.getChallengee());
 
-            // we have to get the result and determin winner for the email...
-            Result result = ResultsUtil.parseResultString(match.getResult());
-            boolean isChallengerWinner = ResultsUtil.isChallengerWinner(result);
-            playerService.sendEmailResults(match.getChallenger(),match.getChallengee(), isChallengerWinner, result);
-
+            // TODO we have to get the result and determin winner for the email...
             writeSimpleData(writer,"success","true");
         } else {
             writeSimpleData(writer, "success", "false");
