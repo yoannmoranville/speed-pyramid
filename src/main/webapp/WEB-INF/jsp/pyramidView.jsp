@@ -313,10 +313,8 @@
     <!-- Legend -->
     <div class="jumbotron">
         <h4>Legend
-            <span class="label label-info">That's you.</span>
+            <span class="label label-info">That's you</span>
             <span class="label label-success">Free for a challenge</span>
             <span class="label label-warning">Playing</span>
-            <span class="label label-primary">Lazy Player</span>
-
         </h4>
     </div>
