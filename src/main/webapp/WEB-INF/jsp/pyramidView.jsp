@@ -111,6 +111,13 @@
             <c:set var="player" value="${playerViewModel.player}" />
             <c:set var="currentMatch" value="${playerViewModel.currentMatch}" />
             <c:set var="pastMatches" value="${playerViewModel.pastMatches}" />
+            <c:set var="wonMatches" value="${playerViewModel.wonMatches}" />
+            <c:set var="lostMatches" value="${playerViewModel.lostMatches}" />
+            <c:set var="challengerWonMatchesCount" value="${playerViewModel.challengerWonMatchesCount}" />
+            <c:set var="challengerLostMatchesCount" value="${playerViewModel.challengerLostMatchesCount}" />
+            <c:set var="challengeeWonMatchesCount" value="${playerViewModel.challengeeWonMatchesCount}" />
+            <c:set var="challengeeLostMatchesCount" value="${playerViewModel.challengeeLostMatchesCount}" />
+
 
             <c:set var="can_be_challenged" value="${playerViewModel.free}"/>
 
@@ -161,7 +168,9 @@
                                     <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
                                     <p>${player.gender}</p>
                                     <p>Sign up date: <fmt:formatDate value="${player.signUpDate}" pattern="dd-MM-yyyy" /></p>
-                                    <p>Matches won/lost: ${playerViewModel.wonMatches}/${playerViewModel.lostMatches}</p>
+                                    <p>Matches won/lost: ${wonMatches}/${lostMatches}</p>
+                                    <p>Challenges won/lost: ${challengerWonMatchesCount}/${challengerLostMatchesCount}</p>
+                                    <p>Challenged won/lost: ${challengeeWonMatchesCount}/${challengeeLostMatchesCount}</p>
                                 </div>
                                 <c:if test="${not empty pastMatches}">
                                     <div class="well" id="lastResultPlayer_${player.id}">
@@ -176,7 +185,9 @@
                                 <c:if test="${currentMatch!=null}">
                                     <div class="well" id="openChallengePlayer_${player.id}">
                                         <h5>Open challenge:</h5>
-                                        <tr><td><fmt:formatDate value="${currentMatch.matchDate}" pattern="dd-MM-yyyy" /></td><td>${currentMatch.challenger.name} vs. ${currentMatch.challengee.name}</td><td>${currentMatch.result}</td></tr>
+                                        <table class="table">
+                                            <tr><td><fmt:formatDate value="${currentMatch.matchDate}" pattern="dd-MM-yyyy" /></td><td>${currentMatch.challenger.name} vs. ${currentMatch.challengee.name}</td><td>${currentMatch.result}</td></tr>
+                                        </table>
                                     </div>
                                 </c:if>
                             </div>

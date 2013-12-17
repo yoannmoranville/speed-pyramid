@@ -1,10 +1,7 @@
 package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
-import eu.speedbadminton.pyramid.model.Match;
-import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.model.PlayerViewModel;
-import eu.speedbadminton.pyramid.model.PyramidViewModel;
+import eu.speedbadminton.pyramid.model.*;
 import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
@@ -72,6 +69,23 @@ public class PyramidController {
             playerViewModel.setFree(free);
             playerViewModel.setWonMatches(matchService.getMatchesWon(p));
             playerViewModel.setLostMatches(matchService.getMatchesLost(p));
+
+            for(Match match : playerViewModel.getPastMatches()) {
+                Result result = match.getResult();
+                if(p.equals(match.getChallenger())) {
+                    if(p.equals(result.getMatchWinner())) {
+                        playerViewModel.setChallengerWonMatchesCount(playerViewModel.getChallengerWonMatchesCount() + 1);
+                    } else {
+                        playerViewModel.setChallengerLostMatchesCount(playerViewModel.getChallengerLostMatchesCount() + 1);
+                    }
+                } else if(p.equals(match.getChallengee())) {
+                    if(p.equals(result.getMatchWinner())) {
+                        playerViewModel.setChallengeeWonMatchesCount(playerViewModel.getChallengeeWonMatchesCount() + 1);
+                    } else {
+                        playerViewModel.setChallengeeLostMatchesCount(playerViewModel.getChallengeeLostMatchesCount() + 1);
+                    }
+                }
+            }
 
             playerViewModelList.add(playerViewModel);
         }

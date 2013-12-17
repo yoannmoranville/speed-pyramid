@@ -12,12 +12,20 @@ public class PlayerViewModel {
     Player player;
     boolean free;
     Match currentMatch;
-    int wonMatches;
-    int lostMatches;
+    private int wonMatches;
+    private int lostMatches;
+    private int challengeeWonMatchesCount;
+    private int challengeeLostMatchesCount;
+    private int challengerWonMatchesCount;
+    private int challengerLostMatchesCount;
     List<Match> pastMatches = new ArrayList<Match>();
 
     public PlayerViewModel(Player p) {
         this.player = p;
+        this.challengeeWonMatchesCount = 0;
+        this.challengeeLostMatchesCount = 0;
+        this.challengerWonMatchesCount = 0;
+        this.challengerLostMatchesCount = 0;
     }
 
     public Player getPlayer() {
@@ -46,6 +54,38 @@ public class PlayerViewModel {
 
     public void addPastMatch(Match match){
         this.pastMatches.add(match);
+    }
+
+    public int getChallengeeWonMatchesCount() {
+        return challengeeWonMatchesCount;
+    }
+
+    public void setChallengeeWonMatchesCount(int challengeeWonMatchesCount) {
+        this.challengeeWonMatchesCount = challengeeWonMatchesCount;
+    }
+
+    public int getChallengeeLostMatchesCount() {
+        return challengeeLostMatchesCount;
+    }
+
+    public void setChallengeeLostMatchesCount(int challengeeLostMatchesCount) {
+        this.challengeeLostMatchesCount = challengeeLostMatchesCount;
+    }
+
+    public int getChallengerWonMatchesCount() {
+        return challengerWonMatchesCount;
+    }
+
+    public void setChallengerWonMatchesCount(int challengerWonMatchesCount) {
+        this.challengerWonMatchesCount = challengerWonMatchesCount;
+    }
+
+    public int getChallengerLostMatchesCount() {
+        return challengerLostMatchesCount;
+    }
+
+    public void setChallengerLostMatchesCount(int challengerLostMatchesCount) {
+        this.challengerLostMatchesCount = challengerLostMatchesCount;
     }
 
     public boolean isFree() {

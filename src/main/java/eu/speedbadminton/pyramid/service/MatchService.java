@@ -227,4 +227,22 @@ public class MatchService {
         }
         return number;
     }
+
+//    public List<Match> getChallengeeMatches(Player player) {
+//        return getChallengeeOrChallengedGames(player, false);
+//    }
+//    public List<Match> getChallengerMatches(Player player) {
+//        return getChallengeeOrChallengedGames(player, true);
+//    }
+//    private List<Match> getChallengeeOrChallengedGames(Player player, boolean isChallenger) {
+//        if(player == null)
+//            return Collections.emptyList();
+//        Criteria criteria = Criteria.where("matchDate").exists(true).and("confirmed").is(true);
+//        if(isChallenger)
+//            criteria.andOperator(Criteria.where("challenger.$id").is(player.getId()));
+//        else
+//            criteria.andOperator(Criteria.where("challengee.$id").is(player.getId()));
+//        Query query = new Query(criteria);
+//        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+//    }
 }
