@@ -93,7 +93,6 @@ public class AdminController {
         }
 
         String password = PasswordGenerator.getRandomString();
-//        LOG.info("Password for "+player.getEmail()+" is "+password);
         player.setPassword(PasswordEncryption.generateDigest(password));
 
         player.setEnabled(true);
