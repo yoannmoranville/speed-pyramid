@@ -84,8 +84,10 @@ public class PyramidController {
         pyramidViewModel.setOpenChallenges(matchService.getOpenChallenges());
         modelAndView.addObject("pyramidViewModel", pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
-
         modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge()));
+        modelAndView.addObject("bestMale", playerService.getBestMale());
+        modelAndView.addObject("bestFemale", playerService.getBestFemale());
+
 
         return modelAndView;
     }

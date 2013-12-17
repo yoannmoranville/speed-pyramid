@@ -121,9 +121,11 @@
 
                 <div class="mybox" data-playerid="${player.id}">
                     <c:set var="colorOfPositionLabel" value="label-primary" />
+                    <c:set var="isYou" value="" />
                     <c:choose>
                         <c:when test="${player.id == loggedPlayer.id}">
                             <c:set var="colorOfPositionLabel" value="label-info" />
+                            <c:set var="isYou" value=" class='bold'" />
                         </c:when>
                         <c:otherwise>
                             <c:if test="${can_be_challenged && loggedPlayerIsFree}">
@@ -136,7 +138,7 @@
                     </c:choose>
 
                     <span class="label ${colorOfPositionLabel}">${player.pyramidPosition}</span>
-                    <div>${player.name}</div>
+                    <div${isYou}>${player.name}</div>
                 </div>
 
                 <!-- player profile + challenge dialog -->
@@ -213,7 +215,6 @@
         <div class="jumbotron">
             <h5>Legend
                 <c:if test="${not empty securityContext}">
-                    <span class="label label-info bold strong">${loggedPlayer.name}</span>
                     <span class="label label-success">Free for a challenge</span>
                 </c:if>
                 <span class="label label-warning">Playing</span>
@@ -289,4 +290,8 @@
             </div>
         </c:if>
         </table>
+
+        <div>Best male: ${bestMale.name} (Rank ${bestMale.pyramidPosition})</div>
+        <div>Best female: ${bestFemale.name} (Rank ${bestFemale.pyramidPosition})</div>
+
     </div>

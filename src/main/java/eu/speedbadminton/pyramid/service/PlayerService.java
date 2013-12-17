@@ -299,6 +299,21 @@ public class PlayerService {
         return busyPlayerIds;
     }
 
+    public Player getBestMale() {
+        return getBestPlayer(Player.Gender.MALE);
+    }
+
+    public Player getBestFemale() {
+        return getBestPlayer(Player.Gender.FEMALE);
+    }
+
+    private Player getBestPlayer(Player.Gender gender) {
+        Query query = new Query(Criteria.where("gender").is(gender));
+        query.addCriteria(Criteria.where("pyramidPosition").gt(-1));
+        query.with(new Sort(Sort.Direction.ASC, "pyramidPosition"));
+        return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
+    }
+
     //todo: Add this in a helper static class
     public int getDaysUntilTimeout(Match match) {
         if(match == null || match.getCreation() == null)
