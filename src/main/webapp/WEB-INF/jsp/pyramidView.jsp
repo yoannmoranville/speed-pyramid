@@ -137,35 +137,6 @@
 
                     <span class="label ${colorOfPositionLabel}">${player.pyramidPosition}</span>
                     <div>${player.name}</div>
-                    <%--<div class="player_actions">--%>
-                        <%--<c:choose>--%>
-                            <%--<c:when test="${player.id == loggedPlayer.id}">--%>
-                                <%--<c:choose>--%>
-                                    <%--<c:when test="${currentMatch!=null}">--%>
-                                        <%--<span class="label label-primary">You play vs. ${playerViewModel.getCurrentOpponent().name}</span>--%>
-                                    <%--</c:when>--%>
-                                    <%--<c:otherwise>--%>
-                                        <%--<span class="label label-primary">--%>
-                                        <%--That's you.--%>
-                                        <%--</span>--%>
-                                    <%--</c:otherwise>--%>
-                                <%--</c:choose>--%>
-                                <%--<c:if test="${player.id == loggedPlayer.id}">--%>
-
-                                <%--</c:if>--%>
-                            <%--</c:when>--%>
-                            <%--<c:otherwise>--%>
-                                <%--<c:if test="${can_be_challenged && loggedPlayerIsFree}">--%>
-                                    <%--<span class="label label-success">challenge me!</span>--%>
-                                <%--</c:if>--%>
-                                <%--<c:if test="${currentMatch!=null}">--%>
-                                    <%--<span class="label label-info">plays vs. ${playerViewModel.getCurrentOpponent().name}</span>--%>
-                                <%--</c:if>--%>
-                            <%--</c:otherwise>--%>
-                        <%--</c:choose>--%>
-
-
-                    <%--</div>--%>
                 </div>
 
                 <!-- player profile + challenge dialog -->
@@ -238,8 +209,18 @@
             </c:forEach>
         </c:if>
 
-        <table id="borderless" class="table table-condensed borderless">
+        <!-- Legend -->
+        <div class="jumbotron">
+            <h5>Legend
+                <c:if test="${not empty securityContext}">
+                    <span class="label label-info bold strong">${loggedPlayer.name}</span>
+                    <span class="label label-success">Free for a challenge</span>
+                </c:if>
+                <span class="label label-warning">Playing</span>
+            </h5>
+        </div>
 
+        <table id="borderless" class="table table-condensed borderless">
         <c:if test="${not empty waitingForConfirmationMatches}">
             <div id="lastResults">
                 <tr><td colspan="3"><h3>Waiting for Confirmation by Looser:</h3></td></tr>
@@ -308,13 +289,4 @@
             </div>
         </c:if>
         </table>
-    </div>
-
-    <!-- Legend -->
-    <div class="jumbotron">
-        <h4>Legend
-            <span class="label label-info">That's you</span>
-            <span class="label label-success">Free for a challenge</span>
-            <span class="label label-warning">Playing</span>
-        </h4>
     </div>
