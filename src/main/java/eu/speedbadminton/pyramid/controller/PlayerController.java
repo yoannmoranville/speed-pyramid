@@ -49,7 +49,13 @@ public class PlayerController {
 
     @RequestMapping(value={"/viewPlayerData"}, method= RequestMethod.GET)
     public ModelAndView viewPlayerData() {
-        return new ModelAndView("playerDataView");
+        ModelAndView modelAndView = new ModelAndView("playerDataView");
+        if(SecurityContext.get() != null) {
+            Player player = playerService.getPlayerById(SecurityContext.get().getPlayerId());
+            if(player != null)
+                modelAndView.addObject("player", player);
+        }
+        return modelAndView;
     }
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
