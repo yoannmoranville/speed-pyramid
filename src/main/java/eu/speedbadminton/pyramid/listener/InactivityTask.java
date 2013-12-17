@@ -61,20 +61,15 @@ public class InactivityTask {
                 break;
             }
             LOGGER.info("Checking if this match has not been played yet: " + match.toString());
-            if(match.getMatchDate() == null || StringUtils.isNotEmpty(match.getValidationId())) {
+            if(match.getMatchDate() == null) {
                 if(match.getCreation().getTime() + MAX_TIME_TO_PLAY.getMilliseconds() <= System.currentTimeMillis()) {
                     LOGGER.info("Match has not been played in time... We need to switch places between both players and send both an email.");
-                    /*if(match.getMatchDate() != null) {
-                        Result result = ResultsUtil.parseResultString(match.getResult());
-                        ResultsUtil.isChallengerWinner(result);
-                    } else */if(match.getMatchDate() == null) {
-                        playerService.swap(match.getChallenger(), match.getChallengee());
-                        match.setMatchDate(new Date());
-                        Result result = new Result(match.getChallenger(),match.getChallengee());
-                        result.addSet(new Set(match.getChallenger(),match.getChallengee(),16, 0))
-                              .addSet(new Set(match.getChallenger(), match.getChallengee(), 16, 0));
-                        playerService.sendEmailResults(match.getChallenger(), match.getChallengee(), true, result);
-                    }
+                    playerService.swap(match.getChallenger(), match.getChallengee());
+                    match.setMatchDate(new Date());
+                    Result result = new Result(match.getChallenger(),match.getChallengee());
+                    result.addSet(new Set(match.getChallenger(), match.getChallengee(), 16, 0))
+                          .addSet(new Set(match.getChallenger(), match.getChallengee(), 16, 0));
+                    playerService.sendEmailResults(match.getChallenger(), match.getChallengee(), true, result);
                     matchService.update(match);
                 }
             }
