@@ -69,6 +69,8 @@ public class PyramidController {
 
             }
             playerViewModel.setFree(free);
+            playerViewModel.setWonMatches(matchService.getMatchesWon(p));
+            playerViewModel.setLostMatches(matchService.getMatchesLost(p));
 
             playerViewModelList.add(playerViewModel);
         }
@@ -80,14 +82,12 @@ public class PyramidController {
         pyramidViewModel.setUnconfirmedWaitingMatch(matchService.getWaitingForConfirmationMatch(loggedPlayer));
         pyramidViewModel.setLastOverallMatches(matchService.getLastMatchesWithResults());
         pyramidViewModel.setLastPlayerMatches(matchService.getLastMatchesWithResults(loggedPlayer));
-        //pyramidViewModel.setWaitingForConfirmationMatches(matchService.getWaitingForConfirmationMatch(loggedPlayer));
         pyramidViewModel.setOpenChallenges(matchService.getOpenChallenges());
         modelAndView.addObject("pyramidViewModel", pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
         modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge()));
         modelAndView.addObject("bestMale", playerService.getBestMale());
         modelAndView.addObject("bestFemale", playerService.getBestFemale());
-
 
         return modelAndView;
     }

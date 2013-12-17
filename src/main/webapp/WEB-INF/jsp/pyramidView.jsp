@@ -159,6 +159,8 @@
                                     <p>${player.name}</p>
                                     <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
                                     <p>${player.gender}</p>
+                                    <p>Sign up date: <fmt:formatDate value="${player.signUpDate}" pattern="dd-MM-yyyy" /></p>
+                                    <p>Matches won/lost: ${playerViewModel.wonMatches}/${playerViewModel.lostMatches}</p>
                                 </div>
                                 <c:if test="${not empty pastMatches}">
                                     <div class="well" id="lastResultPlayer_${player.id}">

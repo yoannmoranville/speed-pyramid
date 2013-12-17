@@ -192,4 +192,29 @@ public class MatchService {
         query.with(new Sort(Sort.Direction.DESC, "creation"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
+
+    public int getMatchesWon(Player player) {
+        return getMatchesWonLost(player, true);
+    }
+    public int getMatchesLost(Player player) {
+        return getMatchesWonLost(player, false);
+    }
+
+    private int getMatchesWonLost(Player player, boolean isWon) {
+        return getMatchesWonLost(player, getMatchesOfPlayer(player), isWon);
+    }
+
+    protected int getMatchesWonLost(Player player, List<Match> matchesOfPlayer, boolean isWon) {
+        int number = 0;
+        for(Match match : matchesOfPlayer) {
+            if(match.getResult() != null && match.isConfirmed()) {
+                if(isWon && match.getResult().getMatchWinner().equals(player)) {
+                    number++;
+                } else if(!isWon && match.getResult().getMatchLooser().equals(player)) {
+                    number++;
+                }
+            }
+        }
+        return number;
+    }
 }

@@ -12,6 +12,8 @@ public class PlayerViewModel {
     Player player;
     boolean free;
     Match currentMatch;
+    int wonMatches;
+    int lostMatches;
     List<Match> pastMatches = new ArrayList<Match>();
 
     public PlayerViewModel(Player p) {
@@ -52,6 +54,22 @@ public class PlayerViewModel {
 
     public void setFree(boolean free) {
         this.free = free;
+    }
+
+    public int getWonMatches() {
+        return wonMatches;
+    }
+
+    public void setWonMatches(int wonMatches) {
+        this.wonMatches = wonMatches;
+    }
+
+    public int getLostMatches() {
+        return lostMatches;
+    }
+
+    public void setLostMatches(int lostMatches) {
+        this.lostMatches = lostMatches;
     }
 
     public Player getCurrentOpponent(){

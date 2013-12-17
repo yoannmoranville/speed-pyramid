@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +35,8 @@ public class Player {
     private String avatarPath;
 
     private boolean enabled;
+
+    private Date signUpDate;
 
     public Player() {}
 
@@ -126,10 +129,13 @@ public class Player {
         this.enabled = enabled;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Player [id=" + id + ", name=" + name + ", pyramidPosition=" + pyramidPosition + ", email=" + email + "]";
-//    }
+    public Date getSignUpDate() {
+        return signUpDate;
+    }
+
+    public void setSignUpDate(Date signUpDate) {
+        this.signUpDate = signUpDate;
+    }
 
     @Override
     public boolean equals(Object obj) {

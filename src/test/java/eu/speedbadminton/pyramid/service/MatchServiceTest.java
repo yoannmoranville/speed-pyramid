@@ -95,4 +95,54 @@ public class MatchServiceTest {
         Assert.assertTrue(result.getMatchLooser().equals(player1));
 
     }
+
+    @Test
+    public void getMatchesWonLostTest() {
+        Player challenger = createPlayer();
+        Player challengee = createPlayer();
+
+        List<Match> matchesOfPlayer = new ArrayList<Match>();
+
+        Match match = createMatch(challenger, challengee);
+        Result result = new Result(challenger, challengee);
+        result.addSet(new Set(challenger, challengee, 16, 0))
+                .addSet(new Set(challenger, challengee, 16, 7));
+        match.setResult(result);
+        match.setConfirmed(true);
+        matchesOfPlayer.add(match);
+
+        match = createMatch(challenger, challengee);
+        result = new Result(challenger, challengee);
+        result.addSet(new Set(challenger, challengee, 16, 7))
+                .addSet(new Set(challenger, challengee, 16, 12));
+        match.setResult(result);
+        match.setConfirmed(true);
+        matchesOfPlayer.add(match);
+
+        match = createMatch(challenger, challengee);
+        result = new Result(challenger, challengee);
+        result.addSet(new Set(challenger, challengee, 16, 7))
+                .addSet(new Set(challenger, challengee, 16, 18))
+                .addSet(new Set(challenger, challengee, 1, 16));
+        match.setResult(result);
+        match.setConfirmed(true);
+        matchesOfPlayer.add(match);
+
+        Assert.assertEquals(matchService.getMatchesWonLost(challenger, matchesOfPlayer, true), 2);
+        Assert.assertEquals(matchService.getMatchesWonLost(challenger, matchesOfPlayer, false), 1);
+        Assert.assertEquals(matchService.getMatchesWonLost(challengee, matchesOfPlayer, true), 1);
+        Assert.assertEquals(matchService.getMatchesWonLost(challengee, matchesOfPlayer, false), 2);
+    }
+
+    private Player createPlayer() {
+        Player player = new Player();
+        player.setId(new ObjectId());
+        return player;
+    }
+    private Match createMatch(Player challenger, Player challengee) {
+        Match match = new Match();
+        match.setChallenger(challenger);
+        match.setChallengee(challengee);
+        return match;
+    }
 }
