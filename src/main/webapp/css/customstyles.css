@@ -107,10 +107,6 @@ body {
     width: 74px;
 }
 
-#borderless td {
-    border: none;
-}
-
 .bold {
     font-weight: bold;
 }

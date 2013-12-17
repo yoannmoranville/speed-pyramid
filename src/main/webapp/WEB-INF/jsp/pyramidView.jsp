@@ -164,13 +164,25 @@
                                     <c:otherwise><img src="${avatarPath}${player.avatarPath}" alt="Avatar" class="img-circle"></c:otherwise>
                                 </c:choose>
                                 <div class="well">
-                                    <p>${player.name}</p>
-                                    <c:if test="${not empty securityContext}"><p>${player.email}</p></c:if>
-                                    <p>${player.gender}</p>
-                                    <p>Sign up date: <fmt:formatDate value="${player.signUpDate}" pattern="dd-MM-yyyy" /></p>
-                                    <p>Matches won/lost: ${wonMatches}/${lostMatches}</p>
-                                    <p>Challenges won/lost: ${challengerWonMatchesCount}/${challengerLostMatchesCount}</p>
-                                    <p>Challenged won/lost: ${challengeeWonMatchesCount}/${challengeeLostMatchesCount}</p>
+                                    <h4>${player.name}</h4>
+                                    <table class="table table-condensed">
+                                        <tr>
+                                            <td>${player.gender}</td>
+                                            <td>Matches won/lost: ${wonMatches}/${lostMatches}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sign up date: <fmt:formatDate value="${player.signUpDate}" pattern="dd-MM-yyyy" /></td>
+                                            <td>Challenges won/lost: ${challengerWonMatchesCount}/${challengerLostMatchesCount}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><c:if test="${not empty securityContext}">${player.email}</c:if></td>
+                                            <td>Challenged won/lost: ${challengeeWonMatchesCount}/${challengeeLostMatchesCount}</td>
+                                        </tr>
+                                        <%--<tr>--%>
+                                            <%--<td></td>--%>
+                                            <%--<td></td>--%>
+                                        <%--</tr>--%>
+                                    </table>
                                 </div>
                                 <c:if test="${not empty pastMatches}">
                                     <div class="well" id="lastResultPlayer_${player.id}">
@@ -235,10 +247,10 @@
             </h5>
         </div>
 
-        <table id="borderless" class="table table-condensed borderless">
+        <table class="table table-condensed">
             <c:if test="${not empty waitingForConfirmationMatches}">
                 <tr>
-                    <td colspan="3"><h3>Waiting for Confirmation by Looser:</h3></td>
+                    <td colspan="3"><h4>Waiting for Confirmation by Looser:</h4></td>
                 </tr>
                 <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
                     <c:set var="isChallengerWinner" value="span"/>
@@ -256,7 +268,7 @@
             </c:if>
             <c:if test="${not empty lastPlayerMatches}">
                 <tr>
-                    <td colspan="3"><h3>Your last matches:</h3></td>
+                    <td colspan="3"><h4>Your last matches:</h4></td>
                 </tr>
                 <c:forEach items="${lastPlayerMatches}" var="lastResult">
                     <c:set var="isChallengerWinner" value="span"/>
@@ -274,7 +286,7 @@
             </c:if>
             <c:if test="${not empty lastOverallMatches}">
                 <tr>
-                    <td colspan="3"><h3>Last Pyramid Matches:</h3></td>
+                    <td colspan="3"><h4>Last Pyramid Matches:</h4></td>
                 </tr>
                 <c:forEach items="${lastOverallMatches}" var="lastResult">
                     <c:set var="isChallengerWinner" value="span"/>
@@ -292,7 +304,7 @@
             </c:if>
             <c:if test="${not empty openChallenges}">
                 <tr>
-                    <td colspan="3"><h3>Current Matches:</h3></td>
+                    <td colspan="3"><h4>Current Matches:</h4></td>
                 </tr>
                 <c:forEach items="${openChallenges}" var="lastResult">
                     <tr>
@@ -304,7 +316,7 @@
             </c:if>
             <c:if test="${not empty unconfirmedMatches}">
                 <tr>
-                    <td colspan="3"><h3>Unconfirmed Matches:</h3></td>
+                    <td colspan="3"><h4>Unconfirmed Matches:</h4></td>
                 </tr>
                 <c:forEach items="${unconfirmedMatches}" var="lastResult">
                     <tr>
