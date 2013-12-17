@@ -72,11 +72,7 @@ public class MatchService {
         mongoTemplate.remove(match, COLLECTION_NAME);
     }
 
-    public List<Match> getLastMatchesWithResults() {
-        return getLastMatchesWithResults(MAX_RESULTS_PAST_MATCHES);
-    }
-
-    public List<Match> getLastMatchesWithResults(int max) {
+    private List<Match> getLastMatchesWithResults(int max) {
         Criteria criteria = Criteria.where("confirmed").is(true);
         Query query = new Query(criteria);
         if(max > -1)
@@ -84,7 +80,9 @@ public class MatchService {
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
-
+    public List<Match> getLastMatchesWithResults() {
+        return getLastMatchesWithResults(MAX_RESULTS_PAST_MATCHES);
+    }
     public List<Match> getAllLastMatchesWithResults() {
         return getLastMatchesWithResults(-1);
     }
@@ -109,7 +107,7 @@ public class MatchService {
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
 
-    private Match getUnconfirmedMatch(Player player) {
+    public Match getUnconfirmedMatch(Player player) {
         if (player==null){
             return null;
         }
@@ -127,11 +125,21 @@ public class MatchService {
         return null;
     }
 
-    public List<Match> getAllUnconfirmedMatch() {
+    private List<Match> getUnconfirmedMatches(int max) {
         Criteria criteria = Criteria.where("confirmed").is(false).and("matchDate").exists(true);
         Query query = new Query(criteria);
+        if(max > -1)
+            query.limit(max);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
-        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+        List<Match> matches = mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+
+        return matches;
+    }
+    public List<Match> getAllUnconfirmedMatch() {
+        return getUnconfirmedMatches(-1);
+    }
+    public List<Match> getUnconfirmedMatches() {
+        return getUnconfirmedMatches(MAX_RESULTS_PAST_MATCHES);
     }
 
     /**
@@ -182,9 +190,11 @@ public class MatchService {
 
     public List<Match> getOpenChallenges(Player player, int max) {
         Criteria criteria = Criteria.where("matchDate").exists(false);
+        Criteria criteriaOr = new Criteria().orOperator(Criteria.where("matchDate").exists(false), Criteria.where("matchDate").exists(true).and("confirmed").is(false));
+        criteria.andOperator(criteriaOr);
         if(player != null) {
-            Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
-            criteria.andOperator(criteriaOr);
+            Criteria criteriaOr2 = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
+            criteria.andOperator(criteriaOr2);
         }
         Query query = new Query(criteria);
         if(max > -1)

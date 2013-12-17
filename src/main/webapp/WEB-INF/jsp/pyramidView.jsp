@@ -9,6 +9,7 @@
     <c:set var="openChallenges" value="${pyramidViewModel.openChallenges}" />
     <c:set var="lastPlayerMatches" value="${pyramidViewModel.lastPlayerMatches}" />
     <c:set var="waitingForConfirmationMatches" value="${pyramidViewModel.waitingForConfirmationMatches}" />
+    <c:set var="unconfirmedMatches" value="${pyramidViewModel.unconfirmedMatches}" />
     <c:set var="unconfirmedLostMatch" value="${pyramidViewModel.unconfirmedLostMatch}"/>
     <c:set var="unconfirmedWaitingMatch" value="${pyramidViewModel.unconfirmedWaitingMatch}"/>
 
@@ -224,76 +225,87 @@
         </div>
 
         <table id="borderless" class="table table-condensed borderless">
-        <c:if test="${not empty waitingForConfirmationMatches}">
-            <div id="lastResults">
-                <tr><td colspan="3"><h3>Waiting for Confirmation by Looser:</h3></td></tr>
-                    <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
-                        <c:set var="isChallengerWinner" value="span"/>
-                        <c:set var="isChallengerLooser" value="strong"/>
-                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
-                            <c:set var="isChallengerWinner" value="strong"/>
-                            <c:set var="isChallengerLooser" value="span"/>
-                        </c:if>
-                        <tr>
-                            <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
-                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
-                            <td>${lastResult.result}</td>
-                        </tr>
-                    </c:forEach>
-            </div>
-        </c:if>
-        <c:if test="${not empty lastPlayerMatches}">
-            <div id="lastResults">
-                <tr><td colspan="3"><h3>Your last matches:</h3></td></tr>
-                    <c:forEach items="${lastPlayerMatches}" var="lastResult">
-                        <c:set var="isChallengerWinner" value="span"/>
-                        <c:set var="isChallengerLooser" value="strong"/>
-                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
-                            <c:set var="isChallengerWinner" value="strong"/>
-                            <c:set var="isChallengerLooser" value="span"/>
-                        </c:if>
-                        <tr>
-                            <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
-                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
-                            <td>${lastResult.result}</td>
-                        </tr>
-                    </c:forEach>
-            </div>
-        </c:if>
-        <c:if test="${not empty lastOverallMatches}">
-            <div id="lastResults">
-                <tr><td colspan="3"><h3>Last Pyramid Matches:</h3></td></tr>
-
-                    <c:forEach items="${lastOverallMatches}" var="lastResult">
-                        <c:set var="isChallengerWinner" value="span"/>
-                        <c:set var="isChallengerLooser" value="strong"/>
-                        <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
-                            <c:set var="isChallengerWinner" value="strong"/>
-                            <c:set var="isChallengerLooser" value="span"/>
-                        </c:if>
-                        <tr>
-                            <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
-                            <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
-                            <td>${lastResult.result}</td>
-                        </tr>
-                    </c:forEach>
-            </div>
-        </c:if>
-        <c:if test="${not empty openChallenges}">
-            <div id="lastResults">
-                <tr><td colspan="3"><h3>Current Matches:</h3></td></tr>
-                    <c:forEach items="${openChallenges}" var="lastResult">
-                        <tr>
-                            <td><fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" /></td>
-                            <td><span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span></td>
-                            <td><span class="label label-warning">Pending</span></td>
-                        </tr>
-                    </c:forEach>
-            </div>
-        </c:if>
+            <c:if test="${not empty waitingForConfirmationMatches}">
+                <tr>
+                    <td colspan="3"><h3>Waiting for Confirmation by Looser:</h3></td>
+                </tr>
+                <c:forEach items="${waitingForConfirmationMatches}" var="lastResult">
+                    <c:set var="isChallengerWinner" value="span"/>
+                    <c:set var="isChallengerLooser" value="strong"/>
+                    <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                        <c:set var="isChallengerWinner" value="strong"/>
+                        <c:set var="isChallengerLooser" value="span"/>
+                    </c:if>
+                    <tr>
+                        <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                        <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                        <td>${lastResult.result}</td>
+                    </tr>
+                </c:forEach>
+            </c:if>
+            <c:if test="${not empty lastPlayerMatches}">
+                <tr>
+                    <td colspan="3"><h3>Your last matches:</h3></td>
+                </tr>
+                <c:forEach items="${lastPlayerMatches}" var="lastResult">
+                    <c:set var="isChallengerWinner" value="span"/>
+                    <c:set var="isChallengerLooser" value="strong"/>
+                    <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                        <c:set var="isChallengerWinner" value="strong"/>
+                        <c:set var="isChallengerLooser" value="span"/>
+                    </c:if>
+                    <tr>
+                        <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                        <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                        <td>${lastResult.result}</td>
+                    </tr>
+                </c:forEach>
+            </c:if>
+            <c:if test="${not empty lastOverallMatches}">
+                <tr>
+                    <td colspan="3"><h3>Last Pyramid Matches:</h3></td>
+                </tr>
+                <c:forEach items="${lastOverallMatches}" var="lastResult">
+                    <c:set var="isChallengerWinner" value="span"/>
+                    <c:set var="isChallengerLooser" value="strong"/>
+                    <c:if test="${lastResult.challenger.id == lastResult.result.getMatchWinner().id}">
+                        <c:set var="isChallengerWinner" value="strong"/>
+                        <c:set var="isChallengerLooser" value="span"/>
+                    </c:if>
+                    <tr>
+                        <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                        <td><${isChallengerWinner}>${lastResult.challenger.name}</${isChallengerWinner}> vs <${isChallengerLooser}>${lastResult.challengee.name}</${isChallengerLooser}></td>
+                        <td>${lastResult.result}</td>
+                    </tr>
+                </c:forEach>
+            </c:if>
+            <c:if test="${not empty openChallenges}">
+                <tr>
+                    <td colspan="3"><h3>Current Matches:</h3></td>
+                </tr>
+                <c:forEach items="${openChallenges}" var="lastResult">
+                    <tr>
+                        <td><fmt:formatDate value="${lastResult.creation}" pattern="dd-MM-yyyy" /></td>
+                        <td><span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span></td>
+                        <td><span class="label label-warning">Pending</span></td>
+                    </tr>
+                </c:forEach>
+            </c:if>
+            <c:if test="${not empty unconfirmedMatches}">
+                <tr>
+                    <td colspan="3"><h3>Unconfirmed Matches:</h3></td>
+                </tr>
+                <c:forEach items="${unconfirmedMatches}" var="lastResult">
+                    <tr>
+                        <td><fmt:formatDate value="${lastResult.matchDate}" pattern="dd-MM-yyyy" /></td>
+                        <td><span>${lastResult.challenger.name}</span> vs <span>${lastResult.challengee.name}</span></td>
+                        <td>${lastResult.result}</td>
+                    </tr>
+                </c:forEach>
+            </c:if>
         </table>
 
-        <div>Best male: ${bestMale.name} (Rank ${bestMale.pyramidPosition})</div>
-        <div>Best female: ${bestFemale.name} (Rank ${bestFemale.pyramidPosition})</div>
+        <h4>Best male: ${bestMale.name} (Rank ${bestMale.pyramidPosition})</h4>
+        <h4>Best female: ${bestFemale.name} (Rank ${bestFemale.pyramidPosition})</h4>
 
     </div>

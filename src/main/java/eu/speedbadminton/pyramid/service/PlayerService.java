@@ -275,17 +275,13 @@ public class PlayerService {
             assert player!=null;
 
             boolean isBusy = false;
-            if(matchService.getWaitingForConfirmationMatch(player)!=null) {
-                for(Match match : getMatchesOfPlayer(player)) {
-                    if(match.getMatchDate() == null) {
-                        isBusy = true;
-                    }
-                }
+            Match match = matchService.getUnconfirmedMatch(player);
+            if(match != null && !match.isConfirmed()) {
+                isBusy = true;
             }
 
             if(!isBusy){
-                Player p = getPlayerWithPosition(position);
-                players.put(p.getId(),p);
+                players.put(player.getId(), player);
             }
         }
         return players;

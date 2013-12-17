@@ -55,10 +55,11 @@ public class PyramidController {
             List<Match> matchesOfPlayer = matchService.getMatchesOfPlayer(p);
             for (Match m : matchesOfPlayer) {
                 if (m.getChallengee().equals(p) || m.getChallenger().equals(p)) {
-                    if (m.getMatchDate() == null) {
+                    if (m.getMatchDate() == null || !m.isConfirmed()) {
                         playerViewModel.setCurrentMatch(m);
                     } else {
-                        playerViewModel.addPastMatch(m); //todo: We had a limit of 5 last games before, why not anymore?
+                        if(playerViewModel.getPastMatches().size() <= 5)
+                            playerViewModel.addPastMatch(m);
                     }
                 }
             }
@@ -83,6 +84,7 @@ public class PyramidController {
         pyramidViewModel.setLastOverallMatches(matchService.getLastMatchesWithResults());
         pyramidViewModel.setLastPlayerMatches(matchService.getLastMatchesWithResults(loggedPlayer));
         pyramidViewModel.setOpenChallenges(matchService.getOpenChallenges());
+        pyramidViewModel.setUnconfirmedMatches(matchService.getUnconfirmedMatches());
         modelAndView.addObject("pyramidViewModel", pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
         modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge()));
