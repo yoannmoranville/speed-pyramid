@@ -73,10 +73,20 @@ public class MatchService {
     }
 
     public List<Match> getLastMatchesWithResults() {
+        return getLastMatchesWithResults(MAX_RESULTS_PAST_MATCHES);
+    }
+
+    public List<Match> getLastMatchesWithResults(int max) {
         Criteria criteria = Criteria.where("confirmed").is(true);
-        Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
+        Query query = new Query(criteria);
+        if(max > -1)
+            query.limit(max);
         query.with(new Sort(Sort.Direction.DESC, "matchDate"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+    }
+
+    public List<Match> getAllLastMatchesWithResults() {
+        return getLastMatchesWithResults(-1);
     }
 
     public List<Match> getMatchesOfPlayer(Player player) {
@@ -117,6 +127,13 @@ public class MatchService {
         return null;
     }
 
+    public List<Match> getAllUnconfirmedMatch() {
+        Criteria criteria = Criteria.where("confirmed").is(false).and("matchDate").exists(true);
+        Query query = new Query(criteria);
+        query.with(new Sort(Sort.Direction.DESC, "matchDate"));
+        return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
+    }
+
     /**
      * Winner waiting for confirmation.
      * @param loggedPlayer
@@ -152,16 +169,26 @@ public class MatchService {
     }
 
     public List<Match> getOpenChallenges() {
-        return getOpenChallenges(null);
+        return getOpenChallenges(null, MAX_RESULTS_PAST_MATCHES);
     }
 
     public List<Match> getOpenChallenges(Player player) {
+        return getOpenChallenges(player, MAX_RESULTS_PAST_MATCHES);
+    }
+
+    public List<Match> getAllOpenChallenges() {
+        return getOpenChallenges(null, -1);
+    }
+
+    public List<Match> getOpenChallenges(Player player, int max) {
         Criteria criteria = Criteria.where("matchDate").exists(false);
         if(player != null) {
             Criteria criteriaOr = new Criteria().orOperator(Criteria.where("challenger.$id").is(player.getId()), Criteria.where("challengee.$id").is(player.getId()));
             criteria.andOperator(criteriaOr);
         }
-        Query query = new Query(criteria).limit(MAX_RESULTS_PAST_MATCHES);
+        Query query = new Query(criteria);
+        if(max > -1)
+            query.limit(max);
         query.with(new Sort(Sort.Direction.DESC, "creation"));
         return mongoTemplate.find(query, Match.class, COLLECTION_NAME);
     }
