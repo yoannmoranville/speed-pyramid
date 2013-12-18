@@ -10,7 +10,6 @@ public class SpeedbadmintonConfig {
     private static String savePathForAvatarFile;
     private static String pathForAvatarFile;
     private static boolean dev;
-    private static String sendMailPath;
     private static String linkServer;
 
     public static String getPathForAvatarFile() {
@@ -43,13 +42,5 @@ public class SpeedbadmintonConfig {
 
     public static void setSavePathForAvatarFile(String savePathForAvatarFile) {
         SpeedbadmintonConfig.savePathForAvatarFile = savePathForAvatarFile;
-    }
-
-    public static String getSendMailPath() {
-        return sendMailPath;
-    }
-
-    public static void setSendMailPath(String sendMailPath) {
-        SpeedbadmintonConfig.sendMailPath = sendMailPath;
     }
 }

@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label for="avatar">Choose your avatar picture</label>
                 <input type="file" id="avatar" name="avatar">
-                <p class="help-block">Size should be in square format and maximum 800px</p>
+                <p class="help-block">Size should be maximum 100px width and 150px height</p>
             </div>
 
             <button type="submit" class="btn btn-default">Upload</button>

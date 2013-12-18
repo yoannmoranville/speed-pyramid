@@ -1,10 +1,7 @@
 package eu.speedbadminton.pyramid.controller;
 
 import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
-import eu.speedbadminton.pyramid.model.Match;
-import eu.speedbadminton.pyramid.model.Player;
-import eu.speedbadminton.pyramid.model.PlayerViewModel;
-import eu.speedbadminton.pyramid.model.PyramidViewModel;
+import eu.speedbadminton.pyramid.model.*;
 import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
@@ -55,10 +52,11 @@ public class PyramidController {
             List<Match> matchesOfPlayer = matchService.getMatchesOfPlayer(p);
             for (Match m : matchesOfPlayer) {
                 if (m.getChallengee().equals(p) || m.getChallenger().equals(p)) {
-                    if (m.getMatchDate() == null) {
+                    if (m.getMatchDate() == null || !m.isConfirmed()) {
                         playerViewModel.setCurrentMatch(m);
                     } else {
-                        playerViewModel.addPastMatch(m); //todo: We had a limit of 5 last games before, why not anymore?
+                        if(playerViewModel.getPastMatches().size() <= 5)
+                            playerViewModel.addPastMatch(m);
                     }
                 }
             }
@@ -69,6 +67,25 @@ public class PyramidController {
 
             }
             playerViewModel.setFree(free);
+            playerViewModel.setWonMatches(matchService.getMatchesWon(p));
+            playerViewModel.setLostMatches(matchService.getMatchesLost(p));
+
+            for(Match match : playerViewModel.getPastMatches()) {
+                Result result = match.getResult();
+                if(p.equals(match.getChallenger())) {
+                    if(p.equals(result.getMatchWinner())) {
+                        playerViewModel.setChallengerWonMatchesCount(playerViewModel.getChallengerWonMatchesCount() + 1);
+                    } else {
+                        playerViewModel.setChallengerLostMatchesCount(playerViewModel.getChallengerLostMatchesCount() + 1);
+                    }
+                } else if(p.equals(match.getChallengee())) {
+                    if(p.equals(result.getMatchWinner())) {
+                        playerViewModel.setChallengeeWonMatchesCount(playerViewModel.getChallengeeWonMatchesCount() + 1);
+                    } else {
+                        playerViewModel.setChallengeeLostMatchesCount(playerViewModel.getChallengeeLostMatchesCount() + 1);
+                    }
+                }
+            }
 
             playerViewModelList.add(playerViewModel);
         }
@@ -80,12 +97,13 @@ public class PyramidController {
         pyramidViewModel.setUnconfirmedWaitingMatch(matchService.getWaitingForConfirmationMatch(loggedPlayer));
         pyramidViewModel.setLastOverallMatches(matchService.getLastMatchesWithResults());
         pyramidViewModel.setLastPlayerMatches(matchService.getLastMatchesWithResults(loggedPlayer));
-        //pyramidViewModel.setWaitingForConfirmationMatches(matchService.getWaitingForConfirmationMatch(loggedPlayer));
         pyramidViewModel.setOpenChallenges(matchService.getOpenChallenges());
+        pyramidViewModel.setUnconfirmedMatches(matchService.getUnconfirmedMatches());
         modelAndView.addObject("pyramidViewModel", pyramidViewModel);
         modelAndView.addObject("avatarPath", SpeedbadmintonConfig.getPathForAvatarFile());
-
         modelAndView.addObject("isInChallengeDate", playerService.getDaysUntilTimeout(pyramidViewModel.getLoggedPlayerChallenge()));
+        modelAndView.addObject("bestMale", playerService.getBestMale());
+        modelAndView.addObject("bestFemale", playerService.getBestFemale());
 
         return modelAndView;
     }

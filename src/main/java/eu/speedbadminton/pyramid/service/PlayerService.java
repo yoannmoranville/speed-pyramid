@@ -186,7 +186,8 @@ public class PlayerService {
     public void sendEmailPassword(String name, String email, String password) {
         String body = "In order to connect to the pyramid system of Gekkos Berlin, you will need to use those credentials:\n" +
                 "Username: " + email + "\n" +
-                "Password: " + password;
+                "Password: " + password + "\n\n" +
+                "Link to connect: " + "http://www.gekkos-berlin.de/?page_id=2609";
 
         mailService.sendEmailPassword(body, email, name);
     }
@@ -274,17 +275,13 @@ public class PlayerService {
             assert player!=null;
 
             boolean isBusy = false;
-            if(matchService.getWaitingForConfirmationMatch(player)!=null) {
-                for(Match match : getMatchesOfPlayer(player)) {
-                    if(match.getMatchDate() == null) {
-                        isBusy = true;
-                    }
-                }
+            Match match = matchService.getUnconfirmedMatch(player);
+            if(match != null && !match.isConfirmed()) {
+                isBusy = true;
             }
 
             if(!isBusy){
-                Player p = getPlayerWithPosition(position);
-                players.put(p.getId(),p);
+                players.put(player.getId(), player);
             }
         }
         return players;
@@ -296,6 +293,21 @@ public class PlayerService {
 
 
         return busyPlayerIds;
+    }
+
+    public Player getBestMale() {
+        return getBestPlayer(Player.Gender.MALE);
+    }
+
+    public Player getBestFemale() {
+        return getBestPlayer(Player.Gender.FEMALE);
+    }
+
+    private Player getBestPlayer(Player.Gender gender) {
+        Query query = new Query(Criteria.where("gender").is(gender));
+        query.addCriteria(Criteria.where("pyramidPosition").gt(-1));
+        query.with(new Sort(Sort.Direction.ASC, "pyramidPosition"));
+        return mongoTemplate.findOne(query, Player.class, COLLECTION_NAME_PLAYER);
     }
 
     //todo: Add this in a helper static class

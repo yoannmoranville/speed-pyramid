@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="centermain">
     <div id="createPlayer">
-        <form action="saveAdmin.html" method="post">
+        <form action="saveAdmin.html" method="post" accept-charset="UTF-8">
             <label for="email">Email</label>
             <input type="text" id="email" name="email"/>
             <c:if test="${not empty error_email}"><div class="alert alert-danger">${error_email}</div></c:if>

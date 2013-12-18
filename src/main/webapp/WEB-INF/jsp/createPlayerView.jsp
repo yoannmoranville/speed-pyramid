@@ -3,7 +3,7 @@
 <div class="centermain">
 
     <div id="createPlayer">
-        <form action="create_player_save.html" method="post">
+        <form action="create_player_save.html" method="post" accept-charset="UTF-8">
             <label for="name">Player's name</label>
             <input type="text" id="name" name="name"/>
             <c:if test="${not empty error_name}"><div class="alert alert-danger">${error_name}</div></c:if>

@@ -24,8 +24,16 @@ public class MatchController {
     @RequestMapping("/viewMatches")
     public ModelAndView handleRequest() {
         ModelAndView modelAndView = new ModelAndView("matchView");
-        List<Match> matches = matchService.getMatches();
-        modelAndView.addObject("matches", matches);
+
+        List<Match> allOpenChallenges = matchService.getAllOpenChallenges();
+        List<Match> allUnconfirmedMatches = matchService.getAllUnconfirmedMatch();
+        List<Match> allLastMatchesWithResults = matchService.getAllLastMatchesWithResults();
+        modelAndView.addObject("allOpenChallenges", allOpenChallenges);
+        modelAndView.addObject("allUnconfirmedMatches", allUnconfirmedMatches);
+        modelAndView.addObject("allLastMatchesWithResults", allLastMatchesWithResults);
+
+//        List<Match> matches = matchService.getMatches();
+//        modelAndView.addObject("matches", matches);
         return modelAndView;
     }
 

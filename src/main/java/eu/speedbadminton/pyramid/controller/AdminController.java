@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -93,12 +94,12 @@ public class AdminController {
         }
 
         String password = PasswordGenerator.getRandomString();
-//        LOG.info("Password for "+player.getEmail()+" is "+password);
         player.setPassword(PasswordEncryption.generateDigest(password));
 
         player.setEnabled(true);
         player.setRole(Player.Role.NONE);
         player.setPyramidPosition(playerService.getLastPlayerPosition() + 1);
+        player.setSignUpDate(new Date());
 
         playerService.create(player);
         playerService.sendEmailPassword(player.getName(), player.getEmail(), password);
@@ -139,6 +140,7 @@ public class AdminController {
         player.setEnabled(true);
         player.setRole(Player.Role.ADMIN);
         player.setPyramidPosition(1);
+        player.setSignUpDate(new Date());
         playerService.create(player);
         return new ModelAndView("redirect:login.html");
     }

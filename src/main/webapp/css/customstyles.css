@@ -106,3 +106,7 @@ body {
 .set {
     width: 74px;
 }
+
+.bold {
+    font-weight: bold;
+}
