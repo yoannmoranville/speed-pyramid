@@ -38,6 +38,8 @@ public class Player {
 
     private Date signUpDate;
 
+    private List<PositionHistory> positionHistoryList = new ArrayList<PositionHistory>();
+
     public Player() {}
 
     public Player(String name, String email, String password, Gender gender) {
@@ -70,6 +72,11 @@ public class Player {
     }
 
     public void setPyramidPosition(long pyramidPosition) {
+        int currentPyramidPosition = (int)this.pyramidPosition;
+        // update the history if the position changed
+        if (currentPyramidPosition > 0 && currentPyramidPosition != pyramidPosition){
+            this.positionHistoryList.add(new PositionHistory(currentPyramidPosition,new Date()));
+        }
         this.pyramidPosition = pyramidPosition;
     }
 
@@ -135,6 +142,14 @@ public class Player {
 
     public void setSignUpDate(Date signUpDate) {
         this.signUpDate = signUpDate;
+    }
+
+    public List<PositionHistory> getPositionHistoryList() {
+        return positionHistoryList;
+    }
+
+    public void setPositionHistoryList(List<PositionHistory> positionHistoryList) {
+        this.positionHistoryList = positionHistoryList;
     }
 
     @Override

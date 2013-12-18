@@ -3,8 +3,10 @@ package eu.speedbadminton.pyramid.testdata;
 import eu.speedbadminton.pyramid.context.ApplicationContextSpeedminton;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.model.PositionHistory;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
+import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,6 +67,33 @@ public class InsertTestData {
 
         LOG.warn("Deleted 36 Test Players!");
 
+    }
+
+    //@Ignore
+    @Test
+    public void insertPlayerWithPositionHistory(){
+
+        Player player = new Player("Tester","tester@mail","pwd", Player.Gender.MALE);
+
+        playerService.create(player);
+
+        Assert.assertNotNull(player.getId());
+
+        int originalPyramidPosition = 3;
+        player.setPyramidPosition(originalPyramidPosition);
+
+
+        player.setPyramidPosition(5); // this should add a history to the player
+
+        playerService.update(player);
+
+        // get back the history
+        System.out.println(player.getPositionHistoryList());
+
+        Assert.assertNotNull(player.getPositionHistoryList());
+        Assert.assertEquals(player.getPositionHistoryList().get(0).getPosition(), originalPyramidPosition);
+
+        playerService.delete(player);
     }
 
 
