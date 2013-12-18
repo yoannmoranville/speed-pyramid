@@ -8,19 +8,19 @@ import java.util.Date;
  */
 public class PositionHistory {
 
-    private int position;
+    private long position;
     private Date date;
 
-    public PositionHistory(int position, Date date){
+    public PositionHistory(long position, Date date){
         this.position = position;
         this.date = date;
     }
 
-    public int getPosition() {
+    public long getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(long position) {
         this.position = position;
     }
 

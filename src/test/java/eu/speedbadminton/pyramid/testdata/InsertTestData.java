@@ -69,7 +69,6 @@ public class InsertTestData {
 
     }
 
-    //@Ignore
     @Test
     public void insertPlayerWithPositionHistory(){
 

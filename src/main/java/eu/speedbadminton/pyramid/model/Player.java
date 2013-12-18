@@ -72,10 +72,9 @@ public class Player {
     }
 
     public void setPyramidPosition(long pyramidPosition) {
-        int currentPyramidPosition = (int)this.pyramidPosition;
-        // update the history if the position changed
-        if (currentPyramidPosition > 0 && currentPyramidPosition != pyramidPosition){
-            this.positionHistoryList.add(new PositionHistory(currentPyramidPosition,new Date()));
+        long currentPyramidPosition = this.pyramidPosition;
+        if (currentPyramidPosition > 0 && currentPyramidPosition != pyramidPosition) {
+            this.positionHistoryList.add(new PositionHistory(currentPyramidPosition, new Date()));
         }
         this.pyramidPosition = pyramidPosition;
     }
