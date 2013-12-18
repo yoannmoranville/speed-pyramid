@@ -11,6 +11,7 @@ import eu.speedbadminton.pyramid.model.Result;
 import eu.speedbadminton.pyramid.model.Set;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -163,23 +164,15 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
 
     protected static boolean isDateCorrect(Date creationDate, Date matchDate) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        Calendar calTomorrow = Calendar.getInstance();
-        calTomorrow.add(Calendar.DAY_OF_MONTH,1);
-        calTomorrow.clear(Calendar.MILLISECOND);
-        calTomorrow.clear(Calendar.SECOND);
-        calTomorrow.clear(Calendar.MINUTE);
-        calTomorrow.clear(Calendar.HOUR);
+        LocalDate creation = new LocalDate(creationDate);
+        LocalDate match = new LocalDate(matchDate);
+        LocalDate today = new LocalDate();
 
-        cal1.setTime(creationDate);
-        cal2.setTime(matchDate);
-        if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) {
-            return true;
-        } else if(!creationDate.after(matchDate) && matchDate.before(calTomorrow.getTime())) {
-            return true;
+        if (match.isBefore(creation) || match.isAfter(today)){
+            return false;
         }
-        return false;
+
+        return true;
     }
 
     private static Integer getPointsInteger(String points) {
