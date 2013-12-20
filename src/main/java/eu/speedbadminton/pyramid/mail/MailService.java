@@ -27,7 +27,7 @@ public class MailService {
         emailComposer.setProperty("to", to);
         emailComposer.setProperty("from", from);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
 
     }
 
@@ -42,7 +42,7 @@ public class MailService {
         emailComposer.setProperty("to", to);
         emailComposer.setProperty("from", from);
 
-        sendMail(to,emailComposer);
+        sendMail(to, from, emailComposer);
     }
 
     public void sendEmailPassword(String body, String to, String nameOfReceiver) {
@@ -51,7 +51,7 @@ public class MailService {
         emailComposer.setProperty("nameOfReceiver", nameOfReceiver);
         emailComposer.setProperty("to", to);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
     }
 
     public void sendEmailResultsLooserValidation(String body, String to, String name) {
@@ -60,7 +60,7 @@ public class MailService {
         emailComposer.setProperty("nameOfReceiver", name);
         emailComposer.setProperty("to", to);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
     }
 
     public void sendEmailResultsWaitingForLooserValidation(String body, String to, String name) {
@@ -69,7 +69,7 @@ public class MailService {
         emailComposer.setProperty("nameOfReceiver", name);
         emailComposer.setProperty("to", to);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
     }
 
     public void sendEmailDisablePlayer(String body, String to, String name) {
@@ -78,7 +78,7 @@ public class MailService {
         emailComposer.setProperty("nameOfReceiver", name);
         emailComposer.setProperty("to", to);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
     }
 
     public void sendEmailEnablePlayer(String body, String to, String name) {
@@ -87,7 +87,7 @@ public class MailService {
         emailComposer.setProperty("nameOfReceiver", name);
         emailComposer.setProperty("to", to);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
     }
 
     public void sendEmailChangePassword(String body, String to, String name) {
@@ -96,12 +96,12 @@ public class MailService {
         emailComposer.setProperty("nameOfReceiver", name);
         emailComposer.setProperty("to", to);
 
-        sendMail(to,emailComposer);
+        sendMail(to, null, emailComposer);
     }
 
-    private void sendMail(String to, EmailComposer emailComposer) {
+    private void sendMail(String to, String cc, EmailComposer emailComposer) {
         try {
-            applicationMailer.sendMail(to, emailComposer.getSubject(), emailComposer.getContent());
+            applicationMailer.sendMail(to, cc, emailComposer.getSubject(), emailComposer.getContent());
         } catch (Exception ex) {
             LOG.error("Error sending mail. Most probably Template not found. "+ex.getMessage());
         }
