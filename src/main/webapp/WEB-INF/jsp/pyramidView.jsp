@@ -94,7 +94,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" id="savematch-close" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success" id="savematch">Save Result</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -204,7 +204,7 @@
                                 </c:if>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default btn-challenge-close" data-dismiss="modal">Close</button>
                                 <c:if test="${loggedPlayerChallenge == null}">
                                     <c:if test="${can_be_challenged}">
                                         <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-challengee_player_name="${player.name}">Challenge this player.</button>

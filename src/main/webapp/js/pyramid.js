@@ -1,39 +1,3 @@
-
-function bindLoggedoutPyramidFunctions() {
-    $(document).on('click','.mybox', function(){
-        var playerId = $(this).data('playerid');
-        var modal_id = '#modal_' + playerId;
-        $(modal_id).modal({});
-        $("#lastResultPlayer_"+$(this).data('playerid')).removeClass("hidden");
-        $("#openChallengePlayer_"+$(this).data('playerid')).removeClass("hidden");
-        $("#lastResultPlayerData_"+$(this).data('playerid')).html("<img alt='loader' src='images/loader.gif' />");
-        $("#openChallengePlayerData_"+$(this).data('playerid')).html("<img alt='loader' src='images/loader.gif' />");
-
-        $(modal_id).on('shown.bs.modal', function() {
-            $.post("getUserMatchData.html", {playerid: playerId}, function(data) {
-                $("#lastResultPlayerData_" + playerId).html("");
-                $("#openChallengePlayerData_" + playerId).html("");
-                if(data) {
-                    $.each(data.lastResults, function(i, item) {
-                        $("#lastResultPlayerData_" + playerId).append(item + "<br/>");
-                    });
-                    if(data.lastResults.length == 0) {
-                        $("#lastResultPlayer_" + playerId).addClass("hidden");
-                    }
-                    if(data.openChallenge) {
-                        $("#openChallengePlayerData_" + playerId).append(data.openChallenge);
-                    } else {
-                        $("#openChallengePlayer_" + playerId).addClass("hidden");
-                    }
-                } else {
-                    $("#lastResultPlayer_" + playerId).addClass("hidden");
-                    $("#openChallengePlayer_" + playerId).addClass("hidden");
-                }
-            });
-        });
-    });
-}
-
 function bindPyramidFunctions(isInChallengeDate) {
     $(document).on('click','.mybox', function(){
         var modal_id = '#modal_'+$(this).data('playerid');
@@ -68,6 +32,7 @@ function bindPyramidFunctions(isInChallengeDate) {
 
         if(confirm("Are you sure you want to challenge '" + challengee_name + "'?")) {
             $(this).attr("disabled", "disabled");
+            $(".btn-challenge-close").attr("disabled", "disabled");
             $(this).text("Challenging......")
             $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
@@ -75,6 +40,7 @@ function bindPyramidFunctions(isInChallengeDate) {
                     location.reload();
                 } else {
                     $(this).removeAttr("disabled");
+                    $(".btn-challenge-close").removeAttr("disabled");
                     $(this).text("Challenge Player.")
                     console.log(data);
                     alert("Sorry a problem occured, please contact admin...");
@@ -95,6 +61,7 @@ function bindPyramidFunctions(isInChallengeDate) {
     $("#savematch").click(function() {
         console.log("saving match id:"+$("#matchform").data('matchid'));
         $(this).attr("disabled", "disabled");
+        $("#savematch-close").attr("disabled", "disabled");
         $(this).text("Saving......");
         $.post("saveResults.html",
             {   matchid: $("#matchform").data('matchid'),
@@ -113,6 +80,7 @@ function bindPyramidFunctions(isInChallengeDate) {
                 location.reload();
             }).fail(function(data) {
                 $("#savematch").removeAttr("disabled");
+                $("#savematch-close").removeAttr("disabled");
                 $("#savematch").text("Save Result");
                 console.log(data);
                 $("#resultsValidationBox").show();
