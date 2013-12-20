@@ -23,7 +23,26 @@ function bindPyramidFunctions(isInChallengeDate) {
         });
     });
 
+    $(document).on('mouseenter', '.mybox', function(){
+        var againstid = "#mybox_" + $(this).data('againstid');
+        var playerid = "#mybox_" + $(this).data('playerid');
+        if(againstid != null && playerid != null) {
+            $(againstid).addClass('playagainst');
+            $(playerid).addClass('playagainst');
+        } else {
+            $(againstid).removeClass('playagainst');
+            $(playerid).removeClass('playagainst');
+        }
+    });
 
+    $(document).on('mouseleave', '.mybox', function(){
+        var againstid = "#mybox_" + $(this).data('againstid');
+        var playerid = "#mybox_" + $(this).data('playerid');
+        if(againstid != null) {
+            $(againstid).removeClass('playagainst');
+            $(playerid).removeClass('playagainst');
+        }
+    });
 
     $(document).on('click','.btn-challenge',function(){
         var challenge_player = $(this).data('challenge_player');

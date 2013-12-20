@@ -127,7 +127,7 @@
                 </c:when>
             </c:choose>
 
-                <div class="mybox" data-playerid="${player.id}">
+                <div class="mybox" id="mybox_${player.id}" data-playerid="${player.id}" data-againstid="${playerViewModel.currentMatchAgainst.id}">
                     <c:set var="colorOfPositionLabel" value="label-primary" />
                     <c:set var="isYou" value="" />
                     <c:choose>

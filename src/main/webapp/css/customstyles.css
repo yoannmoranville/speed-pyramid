@@ -69,7 +69,7 @@ body {
 
 .mybox:hover {
     transition: all 0.3s ease-out;
-    background-color: #EBEBEB;
+    /*background-color: #EBEBEB;*/
 
 }
 
@@ -109,4 +109,8 @@ body {
 
 .bold {
     font-weight: bold;
+}
+
+.playagainst {
+    background-color: #EEBA8B;
 }

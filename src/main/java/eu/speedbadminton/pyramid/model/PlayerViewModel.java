@@ -12,6 +12,7 @@ public class PlayerViewModel {
     Player player;
     boolean free;
     Match currentMatch;
+    Player currentMatchAgainst;
     private int wonMatches;
     private int lostMatches;
     private int challengeeWonMatchesCount;
@@ -123,5 +124,11 @@ public class PlayerViewModel {
 
     }
 
+    public Player getCurrentMatchAgainst() {
+        return currentMatchAgainst;
+    }
 
+    public void setCurrentMatchAgainst(Player currentMatchAgainst) {
+        this.currentMatchAgainst = currentMatchAgainst;
+    }
 }

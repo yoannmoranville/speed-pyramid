@@ -54,6 +54,10 @@ public class PyramidController {
                 if (m.getChallengee().equals(p) || m.getChallenger().equals(p)) {
                     if (m.getMatchDate() == null || !m.isConfirmed()) {
                         playerViewModel.setCurrentMatch(m);
+                        if(m.getChallengee().equals(p))
+                            playerViewModel.setCurrentMatchAgainst(m.getChallenger());
+                        else
+                            playerViewModel.setCurrentMatchAgainst(m.getChallengee());
                     } else {
                         if(playerViewModel.getPastMatches().size() <= 5)
                             playerViewModel.addPastMatch(m);
