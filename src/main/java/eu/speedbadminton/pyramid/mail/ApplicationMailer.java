@@ -1,5 +1,6 @@
 package eu.speedbadminton.pyramid.mail;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -28,7 +29,8 @@ public class ApplicationMailer {
     {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
-        message.setCc(cc);
+        if(StringUtils.isNotEmpty(cc))
+            message.setCc(cc);
         message.setSubject(subject);
         message.setText(body);
         mailSender.send(message);
