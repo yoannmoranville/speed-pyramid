@@ -24,24 +24,19 @@ function bindPyramidFunctions(isInChallengeDate) {
     });
 
     $(document).on('mouseenter', '.mybox', function(){
-        var againstid = "#mybox_" + $(this).data('againstid');
-        var playerid = "#mybox_" + $(this).data('playerid');
-        if(againstid != null && playerid != null) {
-            $(againstid).addClass('playagainst');
-            $(playerid).addClass('playagainst');
-        } else {
-            $(againstid).removeClass('playagainst');
-            $(playerid).removeClass('playagainst');
+        var againstid = $(this).data('againstid');
+        var playerid = $(this).data('playerid');
+        if(againstid != "" && playerid != "") {
+            $("#mybox_" + againstid).addClass('playagainst');
+            $("#mybox_" + playerid).addClass('playagainst');
         }
     });
 
     $(document).on('mouseleave', '.mybox', function(){
-        var againstid = "#mybox_" + $(this).data('againstid');
-        var playerid = "#mybox_" + $(this).data('playerid');
-        if(againstid != null) {
-            $(againstid).removeClass('playagainst');
-            $(playerid).removeClass('playagainst');
-        }
+        var againstid = $(this).data('againstid');
+        var playerid = $(this).data('playerid');
+        $("#mybox_" +againstid).removeClass('playagainst');
+        $("#mybox_" +playerid).removeClass('playagainst');
     });
 
     $(document).on('click','.btn-challenge',function(){
