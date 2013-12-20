@@ -207,10 +207,10 @@
                                 <button type="button" class="btn btn-default btn-challenge-close" data-dismiss="modal">Close</button>
                                 <c:if test="${loggedPlayerChallenge == null}">
                                     <c:if test="${can_be_challenged}">
-                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-challengee_player_name="${player.name}">Challenge this player.</button>
+                                        <button type="button" class="btn btn-success btn-challenge" data-challenge_player="${player.id}" data-challengee_player_name="${player.name}">Challenge this player</button>
                                     </c:if>
                                     <c:if test="${!can_be_challenged}">
-                                        <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge.</button>
+                                        <button type="button" class="btn btn-warning" disabled="disabled">You cannot challenge</button>
                                     </c:if>
                                 </c:if>
                             </div>
