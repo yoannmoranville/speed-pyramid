@@ -69,6 +69,8 @@ public class InactivityTask {
                     Result result = new Result(match.getChallenger(),match.getChallengee());
                     result.addSet(new Set(match.getChallenger(), match.getChallengee(), 16, 0))
                           .addSet(new Set(match.getChallenger(), match.getChallengee(), 16, 0));
+                    match.setResult(result);
+                    match.setConfirmed(true);
                     playerService.sendEmailResults(match.getChallenger(), match.getChallengee(), true, result);
                     matchService.update(match);
                 }
