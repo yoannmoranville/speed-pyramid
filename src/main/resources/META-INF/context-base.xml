@@ -11,7 +11,7 @@
     </bean>
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongo" ref="mongo" />
-        <constructor-arg name="databaseName" value="speedminton" />
+        <constructor-arg name="databaseName" value="speedminton-vorstand" />
     </bean>
 
     <bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -44,8 +44,8 @@
 
     <!-- test Message to send on application start -->
     <bean id="testMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="to" value="l.gotter@gmail.com"></property>
-        <property name="from" value="speedpyramid@gmail.com"></property>
+        <property name="to" value="l.gotter@gmail.com"/>
+        <property name="from" value="speedpyramid@gmail.com"/>
         <property name="subject" value="TEST - Spring is sending a test message!"/>
     </bean>
 
