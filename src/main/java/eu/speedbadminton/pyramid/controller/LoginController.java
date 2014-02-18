@@ -65,7 +65,7 @@ public class LoginController {
             } else {
                 SecurityService.logout(false);
             }
-            LOG.info("User '" + email + "' has logged in");
+            LOG.info("User '" + email + "' has logged out");
         }
         return new RedirectView("viewPyramid.html");
     }
