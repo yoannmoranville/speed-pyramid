@@ -4,8 +4,11 @@ function bindPyramidFunctions(isInChallengeDate) {
         console.log('model_id:'+modal_id);
 
         $(modal_id).modal({});
-
     });
+
+    if(isInFrame()) {
+        $('#signinBtn').attr('target', '_blank');
+    }
 
     $('#confirmLostMatch').click(function(){
         $.post("confirmMatchResults.html", function(data){
@@ -106,5 +109,13 @@ function bindPyramidFunctions(isInChallengeDate) {
 
     if(undefined != isInChallengeDate && isInChallengeDate != -1) {
         $("#isInChallenge").text("You are in a challenge and have " + isInChallengeDate + " days to play");
+    }
+}
+
+function isInFrame () {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
     }
 }

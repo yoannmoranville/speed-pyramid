@@ -51,7 +51,7 @@
                             </form>
                         </c:if>
                         <c:if test="${empty securityContext}">
-                            <form class="navbar-form navbar-right" action="login.html" method="GET">
+                            <form class="navbar-form navbar-right" action="login.html" method="GET" id="signinBtn">
                                 <button type="submit" class="btn btn-success">Sign in</button>
                             </form>
                         </c:if>
