@@ -81,25 +81,16 @@ public class Set {
     private boolean isSetHasOvertimeWinner(){
         int pointsPlayer1 = this.getPointsPlayer1();
         int pointsPlayer2 = this.getPointsPlayer2();
-
-        if (pointsPlayer1>16){
-            if(pointsPlayer1 - pointsPlayer2 == 2){
-                return true;
-            }
-        } else if (pointsPlayer2>16){
-            if(pointsPlayer2-pointsPlayer1==2){
+        if(pointsPlayer1 > 16 || pointsPlayer2 > 16) {
+            if(Math.abs(pointsPlayer1 - pointsPlayer2) == 2) {
                 return true;
             }
         }
-
         return false;
     }
 
     public boolean setCompleted(){
-        if (isSetHasSimpleWinner() || isSetHasOvertimeWinner()){
-            return true;
-        }
-        return false;
+        return isSetHasSimpleWinner() || isSetHasOvertimeWinner();
     }
 
     /**

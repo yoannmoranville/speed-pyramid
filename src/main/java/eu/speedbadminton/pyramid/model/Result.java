@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -50,8 +49,8 @@ public class Result {
     public Set getSet(int nr){
         int index = nr - 1;
 
-        if (sets.size()>index){
-            return sets.get(nr-1);
+        if(sets.size() > index) {
+            return sets.get(index);
         }
         return null;
     }
@@ -102,7 +101,6 @@ public class Result {
                 return true;
             }
         }
-
         return false;
     }
 

@@ -6,6 +6,7 @@ import eu.speedbadminton.pyramid.model.Result;
 import eu.speedbadminton.pyramid.model.Set;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -68,6 +69,10 @@ public class ResultsUtilTest {
         result.setSets(new ArrayList<Set>());
         result.addSet(new Set(player1,player2,-16,10)).addSet(new Set(player1,player2,-5,16));
         Assert.assertFalse(result.isResultCorrect());
+
+        result.setSets(new ArrayList<Set>());
+        result.addSet(new Set(player1,player2,16,11)).addSet(new Set(player1,player2,10,16)).addSet(new Set(player1,player2,19,21));
+        Assert.assertTrue(result.isResultCorrect());
     }
 
     @Test
