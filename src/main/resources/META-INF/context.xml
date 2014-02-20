@@ -10,6 +10,7 @@
         <bean class="eu.speedbadminton.pyramid.security.SecurityInterceptor">
             <property name="loginPage" value="login.html" />
         </bean>
+        <bean class="eu.speedbadminton.pyramid.security.SslInterceptor" />
     </mvc:interceptors>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />

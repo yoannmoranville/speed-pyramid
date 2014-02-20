@@ -47,20 +47,6 @@
         <listener-class>eu.speedbadminton.pyramid.listener.SpeedbadmintonListener</listener-class>
     </listener>
 
-    <security-constraint>
-        <display-name>SSL is required</display-name>
-        <web-resource-collection>
-            <web-resource-name>Match All - SSL is required</web-resource-name>
-            <description/>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-
-        <user-data-constraint>
-            <description>SSL is required</description>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-
     <mime-mapping>
         <extension>ico</extension>
         <mime-type>image/x-icon</mime-type>
