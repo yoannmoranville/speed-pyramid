@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="speedbadminton" uri="http://www.speedbadminton.eu/tags" %>
 <speedbadminton:securityContext var="securityContext" />
+<speedbadminton:developmentTag var="isDev" />
 <html lang="en">
     <head>
         <meta content="text/html; charset=UTF-8;" http-equiv="content-type" />
@@ -71,6 +72,11 @@
         </c:choose>
 
         <div class="main">
+            <c:if test="${isDev == true}">
+                <div class="well">
+                    <h3 class="text-center">TEST SERVER</h3>
+                </div>
+            </c:if>
             <tiles:insertAttribute name="body"/>
         </div>
 

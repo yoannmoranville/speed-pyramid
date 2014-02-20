@@ -15,4 +15,14 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>developmentTag</name>
+        <tag-class>eu.speedbadminton.pyramid.security.tags.DevelopmentTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>
