@@ -76,7 +76,8 @@ function bindPyramidFunctions(isInChallengeDate) {
         if(confirm("Are you really sure you want to give up on this game? There is no going back, you will lose the game...")) {
             $.post("giveupChallenge.html" , {matchid: $(this).data("matchid")}, function() {
                 location.reload();
-            }).fail(function() {
+            }).fail(function(data) {
+                console.log(data);
                 alert("There was a problem... Please try again later or contact an admin.");
             })
         }

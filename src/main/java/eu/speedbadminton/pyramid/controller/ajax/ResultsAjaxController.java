@@ -94,9 +94,13 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
         // validation completed
         if(continueTask) {
-            playerService.processResult(match, result,loggedPlayer,challengerPlayer,challengeePlayer);
-            response.setStatus(200);
-            writeSimpleData(writer, "success", "true");
+            try {
+                playerService.processResult(match, result,loggedPlayer,challengerPlayer,challengeePlayer);
+                response.setStatus(200);
+                writeSimpleData(writer, "success", "true");
+            } catch (Exception e) {
+                response.setStatus(400);
+            }
         } else {
             response.setStatus(400);
         }

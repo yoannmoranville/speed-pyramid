@@ -7,6 +7,7 @@ import eu.speedbadminton.pyramid.model.Set;
 import eu.speedbadminton.pyramid.security.SecurityContext;
 import eu.speedbadminton.pyramid.service.MatchService;
 import eu.speedbadminton.pyramid.service.PlayerService;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -32,6 +33,7 @@ import java.util.Locale;
  */
 @Controller
 public class GiveUpChallengeAjaxController extends AjaxAbstractController {
+    private static final Logger LOG = Logger.getLogger(GiveUpChallengeAjaxController.class);
     @Autowired
     private MatchService matchService;
     @Autowired
@@ -49,8 +51,9 @@ public class GiveUpChallengeAjaxController extends AjaxAbstractController {
             Match match = matchService.getMatchById(matchId);
 
             Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
-            Player player1 = match.getChallenger().equals(loggedPlayer)?loggedPlayer:match.getChallengee();
-            Player player2 = match.getChallengee().equals(loggedPlayer)?loggedPlayer:match.getChallenger();
+
+            Player player1 = match.getChallenger();
+            Player player2 = match.getChallengee();
 
             Result result = new Result(player1, player2).addSet(new Set(player1, player2, 16, 0)).addSet(new Set(player1, player2, 16, 0));
 
@@ -60,9 +63,11 @@ public class GiveUpChallengeAjaxController extends AjaxAbstractController {
 
             match.setMatchDate(date);
             playerService.processResult(match, result, loggedPlayer, player1, player2);
+            writeSimpleData(writer, "success", "true");
             response.setStatus(200);
 
         } catch (Exception e) {
+            LOG.error("Error when giving up", e);
             response.setStatus(400);
         }
         closeWriter(writer);

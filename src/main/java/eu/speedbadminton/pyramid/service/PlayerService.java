@@ -335,30 +335,34 @@ public class PlayerService {
      * @param challengerPlayer
      * @param challengeePlayer
      */
-    public void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) {
-        match.setResult(result);
+    public void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) throws Exception {
+        try {
+            match.setResult(result);
 
-        Player winner = result.getMatchWinner();
-        Player looser = result.getMatchLooser();
+            Player winner = result.getMatchWinner();
+            Player looser = result.getMatchLooser();
 
-        if(loggedPlayer.equals(looser)) {
-            match.setConfirmed(true);
-            matchService.update(match);
-            if(loggedPlayer.getPyramidPosition() < winner.getPyramidPosition()) {
-                swap(loggedPlayer, winner);
+            if(loggedPlayer.equals(looser)) {
+                match.setConfirmed(true);
+                matchService.update(match);
+                if(loggedPlayer.getPyramidPosition() < winner.getPyramidPosition()) {
+                    swap(loggedPlayer, winner);
+                } else {
+                    sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
+                }
             } else {
-                sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
+                match.setConfirmed(false);
+                String validationId = PasswordGenerator.getRandomString();
+                match.setValidationId(validationId);
+                matchService.update(match);
+
+                String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
+                LOG.info("New Validation Link: "+validationLink);
+
+                sendEmailResultsLooserValidation(looser, winner, result, validationLink);
             }
-        } else {
-            match.setConfirmed(false);
-            String validationId = PasswordGenerator.getRandomString();
-            match.setValidationId(validationId);
-            matchService.update(match);
-
-            String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
-            LOG.info("New Validation Link: "+validationLink);
-
-            sendEmailResultsLooserValidation(looser, winner, result, validationLink);
+        } catch (Exception e) {
+            throw e;
         }
     }
 
