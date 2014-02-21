@@ -52,8 +52,15 @@ public class GiveUpChallengeAjaxController extends AjaxAbstractController {
 
             Player loggedPlayer = playerService.getPlayerById(SecurityContext.get().getPlayerId());
 
-            Player player1 = match.getChallenger();
-            Player player2 = match.getChallengee();
+            Player player1;
+            Player player2;
+            if(loggedPlayer.equals(match.getChallenger())) {
+                player1 = match.getChallengee();
+                player2 = match.getChallenger();
+            } else {
+                player1 = match.getChallenger();
+                player2 = match.getChallengee();
+            }
 
             Result result = new Result(player1, player2).addSet(new Set(player1, player2, 16, 0)).addSet(new Set(player1, player2, 16, 0));
 
