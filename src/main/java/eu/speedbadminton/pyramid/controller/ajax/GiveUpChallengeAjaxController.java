@@ -54,15 +54,16 @@ public class GiveUpChallengeAjaxController extends AjaxAbstractController {
 
             Player player1;
             Player player2;
+            Result result;
             if(loggedPlayer.equals(match.getChallenger())) {
                 player1 = match.getChallengee();
                 player2 = match.getChallenger();
+                result = new Result(player2, player1).addSet(new Set(player2, player1, 0, 16)).addSet(new Set(player2, player1, 0, 16));
             } else {
                 player1 = match.getChallenger();
                 player2 = match.getChallengee();
+                result = new Result(player1, player2).addSet(new Set(player1, player2, 16, 0)).addSet(new Set(player1, player2, 16, 0));
             }
-
-            Result result = new Result(player1, player2).addSet(new Set(player1, player2, 16, 0)).addSet(new Set(player1, player2, 16, 0));
 
             DateTime dateTime = new DateTime();
             DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
