@@ -94,7 +94,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
 
         // validation completed
         if(continueTask) {
-            processResult(match, result,loggedPlayer,challengerPlayer,challengeePlayer);
+            playerService.processResult(match, result,loggedPlayer,challengerPlayer,challengeePlayer);
             response.setStatus(200);
             writeSimpleData(writer, "success", "true");
         } else {
@@ -124,41 +124,6 @@ public class ResultsAjaxController extends AjaxAbstractController {
         }
 
         return result;
-    }
-
-    /**
-     * Save this result to DB - if logged Player lost, just switch positions. if logged Player won, the looser has to confirm.
-     * @param match
-     * @param result
-     * @param loggedPlayer
-     * @param challengerPlayer
-     * @param challengeePlayer
-     */
-    protected void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) {
-        match.setResult(result);
-
-        Player winner = result.getMatchWinner();
-        Player looser = result.getMatchLooser();
-
-        if(loggedPlayer.equals(looser)) {
-            match.setConfirmed(true);
-            matchService.update(match);
-            if(loggedPlayer.getPyramidPosition() < winner.getPyramidPosition()) {
-                playerService.swap(loggedPlayer, winner);
-            } else {
-                playerService.sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
-            }
-        } else {
-            match.setConfirmed(false);
-            String validationId = PasswordGenerator.getRandomString();
-            match.setValidationId(validationId);
-            matchService.update(match);
-
-            String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
-            LOG.info("New Validation Link: "+validationLink);
-
-            playerService.sendEmailResultsLooserValidation(looser, winner, result, validationLink);
-        }
     }
 
 

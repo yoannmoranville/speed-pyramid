@@ -31,7 +31,7 @@ import java.util.Locale;
  * @author yoannmoranville
  */
 @Controller
-public class GiveUpChallengeAjaxController extends ResultsAjaxController {
+public class GiveUpChallengeAjaxController extends AjaxAbstractController {
     @Autowired
     private MatchService matchService;
     @Autowired
@@ -59,7 +59,7 @@ public class GiveUpChallengeAjaxController extends ResultsAjaxController {
             Date date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(formatter.print(dateTime));
 
             match.setMatchDate(date);
-            super.processResult(match, result, loggedPlayer, player1, player2);
+            playerService.processResult(match, result, loggedPlayer, player1, player2);
             response.setStatus(200);
 
         } catch (Exception e) {

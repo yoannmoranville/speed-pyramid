@@ -9,10 +9,12 @@ package eu.speedbadminton.pyramid.service;
 import java.util.*;
 
 import com.google.gson.Gson;
+import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
 import eu.speedbadminton.pyramid.model.Result;
+import eu.speedbadminton.pyramid.security.PasswordGenerator;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -323,6 +325,41 @@ public class PlayerService {
         calendarToday.setTime(new Date());
 
         return Days.daysBetween(new DateTime(calendarToday).toLocalDate(), new DateTime(calendarTimeout).toLocalDate()).getDays();
+    }
+
+    /**
+     * Save this result to DB - if logged Player lost, just switch positions. if logged Player won, the looser has to confirm.
+     * @param match
+     * @param result
+     * @param loggedPlayer
+     * @param challengerPlayer
+     * @param challengeePlayer
+     */
+    public void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) {
+        match.setResult(result);
+
+        Player winner = result.getMatchWinner();
+        Player looser = result.getMatchLooser();
+
+        if(loggedPlayer.equals(looser)) {
+            match.setConfirmed(true);
+            matchService.update(match);
+            if(loggedPlayer.getPyramidPosition() < winner.getPyramidPosition()) {
+                swap(loggedPlayer, winner);
+            } else {
+                sendEmailResults(challengerPlayer, challengeePlayer, ResultsUtil.isChallengerWinner(result), result);
+            }
+        } else {
+            match.setConfirmed(false);
+            String validationId = PasswordGenerator.getRandomString();
+            match.setValidationId(validationId);
+            matchService.update(match);
+
+            String validationLink = SpeedbadmintonConfig.getLinkServer() + validationId;
+            LOG.info("New Validation Link: "+validationLink);
+
+            sendEmailResultsLooserValidation(looser, winner, result, validationLink);
+        }
     }
 
 }
