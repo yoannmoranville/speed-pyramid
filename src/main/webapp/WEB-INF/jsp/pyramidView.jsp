@@ -33,14 +33,15 @@
     <!-- Player is waiting for confirmation of Looser -->
     <c:if test="${unconfirmedWaitingMatch!=null}">
         <div class="jumbotron">
-                ${unconfirmedWaitingMatch.challenger.name} vs ${unconfirmedWaitingMatch.challengee.name} <span class="label label-success">You won. (${unconfirmedWaitingMatch.result})</span> <span class="label label-warning">Waiting for confirmation. </span>
+                ${unconfirmedWaitingMatch.challenger.name} vs ${unconfirmedWaitingMatch.challengee.name} <span class="label label-success">You won. (${unconfirmedWaitingMatch.result})</span> <span class="label label-warning">Waiting for confirmation of your opponent.</span>
         </div>
     </c:if>
     <!-- Showing Player's open challenge. -->
-    <c:if test="${loggedPlayerChallenge!=null}">
+    <c:if test="${loggedPlayerChallenge!=null and unconfirmedWaitingMatch==null and unconfirmedLostMatch==null}">
         <div class="jumbotron" id="openChallenges">
-                ${loggedPlayerChallenge.challenger.name} vs ${loggedPlayerChallenge.challengee.name}
+            ${loggedPlayerChallenge.challenger.name} vs ${loggedPlayerChallenge.challengee.name}
             <button id="enter_result_button" class="btn btn-success" data-matchid="${loggedPlayerChallenge.id}">Enter results</button>
+            <button id="giveup_button" class="btn btn-warning" data-matchid="${loggedPlayerChallenge.id}">Give up the game?</button>
         </div>
 
         <!-- Modal for Enter Results -->

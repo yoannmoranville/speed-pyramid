@@ -6,6 +6,9 @@ function bindPyramidFunctions(isInChallengeDate) {
         $(modal_id).modal({});
     });
 
+    $("#giveup_button").attr("title", "If you have no time to play, if you are injured or if you want to challenge someone else instead, you can cancel this game");
+    $("#giveup_button").tooltip();
+
     if(isInFrame()) {
         $('#signinBtn').attr('target', '_blank');
     }
@@ -53,14 +56,13 @@ function bindPyramidFunctions(isInChallengeDate) {
             $(this).text("Challenging......")
             $.post("usersEncounterQuestion.html", { challenge_player: challenge_player}, function(data){
                 if(data.success == 'true'){
-                    console.log("sucessfully challenged. emails sent.");
                     location.reload();
                 } else {
                     $(this).removeAttr("disabled");
                     $(".btn-challenge-close").removeAttr("disabled");
                     $(this).text("Challenge Player.")
                     console.log(data);
-                    alert("Sorry a problem occured, please contact admin...");
+                    alert("Sorry a problem occurred, please contact admin...");
                 }
             });
         }
@@ -69,6 +71,16 @@ function bindPyramidFunctions(isInChallengeDate) {
     /* Enter Results from Pyramid View */
 
     $('#dateMatchPlayed').datepicker();
+
+    $("#giveup_button").click(function() {
+        if(confirm("Are you really sure you want to give up on this game? There is no going back, you will lose the game...")) {
+            $.post("giveupChallenge.html" , {matchid: $(this).data("matchid")}, function() {
+                location.reload();
+            }).fail(function() {
+                alert("There was a problem... Please try again later or contact an admin.");
+            })
+        }
+    });
 
     $("#enter_result_button").click(function() {
         var modal_id = '#modal_results';

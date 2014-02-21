@@ -74,7 +74,8 @@
         <div class="main">
             <c:if test="${isDev == true}">
                 <div class="well">
-                    <h3 class="text-center">TEST SERVER</h3>
+                    <h3 class="text-center">THIS IS A TEST SERVER</h3>
+                    <h4 class="text-center"><a href="http://54.213.165.168:8080/pyramid-system/viewPyramid.html">Go to the production server</a></h4>
                 </div>
             </c:if>
             <tiles:insertAttribute name="body"/>

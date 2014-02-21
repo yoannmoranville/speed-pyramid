@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -135,7 +134,7 @@ public class ResultsAjaxController extends AjaxAbstractController {
      * @param challengerPlayer
      * @param challengeePlayer
      */
-    private void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) {
+    protected void processResult(Match match, Result result, Player loggedPlayer, Player challengerPlayer, Player challengeePlayer) {
         match.setResult(result);
 
         Player winner = result.getMatchWinner();
