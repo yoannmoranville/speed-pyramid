@@ -35,6 +35,10 @@
         <put-attribute name="title" value="Pyramid" />
         <put-attribute name="body" value="/WEB-INF/jsp/pyramidView.jsp" />
     </definition>
+    <definition name="statisticsView" extends="base.definition">
+        <put-attribute name="title" value="Statistics" />
+        <put-attribute name="body" value="/WEB-INF/jsp/statisticsView.jsp" />
+    </definition>
 
     <definition name="confirmResultsView" extends="base.empty">
         <put-attribute name="title" value="Confirmation of results" />

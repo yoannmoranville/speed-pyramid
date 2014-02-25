@@ -22,8 +22,12 @@
         <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
         <script type="text/javascript" src="js/pyramid.js"></script>
         <script type="text/javascript" src="js/player.js"></script>
+        <script type="text/javascript" src="js/statistics.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="bootstrap/datepicker/js/bootstrap-datepicker.js"></script>
+        <script type="text/javascript" src="js/raphael-2.1.0.min.js"></script>
+        <script type="text/javascript" src="js/morris-0.4.3.min.js"></script>
+        <script type="text/javascript" src="js/moment-2.5.1.min.js"></script>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -42,6 +46,7 @@
                         <li><a href="viewPyramid.html">Speed Pyramid</a></li>
                         <c:if test="${not empty securityContext}">
                             <li><a href="viewPlayerData.html">Profile</a></li>
+                            <li><a href="viewStatistics.html">Statistics</a></li>
                             <c:if test="${securityContext.admin}">
                                 <li><a href="createPlayer.html">Create new player</a></li>
                                 <li><a href="viewPlayers.html">List of players</a></li>

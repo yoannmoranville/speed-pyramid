@@ -6,6 +6,7 @@ package eu.speedbadminton.pyramid.service;
  *
  * @author Yoann Moranville
  */
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import eu.speedbadminton.pyramid.listener.SpeedbadmintonConfig;
 import eu.speedbadminton.pyramid.mail.MailService;
 import eu.speedbadminton.pyramid.model.Match;
 import eu.speedbadminton.pyramid.model.Player;
+import eu.speedbadminton.pyramid.model.PositionHistory;
 import eu.speedbadminton.pyramid.model.Result;
 import eu.speedbadminton.pyramid.security.PasswordGenerator;
 import eu.speedbadminton.pyramid.utils.ResultsUtil;
@@ -364,6 +366,23 @@ public class PlayerService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public String createPastPositionsJson(Player player) {
+        List<PositionHistory> pastPositions = player.getPositionHistoryList();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for(int i = 0; i < pastPositions.size(); i++) {
+            PositionHistory positionHistory = pastPositions.get(i);
+            Date date = positionHistory.getDate();
+            stringBuilder.append("{\"date\":").append("\"").append(simpleDateFormat.format(date)).append("\", ").append("\"position\":").append(-positionHistory.getPosition()).append("}");
+            if(i < pastPositions.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 
 }
